@@ -1,21 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2022/02/01/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+    <title>Hexo+Github搭建个人博客</title>
+    <url>/2022/02/02/Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="1-安装Node-js"><a href="#1-安装Node-js" class="headerlink" title="1 安装Node.js"></a>1 安装Node.js</h1><ul>
+<li>Hexo需要Node.js支持</li>
+<li>Node.js下载地址：<a href="https://nodejs.org/en/">nodejs.org</a></li>
+<li>安装完以后会有两个组件，Node.js + npm包管理器</li>
+</ul>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">$ <span class="keyword">node</span> <span class="title">-v</span></span><br><span class="line">v16.<span class="number">13.1</span></span><br><span class="line"></span><br><span class="line">$ npm -v</span><br><span class="line"><span class="number">8.1</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h1 id="2-安装cnpm，淘宝镜像源"><a href="#2-安装cnpm，淘宝镜像源" class="headerlink" title="2 安装cnpm，淘宝镜像源"></a>2 安装cnpm，淘宝镜像源</h1><ul>
+<li>借助npm安装Hexo博客框架，但由于国内镜像源速度慢，可以利用npm安装一个cnpm，淘宝的源</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https:<span class="regexp">//</span>registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105234517559.png"></p>
+<h1 id="3-使用cnpm安装Hexo博客"><a href="#3-使用cnpm安装Hexo博客" class="headerlink" title="3 使用cnpm安装Hexo博客"></a>3 使用cnpm安装Hexo博客</h1><figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ cnpm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235001374.png"></p>
+<h1 id="4-使用Hexo搭建博客"><a href="#4-使用Hexo搭建博客" class="headerlink" title="4 使用Hexo搭建博客"></a>4 使用Hexo搭建博客</h1><ul>
+<li>创建博客目录</li>
+<li>初始化博客</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">init</span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235806763.png"></p>
+<ul>
+<li>启动博客</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235937501.png"></p>
+<ul>
+<li>浏览器访问<a href="http://localhost:4000/">http://localhost:4000/</a></li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000154817.png"></p>
+<ul>
+<li>新建一篇博客，并编辑</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo n <span class="string">&quot;My First Blog&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000542115.png"></p>
+<ul>
+<li>清理，重新生成，并启动博客</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo clean</span><br><span class="line"><span class="variable">$ </span>hexo g</span><br><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001429254.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001505606.png"></p>
+<h1 id="5-将博客部署到远端，比如GitHub"><a href="#5-将博客部署到远端，比如GitHub" class="headerlink" title="5 将博客部署到远端，比如GitHub"></a>5 将博客部署到远端，比如GitHub</h1><ul>
+<li>创建一个新的仓库，注意：仓库名必须为GitHub用户名+github.io</li>
+<li>使用cnpm安装git部署插件</li>
+</ul>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">$ cnpm install <span class="comment">--save hexo-deployer-git</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106002928759.png"></p>
+<ul>
+<li>修改博客目录下的_config.yml</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230537645.png"></p>
+<ul>
+<li>部署到远端</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo d</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>会提示你输入GitHub用户名和密码，但是重点来了，这里试了好几次，明明用户名和密码都正确，就是部署不上去，提示Authentication failed &amp; Error: Spawn failed</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230617045.png"></p>
+<ul>
+<li>不知道是不是HTTPS的问题，不过以前也确实没用过HTTPS的方式，又尝试了SSH的方式，修改如下，注意如果以前没有在GitHub上添加过SSH Keys的话需要添加下，参考链接：<a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generating a new SSH key and adding it to the ssh-agent</a></li>
+<li>重新修改_config.yml如下</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231656787.png"></p>
+<ul>
+<li>重新部署成功</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231858319.png"></p>
+<ul>
+<li>将仓库地址复制到浏览器中打开，就可以正常打开个人博客</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117232211582.png"></p>
 ]]></content>
+      <categories>
+        <category>博客搭建</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
   </entry>
 </search>
