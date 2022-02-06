@@ -173,4 +173,34 @@
         <tag>Hexo</tag>
       </tags>
   </entry>
+  <entry>
+    <title>引用</title>
+    <url>/2022/02/06/%E5%BC%95%E7%94%A8/</url>
+    <content><![CDATA[<h1 id="引用的使用"><a href="#引用的使用" class="headerlink" title="引用的使用"></a>引用的使用</h1><ul>
+<li>引用（reference），为对象起了另外一个名字</li>
+<li>引用并非对象，相反的，它只是为一个已存在的对象所起的另外一个名字</li>
+<li>引用必须初始化，且不能使引用重新绑定到另外一个对象</li>
+<li>引用只能绑定在对象上，而不能与字面值或某个表达式的计算结果绑定在一起</li>
+<li>引用本身不是对象，不能定义引用的引用</li>
+<li>引用和指针的区别：指针指向内存中的某个对象，而引用绑定到内存中的某个对象，它们都实现了对其他对象的间接访问，两者的区别主要有两方面。第一，指针本身就是一个对象，允许对指针赋值和拷贝，而且在指针的生命周期内它可以指向几个不同的对象，引用不是一个对象，无法令引用重新绑定到另外一个对象；第二，指针无须在定义是赋初值，和其他内置类型一样，在块作用域内定义的指针如果没有初始化，也将拥有一个不确定的值，引用必须在定义时赋初值</li>
+</ul>
+<h1 id="引用的本质"><a href="#引用的本质" class="headerlink" title="引用的本质"></a>引用的本质</h1><ul>
+<li>引用的本质就是指针，只是编译器削弱了它的功能，所以引用就是弱化了的指针，一个引用占用一个指针的大小</li>
+<li>通过反汇编观察指令（msvc）如下</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">    <span class="number">10</span>:     <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="number">008B</span>1010 C7 <span class="number">45</span> F8 <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> mov         dword ptr [a],<span class="number">0</span>Ah  </span><br><span class="line">    <span class="number">11</span>:     <span class="keyword">int</span>* p = &amp;a;</span><br><span class="line"><span class="number">008B</span>1017 <span class="number">8</span>D <span class="number">45</span> F8             lea         eax,[a]  </span><br><span class="line"><span class="number">008B</span>101A <span class="number">89</span> <span class="number">45</span> F4             mov         dword ptr [p],eax  </span><br><span class="line">    <span class="number">12</span>:     <span class="keyword">int</span>&amp; ref = a;</span><br><span class="line"><span class="number">008B</span>101D <span class="number">8</span>D <span class="number">4</span>D F8             lea         ecx,[a]  </span><br><span class="line"><span class="number">008B</span>1020 <span class="number">89</span> <span class="number">4</span>D F0             mov         dword ptr [ref],ecx  </span><br></pre></td></tr></table></figure>
+
+<h1 id="常引用可以指向不同类型的数据"><a href="#常引用可以指向不同类型的数据" class="headerlink" title="常引用可以指向不同类型的数据"></a>常引用可以指向不同类型的数据</h1><ul>
+<li>常引用可以指向不同类型的数据，且此时会产生临时变量，即引用指向的并不是初始化的那个变量</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">long</span>&amp; ref = a;</span><br><span class="line">    a = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; a &lt;&lt; endl;      <span class="comment">// 20</span></span><br><span class="line">    cout &lt;&lt; ref &lt;&lt; endl;    <span class="comment">// 10</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">     <span class="number">7</span>:     <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">C7 <span class="number">45</span> F4 <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">0</span>Ah  </span><br><span class="line">     <span class="number">8</span>:     <span class="keyword">const</span> <span class="keyword">long</span>&amp; ref = a;</span><br><span class="line">            <span class="comment">// [ebp-24h] 为一个临时变量的地址</span></span><br><span class="line">            <span class="comment">// [ebp-18h] 为引用变量ref的地址</span></span><br><span class="line"><span class="number">8B</span> <span class="number">45</span> F4             mov         eax,dword ptr [ebp<span class="number">-0</span>Ch]  </span><br><span class="line"><span class="number">89</span> <span class="number">45</span> DC             mov         dword ptr [ebp<span class="number">-24</span>h],eax  </span><br><span class="line"><span class="number">8</span>D <span class="number">4</span>D DC             lea         ecx,[ebp<span class="number">-24</span>h]  </span><br><span class="line"><span class="number">89</span> <span class="number">4</span>D E8             mov         dword ptr [ebp<span class="number">-18</span>h],ecx  </span><br><span class="line">     <span class="number">9</span>:     a = <span class="number">20</span>;</span><br><span class="line">C7 <span class="number">45</span> F4 <span class="number">14</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">14</span>h  </span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>引用</tag>
+      </tags>
+  </entry>
 </search>
