@@ -174,6 +174,33 @@
       </tags>
   </entry>
   <entry>
+    <title>const</title>
+    <url>/2022/02/06/const/</url>
+    <content><![CDATA[<h1 id="const对象的多文件访问"><a href="#const对象的多文件访问" class="headerlink" title="const对象的多文件访问"></a>const对象的多文件访问</h1><ul>
+<li>若需要多个文件访问const对象，则对于const变量不管是声明还是定义都添加extern关键字</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp定义并初始化一个常量, 改常量能被其他文件访问</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>若无const，则定义时没有限制要加上extern</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp</span></span><br><span class="line"><span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
+
+<h1 id="顶层const-amp-底层const"><a href="#顶层const-amp-底层const" class="headerlink" title="顶层const &amp; 底层const"></a>顶层const &amp; 底层const</h1><ul>
+<li>顶层const：指针本身是一个常量，一般也可表示任意的对象是常量</li>
+<li>底层const：指针所指向的对象是一个常量</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p1 = &amp;i;       <span class="comment">// 不能改变p1的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = <span class="number">1</span>;         <span class="comment">// 不能改变ci的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p2 = &amp;ci;      <span class="comment">// 允许改变p2的值, 这是一个底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *<span class="keyword">const</span> p3 = p2; <span class="comment">// 右侧const是顶层const, 左侧const是底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *r = i;         <span class="comment">// 用于声明引用的const都是底层const</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>const</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>引用</title>
     <url>/2022/02/06/%E5%BC%95%E7%94%A8/</url>
     <content><![CDATA[<h1 id="引用的使用"><a href="#引用的使用" class="headerlink" title="引用的使用"></a>引用的使用</h1><ul>
@@ -201,6 +228,32 @@
       </categories>
       <tags>
         <tag>引用</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>函数重载</title>
+    <url>/2022/02/06/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/</url>
+    <content><![CDATA[<h1 id="重载和const形参"><a href="#重载和const形参" class="headerlink" title="重载和const形参"></a>重载和const形参</h1><ul>
+<li>顶层const不影响传入函数的对象，因此一个拥有顶层const的形参无法和另一个没有顶层const的形参区分开来</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone)</span></span>;</span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Phone)</span></span>;   <span class="comment">// 重复声明了Record lookup(Phone);</span></span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone *)</span></span>;</span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone * <span class="keyword">const</span>)</span></span>; <span class="comment">// 重复声明了Record lookup(Phone *);</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果形参是某种类型的指针或引用，则通过区分其指向的是常量对象还是非常量对象可以实现函数重载，此时const是底层的，因为const不能转换成其他类型，只能把const对象传递给const形参，但当传递一个非常量对象或者非常量对象的指针时，编译器会优先选择非常量的版本</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 对于接受引用或指针的函数来说, 对象是常量还是非常量对应的形参不同</span></span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone &amp;)</span></span>;         <span class="comment">// 函数作用于Phone的引用</span></span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Phone &amp;)</span></span>;   <span class="comment">// 新函数, 作用于常量引用</span></span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone *)</span></span>;         <span class="comment">// 新函数, 作用于指向Phone的指针</span></span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Phone *)</span></span>;   <span class="comment">// 新函数, 作用与指向常量的指针</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="函数重载的本质"><a href="#函数重载的本质" class="headerlink" title="函数重载的本质"></a>函数重载的本质</h1><ul>
+<li>采用了name mangling或者叫name decoration技术，C++编译器默认会对符号名（比如函数名）进行改编、修饰，重载时会生成多个不同的函数名，不同编译器有不同的生成规则，通过逆向工程IDA打开可以看到不同函数名，反汇编后也可以看到跳转到了不同的函数地址</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;func(int)&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">double</span> a)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;func(double)&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">func</span>();</span><br><span class="line"><span class="number">00B</span>31<span class="function">E8E E8 A5 F5 FF FF       call        <span class="title">func</span> <span class="params">(<span class="number">0B</span>31438h)</span>  </span></span><br><span class="line"><span class="function">    <span class="title">func</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="number">00B</span>31E93 <span class="number">6</span>A <span class="number">01</span>                push        <span class="number">1</span>  </span><br><span class="line"><span class="number">00B</span>31<span class="function">E95 E8 C1 F5 FF FF       call        <span class="title">func</span> <span class="params">(<span class="number">0B</span>3145Bh)</span>  </span></span><br><span class="line"><span class="function">00B31E9A 83 C4 04             add         esp,4  </span></span><br><span class="line"><span class="function">    <span class="title">func</span><span class="params">(<span class="number">1.0</span>)</span></span>;</span><br><span class="line"><span class="number">00B</span>31E9D <span class="number">83</span> EC <span class="number">08</span>             sub         esp,<span class="number">8</span>  </span><br><span class="line"><span class="number">00B</span>31EA0 F2 <span class="number">0F</span> <span class="number">10</span> <span class="number">05</span> <span class="number">48</span> <span class="number">8B</span> B3 <span class="number">00</span> movsd       xmm0,mmword ptr [__real@<span class="number">3f</span>f0000000000000 (<span class="number">0B</span>38B48h)]  </span><br><span class="line"><span class="number">00B</span>31EA8 F2 <span class="number">0F</span> <span class="number">11</span> <span class="number">04</span> <span class="number">24</span>       movsd       mmword ptr [esp],xmm0  </span><br><span class="line"><span class="number">00B</span>31<span class="function">EAD E8 B3 F5 FF FF       call        <span class="title">func</span> <span class="params">(<span class="number">0B</span>31465h)</span>  </span></span><br><span class="line"><span class="function">00B31EB2 83 C4 08             add         esp,8  </span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>函数重载</tag>
       </tags>
   </entry>
 </search>
