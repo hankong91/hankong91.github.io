@@ -1,25 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>C++中的变量初始化</title>
+    <url>/2022/02/05/C++%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="默认初始化"><a href="#默认初始化" class="headerlink" title="默认初始化"></a>默认初始化</h1><ul>
+<li>定义变量时没有指定初值时进行的初始化操作。如int a; MyClass obj;等，这些变量被定义了而不是仅仅被声明，而且没有显示的赋初始值。特别的，如果采用动态分配内存的方式创建的变量，不加括号（如int *p = new int;）也是默认初始化，加了括号（如int *p = new int();）为值初始化。变量的值与变量定义的位置有关</li>
+</ul>
+<blockquote>
+<p>对于内置变量类型（如int，double，bool等），如果定义为全局变量，则变量被默认初始化为0；如果定义为局部变量，变量将拥有未定义的值</p>
+<p>对于类类型（如string或其他自定义类型），不管定义予何处，都会执行默认构造函数。如果该类没有默认构造函数，则会引发编译错误</p>
+</blockquote>
+<ul>
+<li>对于内置类型的局部变量，其默认初始化后，值可能为0，比如在g++和msvc中，这可能跟编译器和操作系统有关，具体可以参考：<a href="https://stackoverflow.com/questions/11143354/why-are-local-variables-initialized-to-0-in-g-compiler-for-c-in-ubuntu-linux">Why are local variables initialized to 0 in g++ compiler for c++ in ubuntu linux?</a></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> global_value;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> local_value;</span><br><span class="line">    <span class="keyword">int</span> *new_value = <span class="keyword">new</span> <span class="keyword">int</span>;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;global_value: &quot;</span> &lt;&lt; global_value &lt;&lt; endl;   <span class="comment">// 0</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;local_value: &quot;</span> &lt;&lt; local_value &lt;&lt; endl;     <span class="comment">// 在g++和msvc中可能为0</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;new_value: &quot;</span> &lt;&lt; *new_value &lt;&lt; endl;        <span class="comment">// 未定义</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="值初始化"><a href="#值初始化" class="headerlink" title="值初始化"></a>值初始化</h1><ul>
+<li>定义变量时使用了初始化器（即圆括号或者大括号），但却没有提供初始值的情况，如int *p = new int(); vector&lt;string&gt; vec(10)等</li>
+<li>注意，当不采用动态分配内存的方式（即不采用new运算符）时，写成int a();是错误的值初始化方式，因为这种方式声明了一个函数而不是进行值初始化。如果一定要进行值初始化，必须结合拷贝初始化使用，即写成int a = int();值初始化和默认初始化一样，对于内置类型初始化为0，对于类类型则调用其默认构造函数，如果没有默认构造函数，则不能进行初始化</li>
+<li>只要使用了括号（圆括号或花括号）但没有给出具体初始值，就是值初始化。可以简单理解为括号告诉编译器你希望该对象初始化。没有使用括号，就是默认初始化。可以简单理解成，你放任不管，允许编译器使用默认行为，通常这是糟糕的行为</li>
+</ul>
+<h1 id="直接初始化和拷贝初始化"><a href="#直接初始化和拷贝初始化" class="headerlink" title="直接初始化和拷贝初始化"></a>直接初始化和拷贝初始化</h1><ul>
+<li><p>直接初始化：定义变量时采用小括号的方式进行变量初始化，且小括号里一定要有初始值，如果没有初始值，那就是值初始化了，如int a(12); MyClass obj(param); string s(“123”);等</p>
+</li>
+<li><p>拷贝初始化：定义变量时采用等号的方式进行变量初始化，如int a = 12; string s = “123”等，拷贝初始化像是给变量赋值，实际上执行了初始化操作，与先定义再赋值本质不同</p>
+</li>
+<li><p>对于内置类型，直接初始化和拷贝初始化差别可以忽略不计；对于类类型，直接初始化调用类的构造函数（调用参数最匹配的那个），拷贝初始化调用类的拷贝构造函数</p>
+</li>
+<li><p>对于示例，s的初始化书本说是直接初始化，看起来似乎像是拷贝初始化，其实的确是直接初始化，因为直接初始化是用参数来直接匹配某一个构造函数，而拷贝构造函数和其他构造函数形成了重载，以至于刚好调用了拷贝构造函数</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">dots</span><span class="params">(<span class="number">10</span>, <span class="string">&#x27;.&#x27;</span>)</span></span>;   <span class="comment">// 直接初始化</span></span><br><span class="line"><span class="function">string <span class="title">s</span><span class="params">(dots)</span></span>;         <span class="comment">// 直接初始化</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>C++语言标准规定拷贝初始化应该是先调用对应的构造函数创建一个临时对象，然后拷贝构造函数再将构造的临时对象拷贝给要创建的对象，如string a = “hello”;，因为“hello”的类型是const char *，所以string类的string(const char *)构造函数会被首先调用，创建一个临时对象，然后拷贝构造函数将这个临时对象复制到a。但是标准还规定，为了提高效率，允许编译器跳过创建临时对象这一步，直接调用构造函数构造要创建的对象，从而忽略调用拷贝构造函数进行优化，这样就完全等价于直接初始化了，当然可以使用-fno-elide-constructors选项来禁用优化</li>
+</ul>
+<h1 id="列表初始化"><a href="#列表初始化" class="headerlink" title="列表初始化"></a>列表初始化</h1><ul>
+<li>列表初始化是C++ 11新引进的初始化方式，它采用一对花括号进行初始化操作。能用直接初始化和拷贝初始化的地方都能用列表初始化，而且列表初始化能对容器进行方便的初始化，因此在新的C++标准中，推荐使用列表初始化的方式进行初始化，如int a{12}; string s{“123”}; vector&lt;int&gt; vec{1,2,3};等</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 直接列表初始化</span></span><br><span class="line"><span class="keyword">int</span> x&#123;&#125;;</span><br><span class="line"><span class="keyword">int</span> y&#123; <span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> array1[]&#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s1[<span class="number">3</span>]&#123; <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;k&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s2[]&#123;<span class="string">&quot;Hello&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 拷贝列表初始化</span></span><br><span class="line"><span class="keyword">int</span> z = &#123; <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> array2[] = &#123; <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s3[] = &#123; <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;k&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s4[] = &#123; <span class="string">&quot;Hello&quot;</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s5[] = <span class="string">&quot;Hello&quot;</span>; </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>用于内置类型的变量时，若使用列表初始化且初始值存在丢失信息的风险，则编译器将报错，即列表初始化不允许“窄化”</li>
+</ul>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><ul>
+<li>初始化不是赋值，初始化的含义是创建变量时赋予其一个初始值，而赋值的含义是把对象的当前值擦除，而以一个新值来代替</li>
+<li>使用等号（=）初始化一个类变量执行的是拷贝初始化，编译器会把等号右侧的初始值拷贝到新创建的对象中去，不使用等号则执行的是直接初始化</li>
+<li>默认初始化是定义对象时，没有使用初始化器，也即没有做任何初始化说明时的行为</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i;</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; vec;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>值初始化是定义对象时，要求初始化，但没有给出初始值的行为</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">i</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>();</span><br><span class="line"><span class="keyword">new</span> <span class="keyword">int</span>&#123;&#125;;  <span class="comment">// C++11</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当用于类类型对象时，初始化的复制形式和直接形式有所不同：直接初始化直接调用与实参匹配的构造函数，复制初始化总是调用复制构造函数。复制初始化首先使用指定构造函数创建一个临时对象，然后用复制构造函数将那个临时对象复制到正在创建的对象</li>
+<li>直接初始化和拷贝初始化主要是相对于我们自定义的对象的初始化而言的，对于内置类型，这两者没有区别。对于自定义对象，直接初始化和拷贝初始化区别是直接调用构造函数还是用”=”来进行初始化</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">10</span>)</span></span>;     <span class="comment">// 直接初始化，匹配某一构造函数</span></span><br><span class="line"><span class="function">vector&lt;string&gt; <span class="title">v2</span><span class="params">(<span class="number">10</span>)</span></span>;  <span class="comment">// 直接初始化，匹配某一构造函数</span></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; v3 = v1;    <span class="comment">// 拷贝初始化，使用 = 进行初始化</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>列表初始化是C++新标准给出的一种初始化方式，可用于内置类型，也可以用于自定义对象，前者比如数组，后者比如vector</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> array[<span class="number">5</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; v = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>尽量使用列表初始化，除非你有个很好不用它的理由</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://blog.csdn.net/u014359097/article/details/50788911">谈谈C++中各种初始化方式</a></li>
+<li><a href="https://segmentfault.com/a/1190000039844285">五花八门的C++初始化规则</a></li>
+<li><a href="https://www.cnblogs.com/pluse/p/7088880.html">C++的各种初始化方式</a></li>
+<li><a href="https://blog.csdn.net/ljianhui/article/details/9245661">C++的一大误区——深入解释直接初始化与复制初始化的区别</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>初始化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hexo+Github搭建个人博客</title>
     <url>/2022/02/02/Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h1 id="1-安装Node-js"><a href="#1-安装Node-js" class="headerlink" title="1 安装Node.js"></a>1 安装Node.js</h1><ul>
+    <content><![CDATA[<h1 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h1><ul>
 <li>Hexo需要Node.js支持</li>
 <li>Node.js下载地址：<a href="https://nodejs.org/en/">nodejs.org</a></li>
 <li>安装完以后会有两个组件，Node.js + npm包管理器</li>
 </ul>
 <figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">$ <span class="keyword">node</span> <span class="title">-v</span></span><br><span class="line">v16.<span class="number">13.1</span></span><br><span class="line"></span><br><span class="line">$ npm -v</span><br><span class="line"><span class="number">8.1</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure>
 
-<h1 id="2-安装cnpm，淘宝镜像源"><a href="#2-安装cnpm，淘宝镜像源" class="headerlink" title="2 安装cnpm，淘宝镜像源"></a>2 安装cnpm，淘宝镜像源</h1><ul>
+<h1 id="安装cnpm，淘宝镜像源"><a href="#安装cnpm，淘宝镜像源" class="headerlink" title="安装cnpm，淘宝镜像源"></a>安装cnpm，淘宝镜像源</h1><ul>
 <li>借助npm安装Hexo博客框架，但由于国内镜像源速度慢，可以利用npm安装一个cnpm，淘宝的源</li>
 </ul>
 <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https:<span class="regexp">//</span>registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105234517559.png"></p>
-<h1 id="3-使用cnpm安装Hexo博客"><a href="#3-使用cnpm安装Hexo博客" class="headerlink" title="3 使用cnpm安装Hexo博客"></a>3 使用cnpm安装Hexo博客</h1><figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ cnpm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
+<h1 id="使用cnpm安装Hexo博客"><a href="#使用cnpm安装Hexo博客" class="headerlink" title="使用cnpm安装Hexo博客"></a>使用cnpm安装Hexo博客</h1><figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ cnpm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
 
 <p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235001374.png"></p>
-<h1 id="4-使用Hexo搭建博客"><a href="#4-使用Hexo搭建博客" class="headerlink" title="4 使用Hexo搭建博客"></a>4 使用Hexo搭建博客</h1><ul>
+<h1 id="使用Hexo搭建博客"><a href="#使用Hexo搭建博客" class="headerlink" title="使用Hexo搭建博客"></a>使用Hexo搭建博客</h1><ul>
 <li>创建博客目录</li>
 <li>初始化博客</li>
 </ul>
@@ -49,7 +132,7 @@
 
 <p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001429254.png"></p>
 <p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001505606.png"></p>
-<h1 id="5-将博客部署到远端，比如GitHub"><a href="#5-将博客部署到远端，比如GitHub" class="headerlink" title="5 将博客部署到远端，比如GitHub"></a>5 将博客部署到远端，比如GitHub</h1><ul>
+<h1 id="将博客部署到远端，比如GitHub"><a href="#将博客部署到远端，比如GitHub" class="headerlink" title="将博客部署到远端，比如GitHub"></a>将博客部署到远端，比如GitHub</h1><ul>
 <li>创建一个新的仓库，注意：仓库名必须为GitHub用户名+github.io</li>
 <li>使用cnpm安装git部署插件</li>
 </ul>
