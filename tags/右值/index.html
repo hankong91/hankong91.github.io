@@ -20,28 +20,25 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hankong91.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="const对象的多文件访问，及顶层const &amp; 底层const">
-<meta property="og:type" content="article">
-<meta property="og:title" content="const">
-<meta property="og:url" content="https://hankong91.github.io/2022/02/06/const/index.html">
+<meta name="description" content="放弃不难，但坚持一定很酷">
+<meta property="og:type" content="website">
+<meta property="og:title" content="寒空の博客">
+<meta property="og:url" content="https://hankong91.github.io/tags/%E5%8F%B3%E5%80%BC/index.html">
 <meta property="og:site_name" content="寒空の博客">
-<meta property="og:description" content="const对象的多文件访问，及顶层const &amp; 底层const">
+<meta property="og:description" content="放弃不难，但坚持一定很酷">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-02-06T13:07:46.000Z">
-<meta property="article:modified_time" content="2022-02-06T13:29:32.971Z">
 <meta property="article:author" content="寒空">
-<meta property="article:tag" content="const">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://hankong91.github.io/2022/02/06/const/">
+<link rel="canonical" href="https://hankong91.github.io/tags/%E5%8F%B3%E5%80%BC/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/02/06/const/","path":"2022/02/06/const/","title":"const"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"tags/右值/index.html","title":""}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>const | 寒空の博客</title>
+<title>标签: 右值 | 寒空の博客</title>
   
 
 
@@ -135,7 +132,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -148,7 +145,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#const%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%A4%9A%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE"><span class="nav-number">1.</span> <span class="nav-text">const对象的多文件访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B6%E5%B1%82const-amp-%E5%BA%95%E5%B1%82const"><span class="nav-number">2.</span> <span class="nav-text">顶层const &amp; 底层const</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -213,146 +209,50 @@
 </noscript>
 
 
-    <div class="main-inner post posts-expand">
+    <div class="main-inner tag posts-collapse">
 
 
   
-
-
-<div class="post-block">
   
   
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/02/06/const/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author.jpg">
-      <meta itemprop="name" content="寒空">
-      <meta itemprop="description" content="放弃不难，但坚持一定很酷">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="寒空の博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          const
+  <div class="post-block">
+    <div class="post-content">
+      <div class="collection-title">
+        <h1 class="collection-header">右值
+          <small>标签</small>
         </h1>
+      </div>
 
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
       
-
-      <time title="创建时间：2022-02-06 21:07:46 / 修改时间：21:29:32" itemprop="dateCreated datePublished" datetime="2022-02-06T21:07:46+08:00">2022-02-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>526</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-            <div class="post-description">const对象的多文件访问，及顶层const & 底层const</div>
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-        <h1 id="const对象的多文件访问"><a href="#const对象的多文件访问" class="headerlink" title="const对象的多文件访问"></a>const对象的多文件访问</h1><ul>
-<li>若需要多个文件访问const对象，则对于const变量不管是声明还是定义都添加extern关键字</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file.cpp定义并初始化一个常量, 改常量能被其他文件访问</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>若无const，则定义时没有限制要加上extern</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file.cpp</span></span><br><span class="line"><span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
-
-<h1 id="顶层const-amp-底层const"><a href="#顶层const-amp-底层const" class="headerlink" title="顶层const &amp; 底层const"></a>顶层const &amp; 底层const</h1><ul>
-<li>顶层const：指针本身是一个常量，一般也可表示任意的对象是常量</li>
-<li>底层const：指针所指向的对象是一个常量</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p1 = &amp;i;       <span class="comment">// 不能改变p1的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = <span class="number">1</span>;         <span class="comment">// 不能改变ci的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p2 = &amp;ci;      <span class="comment">// 允许改变p2的值, 这是一个底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *<span class="keyword">const</span> p3 = p2; <span class="comment">// 右侧const是顶层const, 左侧const是底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *r = i;         <span class="comment">// 用于声明引用的const都是底层const</span></span><br></pre></td></tr></table></figure>
-
-
+    <div class="collection-year">
+      <span class="collection-header">2022</span>
     </div>
 
-    
-    
-    
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2022-02-17T22:11:50+08:00"
+              content="2022-02-17">
+          02-17
+        </time>
+      </div>
 
-    <footer class="post-footer">
-          
+      <div class="post-title">
+          <a class="post-title-link" href="/2022/02/17/%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/" itemprop="url">
+            <span itemprop="name">左值和右值</span>
+          </a>
+      </div>
 
-<div class="post-copyright">
-<ul>
-  <li class="post-copyright-author">
-      <strong>本文作者： </strong>寒空
-  </li>
-  <li class="post-copyright-link">
-      <strong>本文链接：</strong>
-      <a href="https://hankong91.github.io/2022/02/06/const/" title="const">https://hankong91.github.io/2022/02/06/const/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-          <div class="post-tags">
-              <a href="/tags/const/" rel="tag"># const</a>
-          </div>
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2022/02/06/%E5%BC%95%E7%94%A8/" rel="prev" title="引用">
-                  <i class="fa fa-chevron-left"></i> 引用
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2022/02/06/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/" rel="next" title="函数重载">
-                  函数重载 <i class="fa fa-chevron-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
+      
+    </header>
   </article>
-</div>
 
-
-
-
-
+    </div>
+  </div>
+  
+  
+  
 
 </div>
   </main>
