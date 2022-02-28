@@ -174,6 +174,101 @@
       </tags>
   </entry>
   <entry>
+    <title>const</title>
+    <url>/2022/02/06/const/</url>
+    <content><![CDATA[<h1 id="const对象的多文件访问"><a href="#const对象的多文件访问" class="headerlink" title="const对象的多文件访问"></a>const对象的多文件访问</h1><ul>
+<li>若需要多个文件访问const对象，则对于const变量不管是声明还是定义都添加extern关键字</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp定义并初始化一个常量, 改常量能被其他文件访问</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>若无const，则定义时没有限制要加上extern</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp</span></span><br><span class="line"><span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
+
+<h1 id="顶层const-amp-底层const"><a href="#顶层const-amp-底层const" class="headerlink" title="顶层const &amp; 底层const"></a>顶层const &amp; 底层const</h1><ul>
+<li>顶层const：指针本身是一个常量，一般也可表示任意的对象是常量</li>
+<li>底层const：指针所指向的对象是一个常量</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p1 = &amp;i;       <span class="comment">// 不能改变p1的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = <span class="number">1</span>;         <span class="comment">// 不能改变ci的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p2 = &amp;ci;      <span class="comment">// 允许改变p2的值, 这是一个底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *<span class="keyword">const</span> p3 = p2; <span class="comment">// 右侧const是顶层const, 左侧const是底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *r = i;         <span class="comment">// 用于声明引用的const都是底层const</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>const</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>move和完美转发</title>
+    <url>/2022/02/24/move%E5%92%8C%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/</url>
+    <content><![CDATA[<h1 id="move"><a href="#move" class="headerlink" title="move"></a>move</h1><ul>
+<li>在<a href="https://hankong91.github.io/2022/02/17/%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/">左值和右值</a>一文中提到了移动语义，通过移动构造函数解决了临时变量拷贝产生的性能损失问题，且移动语义是通过右值引用来匹配临时值</li>
+<li>普通的左值是否也能通过移动语义来优化性能，C++11为了解决这个问题，提供了std::move方法将左值转换为右值，从而方便应用移动语义</li>
+<li>move是将对象资源的所有权从一个对象转移到另一个对象，只是转移，没有内存的拷贝</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">string str1&#123; <span class="string">&quot;Hello World&quot;</span> &#125;;</span><br><span class="line">string str2 = str1;             <span class="comment">// Copy</span></span><br><span class="line">string str3 = std::<span class="built_in">move</span>(str1);  <span class="comment">// Move</span></span><br><span class="line"></span><br><span class="line">cout &lt;&lt; str1 &lt;&lt; endl;   <span class="comment">// null</span></span><br><span class="line">cout &lt;&lt; str2 &lt;&lt; endl;   <span class="comment">// Hello World</span></span><br><span class="line">cout &lt;&lt; str3 &lt;&lt; endl;   <span class="comment">// Hello World</span></span><br><span class="line"></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; v1&#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> &#125;;</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; v2 = v1;</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; v3 = std::<span class="built_in">move</span>(v1);     <span class="comment">// v1.size() = 0</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果不用std::move，拷贝的代价很大，性能较低。使用move几乎没有任何代价，只是转换了资源的所有权。它实际上将左值变成右值引用，然后应用移动语义，调用移动构造函数，就避免了拷贝，提高了程序性能。如果一个对象内部有较大的对内存或者动态数组时，很有必要写move语义的拷贝构造函数和赋值函数，避免无谓的深拷贝，以提高性能。事实上，C++11中所有的容器都实现了移动语义，方便我们做性能优化</li>
+<li>move实际上并不能移动任何东西，它唯一的功能是将一个左值强制转换为一个右值引用。如果是一些基本类型比如int和char[10]定长数组等类型，使用move的话仍然会发生拷贝（因为没有对应的移动构造函数）。所以，move对于含资源（堆内存或句柄）的对象来说更有意义</li>
+<li>std::move是一个非常有迷惑性的函数，不理解左右值概念的话往往以为它能把一个变量里的内容移动到另一个变量，但事实上std::move移动不了什么，唯一的功能是把左值强制转化为右值，让右值引用可以指向左值。其实现等同于一个类型转换：static_cast&lt;T&amp;&amp;&gt;(lvalue)。所以，单纯的std::move(xxx)不会有性能提升</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">int</span>&amp; ref_a_left = a;                <span class="comment">// 左值引用指向左值</span></span><br><span class="line"><span class="keyword">int</span>&amp;&amp; ref_a_right = std::<span class="built_in">move</span>(a);   <span class="comment">// 通过std::move将左值转化为右值, 可以被右值引用指向</span></span><br><span class="line"></span><br><span class="line">cout &lt;&lt; a &lt;&lt; endl;                  <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>被声明出来的左、右值引用都是左值。因为被声明出的左、右值引用是有地址的，也位于等号左边</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span>&amp;&amp; right_value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    right_value = <span class="number">8</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">int</span>&amp; ref_a_left = a;</span><br><span class="line">    <span class="keyword">int</span>&amp;&amp; ref_a_right = std::<span class="built_in">move</span>(a);</span><br><span class="line"></span><br><span class="line"><span class="comment">//     func(a);            // 编译报错: an lvalue to an rvalue reference</span></span><br><span class="line"><span class="comment">//     func(ref_a_left);   // 编译报错: an lvalue to an rvalue reference</span></span><br><span class="line"><span class="comment">//     func(ref_a_right);  // 编译报错: an lvalue to an rvalue reference</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">func</span>(std::<span class="built_in">move</span>(a));</span><br><span class="line">    <span class="built_in">func</span>(std::<span class="built_in">move</span>(ref_a_left));</span><br><span class="line">    <span class="built_in">func</span>(std::<span class="built_in">move</span>(ref_a_right));</span><br><span class="line"></span><br><span class="line">    <span class="built_in">func</span>(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 打印三个左值的地址都一样</span></span><br><span class="line">    cout &lt;&lt; &amp;a &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; a &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;ref_a_left &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; ref_a_left &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;ref_a_right &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; ref_a_right &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>右值引用既可以是左值也可以是右值，如果有名称则为左值，否则是右值。或者说：作为函数返回值的&amp;&amp;是右值，直接声明出来的&amp;&amp;是左值。其实引用和普通变量是一样的，int &amp;&amp;ref = std::move(a)和int a = 5没有什么区别，等号左边就是左值，右边就是右值</li>
+<li>vector::push_back使用std::move提高性能</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">std::string str1&#123; <span class="string">&quot;Hello World&quot;</span> &#125;;</span><br><span class="line">std::vector&lt;std::string&gt; vec;</span><br><span class="line"></span><br><span class="line">vec.<span class="built_in">push_back</span>(str1);                <span class="comment">// Copy</span></span><br><span class="line">vec.<span class="built_in">push_back</span>(std::<span class="built_in">move</span>(str1));     <span class="comment">// 调用移动语义的push_bak方法, 避免拷贝, str1会失去原有值, 变成空字符串</span></span><br><span class="line">vec.<span class="built_in">emplace_back</span>(std::<span class="built_in">move</span>(str1));  <span class="comment">// emplace_back效果相同, str1会失去原有值</span></span><br><span class="line">vec.<span class="built_in">emplace_back</span>(<span class="string">&quot;abcd&quot;</span>);           <span class="comment">// 直接接右值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// vector方法定义</span></span><br><span class="line"><span class="comment">// void push_back (const value_type&amp; val);</span></span><br><span class="line"><span class="comment">// void push_back(value_type&amp;&amp; val);</span></span><br><span class="line"><span class="comment">// void emplace_back (Args&amp;&amp;... args);</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="完美转发"><a href="#完美转发" class="headerlink" title="完美转发"></a>完美转发</h1><ul>
+<li>这里继续转载博文<a href="https://www.cnblogs.com/qicosmos/p/4283455.html">从4行代码看右值引用</a>中的第四行代码</li>
+</ul>
+<h2 id="第四行代码"><a href="#第四行代码" class="headerlink" title="第四行代码"></a>第四行代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(T&amp;&amp; val)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">foo</span>(std::forward&lt;T&gt;(val));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>C++11之前调用模板函数时，存在一个比较头疼的问题，如何正确的传递参数。比如</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forwardValue</span><span class="params">(T&amp; val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">processValue</span>(val);  <span class="comment">// 右值参数会变成左值 </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forwardValue</span><span class="params">(<span class="keyword">const</span> T&amp; val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">processValue</span>(val);  <span class="comment">// 参数都变成常量左值引用了 </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>不能安装本来的参数类型进行转发</li>
+<li>C++11引入了完美转发：在函数模板中，完全依照模板的参数的类型（即保持参数的左值、右值特征），将参数传递给函数模板中调用的另外一个函数。C++11中的std::forward正是做这个事情的，他会按照参数的实际类型进行转发</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">processValue</span><span class="params">(<span class="keyword">int</span>&amp; a)</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;lvalue&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">processValue</span><span class="params">(<span class="keyword">int</span>&amp;&amp; a)</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;rvalue&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forwardValue</span><span class="params">(T&amp;&amp; val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">processValue</span>(std::forward&lt;T&gt;(val)); <span class="comment">// 按照参数本来的类型进行转发</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    forwardValue(i);    <span class="comment">// 传入左值</span></span><br><span class="line">    forwardValue(<span class="number">0</span>);    <span class="comment">// 传入右值</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出:</span></span><br><span class="line"><span class="comment">// lvalue</span></span><br><span class="line"><span class="comment">// rvalue</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>右值引用T&amp;&amp;是一个universal references，可以接受左值或者右值，正是这个特性让他适合作为一个参数的路由，然后再通过std::forward按照参数的实际类型去匹配对应的重载函数，最终实现完美转发</li>
+</ul>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><ul>
+<li>C++11正是通过引入右值引用来优化性能，具体来说是通过移动语义来避免无谓拷贝的问题，通过move语义来将临时生成的左值中的资源无代价的转移到另外一个对象中去，通过完美转发来解决不能按照参数实际类型来转发的问题（同时，完美转发获得的一个好处是可以实现移动语义）</li>
+<li>从性能上讲，左右值引用没有区别，传参使用左右值引用都可以避免拷贝</li>
+<li>右值引用可以直接指向右值，也可以通过std::move指向左值；而左值引用只能指向左值（const左值引用也能指向右值）</li>
+<li>作为函数形参时，右值引用更灵活。虽然const左值引用也可以做到左右值都接受，但它无法修改，有一定局限性</li>
+<li>可移动对象在需要拷贝且被拷贝者之后不再被需要的场景，建议使用std::move触发移动语义，提升性能</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://www.cnblogs.com/qicosmos/p/4283455.html">从4行代码看右值引用</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/335994370">一文读懂C++右值引用和std::move</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>右值引用</tag>
+        <tag>move</tag>
+        <tag>完美转发,forward</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>函数重载</title>
     <url>/2022/02/06/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/</url>
     <content><![CDATA[<h1 id="重载和const形参"><a href="#重载和const形参" class="headerlink" title="重载和const形参"></a>重载和const形参</h1><ul>
@@ -197,6 +292,36 @@
       </categories>
       <tags>
         <tag>函数重载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>引用</title>
+    <url>/2022/02/06/%E5%BC%95%E7%94%A8/</url>
+    <content><![CDATA[<h1 id="引用的使用"><a href="#引用的使用" class="headerlink" title="引用的使用"></a>引用的使用</h1><ul>
+<li>引用（reference），为对象起了另外一个名字</li>
+<li>引用并非对象，相反的，它只是为一个已存在的对象所起的另外一个名字</li>
+<li>引用必须初始化，且不能使引用重新绑定到另外一个对象</li>
+<li>引用只能绑定在对象上，而不能与字面值或某个表达式的计算结果绑定在一起</li>
+<li>引用本身不是对象，不能定义引用的引用</li>
+<li>引用和指针的区别：指针指向内存中的某个对象，而引用绑定到内存中的某个对象，它们都实现了对其他对象的间接访问，两者的区别主要有两方面。第一，指针本身就是一个对象，允许对指针赋值和拷贝，而且在指针的生命周期内它可以指向几个不同的对象，引用不是一个对象，无法令引用重新绑定到另外一个对象；第二，指针无须在定义是赋初值，和其他内置类型一样，在块作用域内定义的指针如果没有初始化，也将拥有一个不确定的值，引用必须在定义时赋初值</li>
+</ul>
+<h1 id="引用的本质"><a href="#引用的本质" class="headerlink" title="引用的本质"></a>引用的本质</h1><ul>
+<li>引用的本质就是指针，只是编译器削弱了它的功能，所以引用就是弱化了的指针，一个引用占用一个指针的大小</li>
+<li>通过反汇编观察指令（msvc）如下</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">    <span class="number">10</span>:     <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="number">008B</span>1010 C7 <span class="number">45</span> F8 <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> mov         dword ptr [a],<span class="number">0</span>Ah  </span><br><span class="line">    <span class="number">11</span>:     <span class="keyword">int</span>* p = &amp;a;</span><br><span class="line"><span class="number">008B</span>1017 <span class="number">8</span>D <span class="number">45</span> F8             lea         eax,[a]  </span><br><span class="line"><span class="number">008B</span>101A <span class="number">89</span> <span class="number">45</span> F4             mov         dword ptr [p],eax  </span><br><span class="line">    <span class="number">12</span>:     <span class="keyword">int</span>&amp; ref = a;</span><br><span class="line"><span class="number">008B</span>101D <span class="number">8</span>D <span class="number">4</span>D F8             lea         ecx,[a]  </span><br><span class="line"><span class="number">008B</span>1020 <span class="number">89</span> <span class="number">4</span>D F0             mov         dword ptr [ref],ecx  </span><br></pre></td></tr></table></figure>
+
+<h1 id="常引用可以指向不同类型的数据"><a href="#常引用可以指向不同类型的数据" class="headerlink" title="常引用可以指向不同类型的数据"></a>常引用可以指向不同类型的数据</h1><ul>
+<li>常引用可以指向不同类型的数据，且此时会产生临时变量，即引用指向的并不是初始化的那个变量</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">long</span>&amp; ref = a;</span><br><span class="line">    a = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; a &lt;&lt; endl;      <span class="comment">// 20</span></span><br><span class="line">    cout &lt;&lt; ref &lt;&lt; endl;    <span class="comment">// 10</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">     <span class="number">7</span>:     <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">C7 <span class="number">45</span> F4 <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">0</span>Ah  </span><br><span class="line">     <span class="number">8</span>:     <span class="keyword">const</span> <span class="keyword">long</span>&amp; ref = a;</span><br><span class="line">            <span class="comment">// [ebp-24h] 为一个临时变量的地址</span></span><br><span class="line">            <span class="comment">// [ebp-18h] 为引用变量ref的地址</span></span><br><span class="line"><span class="number">8B</span> <span class="number">45</span> F4             mov         eax,dword ptr [ebp<span class="number">-0</span>Ch]  </span><br><span class="line"><span class="number">89</span> <span class="number">45</span> DC             mov         dword ptr [ebp<span class="number">-24</span>h],eax  </span><br><span class="line"><span class="number">8</span>D <span class="number">4</span>D DC             lea         ecx,[ebp<span class="number">-24</span>h]  </span><br><span class="line"><span class="number">89</span> <span class="number">4</span>D E8             mov         dword ptr [ebp<span class="number">-18</span>h],ecx  </span><br><span class="line">     <span class="number">9</span>:     a = <span class="number">20</span>;</span><br><span class="line">C7 <span class="number">45</span> F4 <span class="number">14</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">14</span>h  </span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>引用</tag>
       </tags>
   </entry>
   <entry>
@@ -338,39 +463,9 @@
         <category>C++</category>
       </categories>
       <tags>
-        <tag>右值</tag>
         <tag>右值引用</tag>
+        <tag>右值</tag>
         <tag>移动构造函数</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>引用</title>
-    <url>/2022/02/06/%E5%BC%95%E7%94%A8/</url>
-    <content><![CDATA[<h1 id="引用的使用"><a href="#引用的使用" class="headerlink" title="引用的使用"></a>引用的使用</h1><ul>
-<li>引用（reference），为对象起了另外一个名字</li>
-<li>引用并非对象，相反的，它只是为一个已存在的对象所起的另外一个名字</li>
-<li>引用必须初始化，且不能使引用重新绑定到另外一个对象</li>
-<li>引用只能绑定在对象上，而不能与字面值或某个表达式的计算结果绑定在一起</li>
-<li>引用本身不是对象，不能定义引用的引用</li>
-<li>引用和指针的区别：指针指向内存中的某个对象，而引用绑定到内存中的某个对象，它们都实现了对其他对象的间接访问，两者的区别主要有两方面。第一，指针本身就是一个对象，允许对指针赋值和拷贝，而且在指针的生命周期内它可以指向几个不同的对象，引用不是一个对象，无法令引用重新绑定到另外一个对象；第二，指针无须在定义是赋初值，和其他内置类型一样，在块作用域内定义的指针如果没有初始化，也将拥有一个不确定的值，引用必须在定义时赋初值</li>
-</ul>
-<h1 id="引用的本质"><a href="#引用的本质" class="headerlink" title="引用的本质"></a>引用的本质</h1><ul>
-<li>引用的本质就是指针，只是编译器削弱了它的功能，所以引用就是弱化了的指针，一个引用占用一个指针的大小</li>
-<li>通过反汇编观察指令（msvc）如下</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">    <span class="number">10</span>:     <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="number">008B</span>1010 C7 <span class="number">45</span> F8 <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> mov         dword ptr [a],<span class="number">0</span>Ah  </span><br><span class="line">    <span class="number">11</span>:     <span class="keyword">int</span>* p = &amp;a;</span><br><span class="line"><span class="number">008B</span>1017 <span class="number">8</span>D <span class="number">45</span> F8             lea         eax,[a]  </span><br><span class="line"><span class="number">008B</span>101A <span class="number">89</span> <span class="number">45</span> F4             mov         dword ptr [p],eax  </span><br><span class="line">    <span class="number">12</span>:     <span class="keyword">int</span>&amp; ref = a;</span><br><span class="line"><span class="number">008B</span>101D <span class="number">8</span>D <span class="number">4</span>D F8             lea         ecx,[a]  </span><br><span class="line"><span class="number">008B</span>1020 <span class="number">89</span> <span class="number">4</span>D F0             mov         dword ptr [ref],ecx  </span><br></pre></td></tr></table></figure>
-
-<h1 id="常引用可以指向不同类型的数据"><a href="#常引用可以指向不同类型的数据" class="headerlink" title="常引用可以指向不同类型的数据"></a>常引用可以指向不同类型的数据</h1><ul>
-<li>常引用可以指向不同类型的数据，且此时会产生临时变量，即引用指向的并不是初始化的那个变量</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">long</span>&amp; ref = a;</span><br><span class="line">    a = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; a &lt;&lt; endl;      <span class="comment">// 20</span></span><br><span class="line">    cout &lt;&lt; ref &lt;&lt; endl;    <span class="comment">// 10</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">     <span class="number">7</span>:     <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">C7 <span class="number">45</span> F4 <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">0</span>Ah  </span><br><span class="line">     <span class="number">8</span>:     <span class="keyword">const</span> <span class="keyword">long</span>&amp; ref = a;</span><br><span class="line">            <span class="comment">// [ebp-24h] 为一个临时变量的地址</span></span><br><span class="line">            <span class="comment">// [ebp-18h] 为引用变量ref的地址</span></span><br><span class="line"><span class="number">8B</span> <span class="number">45</span> F4             mov         eax,dword ptr [ebp<span class="number">-0</span>Ch]  </span><br><span class="line"><span class="number">89</span> <span class="number">45</span> DC             mov         dword ptr [ebp<span class="number">-24</span>h],eax  </span><br><span class="line"><span class="number">8</span>D <span class="number">4</span>D DC             lea         ecx,[ebp<span class="number">-24</span>h]  </span><br><span class="line"><span class="number">89</span> <span class="number">4</span>D E8             mov         dword ptr [ebp<span class="number">-18</span>h],ecx  </span><br><span class="line">     <span class="number">9</span>:     a = <span class="number">20</span>;</span><br><span class="line">C7 <span class="number">45</span> F4 <span class="number">14</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">14</span>h  </span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>引用</tag>
       </tags>
   </entry>
   <entry>
@@ -399,33 +494,6 @@
       </categories>
       <tags>
         <tag>迭代器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>const</title>
-    <url>/2022/02/06/const/</url>
-    <content><![CDATA[<h1 id="const对象的多文件访问"><a href="#const对象的多文件访问" class="headerlink" title="const对象的多文件访问"></a>const对象的多文件访问</h1><ul>
-<li>若需要多个文件访问const对象，则对于const变量不管是声明还是定义都添加extern关键字</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp定义并初始化一个常量, 改常量能被其他文件访问</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>若无const，则定义时没有限制要加上extern</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp</span></span><br><span class="line"><span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
-
-<h1 id="顶层const-amp-底层const"><a href="#顶层const-amp-底层const" class="headerlink" title="顶层const &amp; 底层const"></a>顶层const &amp; 底层const</h1><ul>
-<li>顶层const：指针本身是一个常量，一般也可表示任意的对象是常量</li>
-<li>底层const：指针所指向的对象是一个常量</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p1 = &amp;i;       <span class="comment">// 不能改变p1的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = <span class="number">1</span>;         <span class="comment">// 不能改变ci的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p2 = &amp;ci;      <span class="comment">// 允许改变p2的值, 这是一个底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *<span class="keyword">const</span> p3 = p2; <span class="comment">// 右侧const是顶层const, 左侧const是底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *r = i;         <span class="comment">// 用于声明引用的const都是底层const</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>const</tag>
       </tags>
   </entry>
 </search>
