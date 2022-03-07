@@ -1,6 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>C++中的变量初始化</title>
+    <url>/2022/02/05/C++%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="默认初始化"><a href="#默认初始化" class="headerlink" title="默认初始化"></a>默认初始化</h1><ul>
+<li>定义变量时没有指定初值时进行的初始化操作。如int a; MyClass obj;等，这些变量被定义了而不是仅仅被声明，而且没有显示的赋初始值。特别的，如果采用动态分配内存的方式创建的变量，不加括号（如int *p = new int;）也是默认初始化，加了括号（如int *p = new int();）为值初始化。变量的值与变量定义的位置有关</li>
+</ul>
+<blockquote>
+<p>对于内置变量类型（如int，double，bool等），如果定义为全局变量，则变量被默认初始化为0；如果定义为局部变量，变量将拥有未定义的值</p>
+<p>对于类类型（如string或其他自定义类型），不管定义予何处，都会执行默认构造函数。如果该类没有默认构造函数，则会引发编译错误</p>
+</blockquote>
+<ul>
+<li>对于内置类型的局部变量，其默认初始化后，值可能为0，比如在g++和msvc中，这可能跟编译器和操作系统有关，具体可以参考：<a href="https://stackoverflow.com/questions/11143354/why-are-local-variables-initialized-to-0-in-g-compiler-for-c-in-ubuntu-linux">Why are local variables initialized to 0 in g++ compiler for c++ in ubuntu linux?</a></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> global_value;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> local_value;</span><br><span class="line">    <span class="keyword">int</span> *new_value = <span class="keyword">new</span> <span class="keyword">int</span>;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;global_value: &quot;</span> &lt;&lt; global_value &lt;&lt; endl;   <span class="comment">// 0</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;local_value: &quot;</span> &lt;&lt; local_value &lt;&lt; endl;     <span class="comment">// 在g++和msvc中可能为0</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;new_value: &quot;</span> &lt;&lt; *new_value &lt;&lt; endl;        <span class="comment">// 未定义</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="值初始化"><a href="#值初始化" class="headerlink" title="值初始化"></a>值初始化</h1><ul>
+<li>定义变量时使用了初始化器（即圆括号或者大括号），但却没有提供初始值的情况，如int *p = new int(); vector&lt;string&gt; vec(10)等</li>
+<li>注意，当不采用动态分配内存的方式（即不采用new运算符）时，写成int a();是错误的值初始化方式，因为这种方式声明了一个函数而不是进行值初始化。如果一定要进行值初始化，必须结合拷贝初始化使用，即写成int a = int();值初始化和默认初始化一样，对于内置类型初始化为0，对于类类型则调用其默认构造函数，如果没有默认构造函数，则不能进行初始化</li>
+<li>只要使用了括号（圆括号或花括号）但没有给出具体初始值，就是值初始化。可以简单理解为括号告诉编译器你希望该对象初始化。没有使用括号，就是默认初始化。可以简单理解成，你放任不管，允许编译器使用默认行为，通常这是糟糕的行为</li>
+</ul>
+<h1 id="直接初始化和拷贝初始化"><a href="#直接初始化和拷贝初始化" class="headerlink" title="直接初始化和拷贝初始化"></a>直接初始化和拷贝初始化</h1><ul>
+<li><p>直接初始化：定义变量时采用小括号的方式进行变量初始化，且小括号里一定要有初始值，如果没有初始值，那就是值初始化了，如int a(12); MyClass obj(param); string s(“123”);等</p>
+</li>
+<li><p>拷贝初始化：定义变量时采用等号的方式进行变量初始化，如int a = 12; string s = “123”等，拷贝初始化像是给变量赋值，实际上执行了初始化操作，与先定义再赋值本质不同</p>
+</li>
+<li><p>对于内置类型，直接初始化和拷贝初始化差别可以忽略不计；对于类类型，直接初始化调用类的构造函数（调用参数最匹配的那个），拷贝初始化调用类的拷贝构造函数</p>
+</li>
+<li><p>对于示例，s的初始化书本说是直接初始化，看起来似乎像是拷贝初始化，其实的确是直接初始化，因为直接初始化是用参数来直接匹配某一个构造函数，而拷贝构造函数和其他构造函数形成了重载，以至于刚好调用了拷贝构造函数</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">dots</span><span class="params">(<span class="number">10</span>, <span class="string">&#x27;.&#x27;</span>)</span></span>;   <span class="comment">// 直接初始化</span></span><br><span class="line"><span class="function">string <span class="title">s</span><span class="params">(dots)</span></span>;         <span class="comment">// 直接初始化</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>C++语言标准规定拷贝初始化应该是先调用对应的构造函数创建一个临时对象，然后拷贝构造函数再将构造的临时对象拷贝给要创建的对象，如string a = “hello”;，因为“hello”的类型是const char *，所以string类的string(const char *)构造函数会被首先调用，创建一个临时对象，然后拷贝构造函数将这个临时对象复制到a。但是标准还规定，为了提高效率，允许编译器跳过创建临时对象这一步，直接调用构造函数构造要创建的对象，从而忽略调用拷贝构造函数进行优化，这样就完全等价于直接初始化了，当然可以使用-fno-elide-constructors选项来禁用优化</li>
+</ul>
+<h1 id="列表初始化"><a href="#列表初始化" class="headerlink" title="列表初始化"></a>列表初始化</h1><ul>
+<li>列表初始化是C++ 11新引进的初始化方式，它采用一对花括号进行初始化操作。能用直接初始化和拷贝初始化的地方都能用列表初始化，而且列表初始化能对容器进行方便的初始化，因此在新的C++标准中，推荐使用列表初始化的方式进行初始化，如int a{12}; string s{“123”}; vector&lt;int&gt; vec{1,2,3};等</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 直接列表初始化</span></span><br><span class="line"><span class="keyword">int</span> x&#123;&#125;;</span><br><span class="line"><span class="keyword">int</span> y&#123; <span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> array1[]&#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s1[<span class="number">3</span>]&#123; <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;k&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s2[]&#123;<span class="string">&quot;Hello&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 拷贝列表初始化</span></span><br><span class="line"><span class="keyword">int</span> z = &#123; <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> array2[] = &#123; <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s3[] = &#123; <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;k&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s4[] = &#123; <span class="string">&quot;Hello&quot;</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s5[] = <span class="string">&quot;Hello&quot;</span>; </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>用于内置类型的变量时，若使用列表初始化且初始值存在丢失信息的风险，则编译器将报错，即列表初始化不允许“窄化”</li>
+</ul>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><ul>
+<li>初始化不是赋值，初始化的含义是创建变量时赋予其一个初始值，而赋值的含义是把对象的当前值擦除，而以一个新值来代替</li>
+<li>使用等号（=）初始化一个类变量执行的是拷贝初始化，编译器会把等号右侧的初始值拷贝到新创建的对象中去，不使用等号则执行的是直接初始化</li>
+<li>默认初始化是定义对象时，没有使用初始化器，也即没有做任何初始化说明时的行为</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i;</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; vec;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>值初始化是定义对象时，要求初始化，但没有给出初始值的行为</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">i</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>();</span><br><span class="line"><span class="keyword">new</span> <span class="keyword">int</span>&#123;&#125;;  <span class="comment">// C++11</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当用于类类型对象时，初始化的复制形式和直接形式有所不同：直接初始化直接调用与实参匹配的构造函数，复制初始化总是调用复制构造函数。复制初始化首先使用指定构造函数创建一个临时对象，然后用复制构造函数将那个临时对象复制到正在创建的对象</li>
+<li>直接初始化和拷贝初始化主要是相对于我们自定义的对象的初始化而言的，对于内置类型，这两者没有区别。对于自定义对象，直接初始化和拷贝初始化区别是直接调用构造函数还是用”=”来进行初始化</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">10</span>)</span></span>;     <span class="comment">// 直接初始化，匹配某一构造函数</span></span><br><span class="line"><span class="function">vector&lt;string&gt; <span class="title">v2</span><span class="params">(<span class="number">10</span>)</span></span>;  <span class="comment">// 直接初始化，匹配某一构造函数</span></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; v3 = v1;    <span class="comment">// 拷贝初始化，使用 = 进行初始化</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>列表初始化是C++新标准给出的一种初始化方式，可用于内置类型，也可以用于自定义对象，前者比如数组，后者比如vector</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> array[<span class="number">5</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; v = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>尽量使用列表初始化，除非你有个很好不用它的理由</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://blog.csdn.net/u014359097/article/details/50788911">谈谈C++中各种初始化方式</a></li>
+<li><a href="https://segmentfault.com/a/1190000039844285">五花八门的C++初始化规则</a></li>
+<li><a href="https://www.cnblogs.com/pluse/p/7088880.html">C++的各种初始化方式</a></li>
+<li><a href="https://blog.csdn.net/ljianhui/article/details/9245661">C++的一大误区——深入解释直接初始化与复制初始化的区别</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>初始化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++中的类型转换</title>
+    <url>/2022/03/07/C++%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</url>
+    <content><![CDATA[<h1 id="隐式类型转换"><a href="#隐式类型转换" class="headerlink" title="隐式类型转换"></a>隐式类型转换</h1><ul>
+<li>隐式类型转换是自动执行的，无需显式的操作符</li>
+<li>从小整数类型（char、short）转换到int，或者从float转换到double，这种提升型的转换通常不会造成数值差异</li>
+<li>需要注意负数转化为无符号类型通常会用二进制补码表示、浮点数转化为整数会采取截断操作等</li>
+</ul>
+<h1 id="显式类型转换"><a href="#显式类型转换" class="headerlink" title="显式类型转换"></a>显式类型转换</h1><h2 id="static-cast"><a href="#static-cast" class="headerlink" title="static_cast"></a>static_cast</h2><ul>
+<li>static_cast强制转换只会在编译时检查，但没有运行时类型检查来保证转换的安全性。同时，static_cast也不能去掉expression的const、volitale、或者__unaligned属性</li>
+<li>用于类层次结构中基类和子类之间指针或引用的转换。进行上行转换（把子类的指针或引用转换成基类表示）是安全的；进行下行转换（把基类指针或引用转换成子类指针或引用）时，由于没有动态类型检查，所以是不安全的</li>
+<li>用于基本数据类型之间的转换，如把int转换成char，把int转换成enum。这种转换的安全性也要开发人员来保证</li>
+<li>把void指针转换成目标类型的指针（不安全）</li>
+<li>把任何类型的表达式转换成void类型</li>
+<li>将enum class值转化为整数或者浮点数</li>
+<li>转换为右值引用</li>
+<li>对比dynamic_cast，缺乏运行时安全检测，不能交叉转换（不是同一继承体系的，无法转换），常用于基本数据类型的转换</li>
+</ul>
+<h2 id="dynamic-cast"><a href="#dynamic-cast" class="headerlink" title="dynamic_cast"></a>dynamic_cast</h2><ul>
+<li>一般用于多态类型的转换，有运行时安全检测，若写代码过程中能够自己确定某个指针一定指向具体哪个类型对象，则可以不调用dynamic_cast做转换，会增加开销</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">A</span>() &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ~<span class="built_in">B</span>() &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A* p1 = <span class="keyword">new</span> <span class="built_in">A</span>();</span><br><span class="line">    A* p2 = <span class="keyword">new</span> <span class="built_in">B</span>();</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;p1: &quot;</span> &lt;&lt; p1 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;p2: &quot;</span> &lt;&lt; p2 &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    B* p3 = <span class="keyword">dynamic_cast</span>&lt;B*&gt;(p1);   <span class="comment">//  call        ___RTDynamicCast (091155Ah) </span></span><br><span class="line">    B* p4 = <span class="keyword">dynamic_cast</span>&lt;B*&gt;(p2);   <span class="comment">//  call        ___RTDynamicCast (091155Ah) </span></span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;p3: &quot;</span> &lt;&lt; p3 &lt;&lt; endl;   <span class="comment">// null, 若直接采用C语言风格强转, 则直接 == p1, 无安全校验</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;p4: &quot;</span> &lt;&lt; p4 &lt;&lt; endl;   <span class="comment">// == p2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="reinterpret-cast"><a href="#reinterpret-cast" class="headerlink" title="reinterpret_cast"></a>reinterpret_cast</h2><ul>
+<li>属于比较底层的强制转换，没有任何类型检查和格式转换，仅仅是简单的二进制数据拷贝，可以交叉转换，可以将指针和整数互相转换</li>
+<li>其转换结果与编译平台息息相关，不具有可移植性，因此在一般的代码中不常见到它。reinterpret_cast只用于底层代码，一般我们都用不到它，如果你的代码中使用到这种转型，务必明白自己在干什么</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;                                 <span class="comment">// 0a 00 00 00</span></span><br><span class="line">    <span class="keyword">double</span> b = a;                               <span class="comment">// 00 00 00 00 00 00 24 40</span></span><br><span class="line">    <span class="keyword">double</span> c = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">double</span>&amp;&gt;(a);    <span class="comment">// 0a 00 00 00 cc cc cc cc</span></span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; a &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; b &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; c &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="const-cast"><a href="#const-cast" class="headerlink" title="const_cast"></a>const_cast</h2><ul>
+<li>一般用于去除const属性，降const转换成非const</li>
+<li>用于强制去掉不能被修改的常数特性，但需要特别注意的是const_cast不是用于去除变量的常量性，而是去除指向常数对象的指针或引用的常量性，其去除常量性的对象必须为指针或引用</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> A* p1 = <span class="keyword">new</span> <span class="built_in">A</span>();</span><br><span class="line">    A* p2 = <span class="keyword">const_cast</span>&lt;A*&gt;(p1);</span><br><span class="line">    A* p3 = (A*)p1;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 上述两种写法本质一样, 就是指针赋值而已</span></span><br><span class="line"><span class="comment">// 使用const_cast只是C++的语法而已, 方便理解是去除const属性</span></span><br><span class="line"></span><br><span class="line">    <span class="number">11</span>:     A* p2 = <span class="keyword">const_cast</span>&lt;A*&gt;(p1);</span><br><span class="line"> mov         eax,dword ptr [p1]  </span><br><span class="line"> mov         dword ptr [p2],eax  </span><br><span class="line">    <span class="number">12</span>:     A* p3 = (A*)p1;</span><br><span class="line"> mov         eax,dword ptr [p1]  </span><br><span class="line"> mov         dword ptr [p3],eax  </span><br></pre></td></tr></table></figure>
+
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://blog.csdn.net/shuzfan/article/details/77338366">C++ 类型转换</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>初始化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hexo+Github搭建个人博客</title>
     <url>/2022/02/02/Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h1><ul>
@@ -88,89 +217,6 @@
       </categories>
       <tags>
         <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C++中的变量初始化</title>
-    <url>/2022/02/05/C++%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
-    <content><![CDATA[<h1 id="默认初始化"><a href="#默认初始化" class="headerlink" title="默认初始化"></a>默认初始化</h1><ul>
-<li>定义变量时没有指定初值时进行的初始化操作。如int a; MyClass obj;等，这些变量被定义了而不是仅仅被声明，而且没有显示的赋初始值。特别的，如果采用动态分配内存的方式创建的变量，不加括号（如int *p = new int;）也是默认初始化，加了括号（如int *p = new int();）为值初始化。变量的值与变量定义的位置有关</li>
-</ul>
-<blockquote>
-<p>对于内置变量类型（如int，double，bool等），如果定义为全局变量，则变量被默认初始化为0；如果定义为局部变量，变量将拥有未定义的值</p>
-<p>对于类类型（如string或其他自定义类型），不管定义予何处，都会执行默认构造函数。如果该类没有默认构造函数，则会引发编译错误</p>
-</blockquote>
-<ul>
-<li>对于内置类型的局部变量，其默认初始化后，值可能为0，比如在g++和msvc中，这可能跟编译器和操作系统有关，具体可以参考：<a href="https://stackoverflow.com/questions/11143354/why-are-local-variables-initialized-to-0-in-g-compiler-for-c-in-ubuntu-linux">Why are local variables initialized to 0 in g++ compiler for c++ in ubuntu linux?</a></li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> global_value;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> local_value;</span><br><span class="line">    <span class="keyword">int</span> *new_value = <span class="keyword">new</span> <span class="keyword">int</span>;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;global_value: &quot;</span> &lt;&lt; global_value &lt;&lt; endl;   <span class="comment">// 0</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;local_value: &quot;</span> &lt;&lt; local_value &lt;&lt; endl;     <span class="comment">// 在g++和msvc中可能为0</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;new_value: &quot;</span> &lt;&lt; *new_value &lt;&lt; endl;        <span class="comment">// 未定义</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="值初始化"><a href="#值初始化" class="headerlink" title="值初始化"></a>值初始化</h1><ul>
-<li>定义变量时使用了初始化器（即圆括号或者大括号），但却没有提供初始值的情况，如int *p = new int(); vector&lt;string&gt; vec(10)等</li>
-<li>注意，当不采用动态分配内存的方式（即不采用new运算符）时，写成int a();是错误的值初始化方式，因为这种方式声明了一个函数而不是进行值初始化。如果一定要进行值初始化，必须结合拷贝初始化使用，即写成int a = int();值初始化和默认初始化一样，对于内置类型初始化为0，对于类类型则调用其默认构造函数，如果没有默认构造函数，则不能进行初始化</li>
-<li>只要使用了括号（圆括号或花括号）但没有给出具体初始值，就是值初始化。可以简单理解为括号告诉编译器你希望该对象初始化。没有使用括号，就是默认初始化。可以简单理解成，你放任不管，允许编译器使用默认行为，通常这是糟糕的行为</li>
-</ul>
-<h1 id="直接初始化和拷贝初始化"><a href="#直接初始化和拷贝初始化" class="headerlink" title="直接初始化和拷贝初始化"></a>直接初始化和拷贝初始化</h1><ul>
-<li><p>直接初始化：定义变量时采用小括号的方式进行变量初始化，且小括号里一定要有初始值，如果没有初始值，那就是值初始化了，如int a(12); MyClass obj(param); string s(“123”);等</p>
-</li>
-<li><p>拷贝初始化：定义变量时采用等号的方式进行变量初始化，如int a = 12; string s = “123”等，拷贝初始化像是给变量赋值，实际上执行了初始化操作，与先定义再赋值本质不同</p>
-</li>
-<li><p>对于内置类型，直接初始化和拷贝初始化差别可以忽略不计；对于类类型，直接初始化调用类的构造函数（调用参数最匹配的那个），拷贝初始化调用类的拷贝构造函数</p>
-</li>
-<li><p>对于示例，s的初始化书本说是直接初始化，看起来似乎像是拷贝初始化，其实的确是直接初始化，因为直接初始化是用参数来直接匹配某一个构造函数，而拷贝构造函数和其他构造函数形成了重载，以至于刚好调用了拷贝构造函数</p>
-</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">dots</span><span class="params">(<span class="number">10</span>, <span class="string">&#x27;.&#x27;</span>)</span></span>;   <span class="comment">// 直接初始化</span></span><br><span class="line"><span class="function">string <span class="title">s</span><span class="params">(dots)</span></span>;         <span class="comment">// 直接初始化</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>C++语言标准规定拷贝初始化应该是先调用对应的构造函数创建一个临时对象，然后拷贝构造函数再将构造的临时对象拷贝给要创建的对象，如string a = “hello”;，因为“hello”的类型是const char *，所以string类的string(const char *)构造函数会被首先调用，创建一个临时对象，然后拷贝构造函数将这个临时对象复制到a。但是标准还规定，为了提高效率，允许编译器跳过创建临时对象这一步，直接调用构造函数构造要创建的对象，从而忽略调用拷贝构造函数进行优化，这样就完全等价于直接初始化了，当然可以使用-fno-elide-constructors选项来禁用优化</li>
-</ul>
-<h1 id="列表初始化"><a href="#列表初始化" class="headerlink" title="列表初始化"></a>列表初始化</h1><ul>
-<li>列表初始化是C++ 11新引进的初始化方式，它采用一对花括号进行初始化操作。能用直接初始化和拷贝初始化的地方都能用列表初始化，而且列表初始化能对容器进行方便的初始化，因此在新的C++标准中，推荐使用列表初始化的方式进行初始化，如int a{12}; string s{“123”}; vector&lt;int&gt; vec{1,2,3};等</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 直接列表初始化</span></span><br><span class="line"><span class="keyword">int</span> x&#123;&#125;;</span><br><span class="line"><span class="keyword">int</span> y&#123; <span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> array1[]&#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s1[<span class="number">3</span>]&#123; <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;k&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s2[]&#123;<span class="string">&quot;Hello&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 拷贝列表初始化</span></span><br><span class="line"><span class="keyword">int</span> z = &#123; <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> array2[] = &#123; <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s3[] = &#123; <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;k&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s4[] = &#123; <span class="string">&quot;Hello&quot;</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> s5[] = <span class="string">&quot;Hello&quot;</span>; </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>用于内置类型的变量时，若使用列表初始化且初始值存在丢失信息的风险，则编译器将报错，即列表初始化不允许“窄化”</li>
-</ul>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><ul>
-<li>初始化不是赋值，初始化的含义是创建变量时赋予其一个初始值，而赋值的含义是把对象的当前值擦除，而以一个新值来代替</li>
-<li>使用等号（=）初始化一个类变量执行的是拷贝初始化，编译器会把等号右侧的初始值拷贝到新创建的对象中去，不使用等号则执行的是直接初始化</li>
-<li>默认初始化是定义对象时，没有使用初始化器，也即没有做任何初始化说明时的行为</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i;</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; vec;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>值初始化是定义对象时，要求初始化，但没有给出初始值的行为</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">i</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>();</span><br><span class="line"><span class="keyword">new</span> <span class="keyword">int</span>&#123;&#125;;  <span class="comment">// C++11</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>当用于类类型对象时，初始化的复制形式和直接形式有所不同：直接初始化直接调用与实参匹配的构造函数，复制初始化总是调用复制构造函数。复制初始化首先使用指定构造函数创建一个临时对象，然后用复制构造函数将那个临时对象复制到正在创建的对象</li>
-<li>直接初始化和拷贝初始化主要是相对于我们自定义的对象的初始化而言的，对于内置类型，这两者没有区别。对于自定义对象，直接初始化和拷贝初始化区别是直接调用构造函数还是用”=”来进行初始化</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">10</span>)</span></span>;     <span class="comment">// 直接初始化，匹配某一构造函数</span></span><br><span class="line"><span class="function">vector&lt;string&gt; <span class="title">v2</span><span class="params">(<span class="number">10</span>)</span></span>;  <span class="comment">// 直接初始化，匹配某一构造函数</span></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; v3 = v1;    <span class="comment">// 拷贝初始化，使用 = 进行初始化</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>列表初始化是C++新标准给出的一种初始化方式，可用于内置类型，也可以用于自定义对象，前者比如数组，后者比如vector</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> array[<span class="number">5</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; v = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>尽量使用列表初始化，除非你有个很好不用它的理由</li>
-</ul>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a href="https://blog.csdn.net/u014359097/article/details/50788911">谈谈C++中各种初始化方式</a></li>
-<li><a href="https://segmentfault.com/a/1190000039844285">五花八门的C++初始化规则</a></li>
-<li><a href="https://www.cnblogs.com/pluse/p/7088880.html">C++的各种初始化方式</a></li>
-<li><a href="https://blog.csdn.net/ljianhui/article/details/9245661">C++的一大误区——深入解释直接初始化与复制初始化的区别</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>初始化</tag>
       </tags>
   </entry>
   <entry>
@@ -298,6 +344,19 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// TestCpp.h</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> TEST_CPP_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TEST_CPP_H_</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestCpp</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// TestCpp.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;TestCpp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">TestCpp::func</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> c = a + b;</span><br><span class="line">    cout &lt;&lt; c &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// TestCppWrapper.h</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> TEST_CPP_WRAPPER_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TEST_CPP_WRAPPER_H_</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">getHandle</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">funcWrapper</span><span class="params">(<span class="keyword">void</span>* handle, <span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// TestCppWrapper.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;TestCppWrapper.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;TestCpp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">getHandle</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> TestCpp c;</span><br><span class="line">    <span class="keyword">return</span> &amp;c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">funcWrapper</span><span class="params">(<span class="keyword">void</span>* handle, <span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    TestCpp* p = <span class="keyword">static_cast</span>&lt;TestCpp*&gt;(handle);</span><br><span class="line">    <span class="keyword">return</span> p-&gt;<span class="built_in">func</span>(a, b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Test.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;TestCppWrapper.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">void</span>* handle = <span class="built_in">getHandle</span>();</span><br><span class="line">    <span class="built_in">funcWrapper</span>(handle, <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// g++ -c TestCpp.cpp TestCppWrapper.cpp</span></span><br><span class="line"><span class="comment">// ar -r libTestCpp.a TestCpp.o TestCppWrapper.o</span></span><br><span class="line"><span class="comment">// gcc -o TestC TestC.c -L. -lTestCpp -lstdc++</span></span><br></pre></td></tr></table></figure>
 
 ]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>内联函数</title>
+    <url>/2022/03/07/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h1 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h1><ul>
+<li>使用inline修饰函数的声明或者实现，可以使其变成内联函数，建议声明和实现都增加inline修饰</li>
+<li>编译器会将函数调用直接展开为函数体代码，可以减少函数调用开销，但会增大代码体积</li>
+<li>尽量不要内联超过10行代码的函数，有些函数即使声明为inline，也不一定会被编译器内联，比如递归函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> v1, <span class="keyword">int</span> v2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> v1 + v2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> c = <span class="built_in">sum</span>(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">    cout &lt;&lt; c &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 未使用inline, 反汇编会看到调用call sum</span></span><br><span class="line">    <span class="number">10</span>:     <span class="keyword">int</span> c = <span class="built_in">sum</span>(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line"><span class="number">00031014</span> <span class="number">6</span>A <span class="number">14</span>                push        <span class="number">14</span>h  </span><br><span class="line"><span class="number">00031016</span> <span class="number">6</span>A <span class="number">0</span>A                push        <span class="number">0</span>Ah  </span><br><span class="line"><span class="number">00031018</span> <span class="function">E8 E3 FF FF FF       call        <span class="title">sum</span> <span class="params">(<span class="number">031000</span>h)</span>  </span></span><br><span class="line"><span class="function">0003101D 83 C4 08             add         esp,8  </span></span><br><span class="line"><span class="function">00031020 89 45 FC             mov         dword ptr [c],eax  </span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 使用inline, 反汇编会看到内联展开</span></span></span><br><span class="line"><span class="function"><span class="comment">// VS需要在Release模式下, 并且关闭编译器优化, 同时使能内联展开</span></span></span><br><span class="line"><span class="function">    10:     int c =</span> <span class="built_in">sum</span>(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line"><span class="number">00481004</span> B8 <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>       mov         eax,<span class="number">0</span>Ah  </span><br><span class="line"><span class="number">00481009</span> <span class="number">83</span> C0 <span class="number">14</span>             add         eax,<span class="number">14</span>h  </span><br><span class="line"><span class="number">0048100</span>C <span class="number">89</span> <span class="number">45</span> FC             mov         dword ptr [c],eax  </span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>C++</category>
       </categories>
@@ -568,18 +627,5 @@
       <tags>
         <tag>迭代器</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>内联函数</title>
-    <url>/2022/03/07/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h1 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h1><ul>
-<li>使用inline修饰函数的声明或者实现，可以使其变成内联函数，建议声明和实现都增加inline修饰</li>
-<li>编译器会将函数调用直接展开为函数体代码，可以减少函数调用开销，但会增大代码体积</li>
-<li>尽量不要内联超过10行代码的函数，有些函数即使声明为inline，也不一定会被编译器内联，比如递归函数</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> v1, <span class="keyword">int</span> v2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> v1 + v2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> c = <span class="built_in">sum</span>(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">    cout &lt;&lt; c &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 未使用inline, 反汇编会看到调用call sum</span></span><br><span class="line">    <span class="number">10</span>:     <span class="keyword">int</span> c = <span class="built_in">sum</span>(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line"><span class="number">00031014</span> <span class="number">6</span>A <span class="number">14</span>                push        <span class="number">14</span>h  </span><br><span class="line"><span class="number">00031016</span> <span class="number">6</span>A <span class="number">0</span>A                push        <span class="number">0</span>Ah  </span><br><span class="line"><span class="number">00031018</span> <span class="function">E8 E3 FF FF FF       call        <span class="title">sum</span> <span class="params">(<span class="number">031000</span>h)</span>  </span></span><br><span class="line"><span class="function">0003101D 83 C4 08             add         esp,8  </span></span><br><span class="line"><span class="function">00031020 89 45 FC             mov         dword ptr [c],eax  </span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 使用inline, 反汇编会看到内联展开</span></span></span><br><span class="line"><span class="function"><span class="comment">// VS需要在Release模式下, 并且关闭编译器优化, 同时使能内联展开</span></span></span><br><span class="line"><span class="function">    10:     int c =</span> <span class="built_in">sum</span>(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line"><span class="number">00481004</span> B8 <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>       mov         eax,<span class="number">0</span>Ah  </span><br><span class="line"><span class="number">00481009</span> <span class="number">83</span> C0 <span class="number">14</span>             add         eax,<span class="number">14</span>h  </span><br><span class="line"><span class="number">0048100</span>C <span class="number">89</span> <span class="number">45</span> FC             mov         dword ptr [c],eax  </span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
   </entry>
 </search>
