@@ -628,4 +628,21 @@
         <tag>迭代器</tag>
       </tags>
   </entry>
+  <entry>
+    <title>匿名对象</title>
+    <url>/2022/03/07/%E5%8C%BF%E5%90%8D%E5%AF%B9%E8%B1%A1/</url>
+    <content><![CDATA[<h1 id="匿名对象"><a href="#匿名对象" class="headerlink" title="匿名对象"></a>匿名对象</h1><ul>
+<li>一个只用一次的对象，这种不命名的对象叫匿名对象</li>
+<li>匿名对象没有变量名，没有被指针指向，用完后马上调用析构函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Circle</span>() &#123;</span><br><span class="line">        radius = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">Circle</span>(<span class="keyword">double</span> r) &#123;</span><br><span class="line">        radius = r;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">getArea</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">3.14</span> * radius * radius;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">double</span> radius;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Circle c1 = Circle&#123; <span class="number">1.1</span> &#125;;</span><br><span class="line">    <span class="keyword">auto</span> c2 = Circle&#123; <span class="number">2.2</span> &#125;;    <span class="comment">// 用匿名对象做拷贝列表初始化</span></span><br><span class="line"></span><br><span class="line">    Circle c3&#123;&#125;;</span><br><span class="line">    c3 = Circle&#123; <span class="number">3.3</span> &#125;;         <span class="comment">// 用匿名对象赋值</span></span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; Circle&#123; <span class="number">4.2</span> &#125;.<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">Circle</span>().<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">Circle</span>(<span class="number">5</span>).<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    cin.<span class="built_in">get</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>初始化</tag>
+      </tags>
+  </entry>
 </search>
