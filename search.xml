@@ -1,6 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Hexo+Github搭建个人博客</title>
+    <url>/2022/02/02/Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h1><ul>
+<li>Hexo需要Node.js支持</li>
+<li>Node.js下载地址：<a href="https://nodejs.org/en/">nodejs.org</a></li>
+<li>安装完以后会有两个组件，Node.js + npm包管理器</li>
+</ul>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">$ <span class="keyword">node</span> <span class="title">-v</span></span><br><span class="line">v16.<span class="number">13.1</span></span><br><span class="line"></span><br><span class="line">$ npm -v</span><br><span class="line"><span class="number">8.1</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="安装cnpm，淘宝镜像源"><a href="#安装cnpm，淘宝镜像源" class="headerlink" title="安装cnpm，淘宝镜像源"></a>安装cnpm，淘宝镜像源</h1><ul>
+<li>借助npm安装Hexo博客框架，但由于国内镜像源速度慢，可以利用npm安装一个cnpm，淘宝的源</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https:<span class="regexp">//</span>registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105234517559.png"></p>
+<h1 id="使用cnpm安装Hexo博客"><a href="#使用cnpm安装Hexo博客" class="headerlink" title="使用cnpm安装Hexo博客"></a>使用cnpm安装Hexo博客</h1><figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ cnpm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235001374.png"></p>
+<h1 id="使用Hexo搭建博客"><a href="#使用Hexo搭建博客" class="headerlink" title="使用Hexo搭建博客"></a>使用Hexo搭建博客</h1><ul>
+<li>创建博客目录</li>
+<li>初始化博客</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">init</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235806763.png"></p>
+<ul>
+<li>启动博客</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235937501.png"></p>
+<ul>
+<li>浏览器访问<a href="http://localhost:4000/">http://localhost:4000/</a></li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000154817.png"></p>
+<ul>
+<li>新建一篇博客，并编辑</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo n <span class="string">&quot;My First Blog&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000542115.png"></p>
+<ul>
+<li>清理，重新生成，并启动博客</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo clean</span><br><span class="line"><span class="variable">$ </span>hexo g</span><br><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001429254.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001505606.png"></p>
+<h1 id="将博客部署到远端，比如GitHub"><a href="#将博客部署到远端，比如GitHub" class="headerlink" title="将博客部署到远端，比如GitHub"></a>将博客部署到远端，比如GitHub</h1><ul>
+<li>创建一个新的仓库，注意：仓库名必须为GitHub用户名+github.io</li>
+<li>使用cnpm安装git部署插件</li>
+</ul>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">$ cnpm install <span class="comment">--save hexo-deployer-git</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106002928759.png"></p>
+<ul>
+<li>修改博客目录下的_config.yml</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230537645.png"></p>
+<ul>
+<li>部署到远端</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo d</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>会提示你输入GitHub用户名和密码，但是重点来了，这里试了好几次，明明用户名和密码都正确，就是部署不上去，提示Authentication failed &amp; Error: Spawn failed</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230617045.png"></p>
+<ul>
+<li>不知道是不是HTTPS的问题，不过以前也确实没用过HTTPS的方式，又尝试了SSH的方式，修改如下，注意如果以前没有在GitHub上添加过SSH Keys的话需要添加下，参考链接：<a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generating a new SSH key and adding it to the ssh-agent</a></li>
+<li>重新修改_config.yml如下</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231656787.png"></p>
+<ul>
+<li>重新部署成功</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231858319.png"></p>
+<ul>
+<li>将仓库地址复制到浏览器中打开，就可以正常打开个人博客</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117232211582.png"></p>
+]]></content>
+      <categories>
+        <category>博客搭建</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C++中的变量初始化</title>
     <url>/2022/02/05/C++%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
     <content><![CDATA[<h1 id="默认初始化"><a href="#默认初始化" class="headerlink" title="默认初始化"></a>默认初始化</h1><ul>
@@ -125,126 +215,6 @@
       <categories>
         <category>C++</category>
       </categories>
-      <tags>
-        <tag>初始化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo+Github搭建个人博客</title>
-    <url>/2022/02/02/Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h1 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h1><ul>
-<li>Hexo需要Node.js支持</li>
-<li>Node.js下载地址：<a href="https://nodejs.org/en/">nodejs.org</a></li>
-<li>安装完以后会有两个组件，Node.js + npm包管理器</li>
-</ul>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">$ <span class="keyword">node</span> <span class="title">-v</span></span><br><span class="line">v16.<span class="number">13.1</span></span><br><span class="line"></span><br><span class="line">$ npm -v</span><br><span class="line"><span class="number">8.1</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="安装cnpm，淘宝镜像源"><a href="#安装cnpm，淘宝镜像源" class="headerlink" title="安装cnpm，淘宝镜像源"></a>安装cnpm，淘宝镜像源</h1><ul>
-<li>借助npm安装Hexo博客框架，但由于国内镜像源速度慢，可以利用npm安装一个cnpm，淘宝的源</li>
-</ul>
-<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https:<span class="regexp">//</span>registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105234517559.png"></p>
-<h1 id="使用cnpm安装Hexo博客"><a href="#使用cnpm安装Hexo博客" class="headerlink" title="使用cnpm安装Hexo博客"></a>使用cnpm安装Hexo博客</h1><figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ cnpm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235001374.png"></p>
-<h1 id="使用Hexo搭建博客"><a href="#使用Hexo搭建博客" class="headerlink" title="使用Hexo搭建博客"></a>使用Hexo搭建博客</h1><ul>
-<li>创建博客目录</li>
-<li>初始化博客</li>
-</ul>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">init</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235806763.png"></p>
-<ul>
-<li>启动博客</li>
-</ul>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235937501.png"></p>
-<ul>
-<li>浏览器访问<a href="http://localhost:4000/">http://localhost:4000/</a></li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000154817.png"></p>
-<ul>
-<li>新建一篇博客，并编辑</li>
-</ul>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo n <span class="string">&quot;My First Blog&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000542115.png"></p>
-<ul>
-<li>清理，重新生成，并启动博客</li>
-</ul>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo clean</span><br><span class="line"><span class="variable">$ </span>hexo g</span><br><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001429254.png"></p>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001505606.png"></p>
-<h1 id="将博客部署到远端，比如GitHub"><a href="#将博客部署到远端，比如GitHub" class="headerlink" title="将博客部署到远端，比如GitHub"></a>将博客部署到远端，比如GitHub</h1><ul>
-<li>创建一个新的仓库，注意：仓库名必须为GitHub用户名+github.io</li>
-<li>使用cnpm安装git部署插件</li>
-</ul>
-<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">$ cnpm install <span class="comment">--save hexo-deployer-git</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106002928759.png"></p>
-<ul>
-<li>修改博客目录下的_config.yml</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230537645.png"></p>
-<ul>
-<li>部署到远端</li>
-</ul>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo d</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>会提示你输入GitHub用户名和密码，但是重点来了，这里试了好几次，明明用户名和密码都正确，就是部署不上去，提示Authentication failed &amp; Error: Spawn failed</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230617045.png"></p>
-<ul>
-<li>不知道是不是HTTPS的问题，不过以前也确实没用过HTTPS的方式，又尝试了SSH的方式，修改如下，注意如果以前没有在GitHub上添加过SSH Keys的话需要添加下，参考链接：<a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generating a new SSH key and adding it to the ssh-agent</a></li>
-<li>重新修改_config.yml如下</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231656787.png"></p>
-<ul>
-<li>重新部署成功</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231858319.png"></p>
-<ul>
-<li>将仓库地址复制到浏览器中打开，就可以正常打开个人博客</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117232211582.png"></p>
-]]></content>
-      <categories>
-        <category>博客搭建</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>const</title>
-    <url>/2022/02/06/const/</url>
-    <content><![CDATA[<h1 id="const对象的多文件访问"><a href="#const对象的多文件访问" class="headerlink" title="const对象的多文件访问"></a>const对象的多文件访问</h1><ul>
-<li>若需要多个文件访问const对象，则对于const变量不管是声明还是定义都添加extern关键字</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp定义并初始化一个常量, 改常量能被其他文件访问</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>若无const，则定义时没有限制要加上extern</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp</span></span><br><span class="line"><span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
-
-<h1 id="顶层const-amp-底层const"><a href="#顶层const-amp-底层const" class="headerlink" title="顶层const &amp; 底层const"></a>顶层const &amp; 底层const</h1><ul>
-<li>顶层const：指针本身是一个常量，一般也可表示任意的对象是常量</li>
-<li>底层const：指针所指向的对象是一个常量</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p1 = &amp;i;       <span class="comment">// 不能改变p1的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = <span class="number">1</span>;         <span class="comment">// 不能改变ci的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p2 = &amp;ci;      <span class="comment">// 允许改变p2的值, 这是一个底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *<span class="keyword">const</span> p3 = p2; <span class="comment">// 右侧const是顶层const, 左侧const是底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *r = i;         <span class="comment">// 用于声明引用的const都是底层const</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>const</tag>
-      </tags>
   </entry>
   <entry>
     <title>move和完美转发</title>
@@ -312,6 +282,33 @@
         <tag>右值引用</tag>
         <tag>move</tag>
         <tag>完美转发,forward</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>const</title>
+    <url>/2022/02/06/const/</url>
+    <content><![CDATA[<h1 id="const对象的多文件访问"><a href="#const对象的多文件访问" class="headerlink" title="const对象的多文件访问"></a>const对象的多文件访问</h1><ul>
+<li>若需要多个文件访问const对象，则对于const变量不管是声明还是定义都添加extern关键字</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp定义并初始化一个常量, 改常量能被其他文件访问</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>若无const，则定义时没有限制要加上extern</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp</span></span><br><span class="line"><span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
+
+<h1 id="顶层const-amp-底层const"><a href="#顶层const-amp-底层const" class="headerlink" title="顶层const &amp; 底层const"></a>顶层const &amp; 底层const</h1><ul>
+<li>顶层const：指针本身是一个常量，一般也可表示任意的对象是常量</li>
+<li>底层const：指针所指向的对象是一个常量</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p1 = &amp;i;       <span class="comment">// 不能改变p1的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = <span class="number">1</span>;         <span class="comment">// 不能改变ci的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p2 = &amp;ci;      <span class="comment">// 允许改变p2的值, 这是一个底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *<span class="keyword">const</span> p3 = p2; <span class="comment">// 右侧const是顶层const, 左侧const是底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *r = i;         <span class="comment">// 用于声明引用的const都是底层const</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>const</tag>
       </tags>
   </entry>
   <entry>
@@ -386,6 +383,20 @@
       <tags>
         <tag>函数重载</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>匿名对象</title>
+    <url>/2022/03/07/%E5%8C%BF%E5%90%8D%E5%AF%B9%E8%B1%A1/</url>
+    <content><![CDATA[<h1 id="匿名对象"><a href="#匿名对象" class="headerlink" title="匿名对象"></a>匿名对象</h1><ul>
+<li>一个只用一次的对象，这种不命名的对象叫匿名对象</li>
+<li>匿名对象没有变量名，没有被指针指向，用完后马上调用析构函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Circle</span>() &#123;</span><br><span class="line">        radius = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">Circle</span>(<span class="keyword">double</span> r) &#123;</span><br><span class="line">        radius = r;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">getArea</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">3.14</span> * radius * radius;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">double</span> radius;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Circle c1 = Circle&#123; <span class="number">1.1</span> &#125;;</span><br><span class="line">    <span class="keyword">auto</span> c2 = Circle&#123; <span class="number">2.2</span> &#125;;    <span class="comment">// 用匿名对象做拷贝列表初始化</span></span><br><span class="line"></span><br><span class="line">    Circle c3&#123;&#125;;</span><br><span class="line">    c3 = Circle&#123; <span class="number">3.3</span> &#125;;         <span class="comment">// 用匿名对象赋值</span></span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; Circle&#123; <span class="number">4.2</span> &#125;.<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">Circle</span>().<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">Circle</span>(<span class="number">5</span>).<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    cin.<span class="built_in">get</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
   </entry>
   <entry>
     <title>左值和右值</title>
@@ -601,6 +612,26 @@
       </tags>
   </entry>
   <entry>
+    <title>类内就地初始化</title>
+    <url>/2022/03/08/%E7%B1%BB%E5%86%85%E5%B0%B1%E5%9C%B0%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="类内就地初始化"><a href="#类内就地初始化" class="headerlink" title="类内就地初始化"></a>类内就地初始化</h1><ul>
+<li>C++03：只有静态常量整形成员才能在类中就地初始化</li>
+<li>C++11：非静态成员可以在它声明的时候初始化，类内初始值的限制：或者放在花括号里，或者放在等号右边，不能使用圆括号</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span> &#123;</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> a = <span class="number">7</span>;         <span class="comment">// Ok</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> b = <span class="number">7</span>;                <span class="comment">// Ok</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> c = <span class="number">7</span>;               <span class="comment">// Error: 非const</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> string d = <span class="string">&quot;ok&quot;</span>;   <span class="comment">// Error: 非整形</span></span><br><span class="line">    <span class="keyword">int</span> m = <span class="number">7</span>;                      <span class="comment">// Ok</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">n</span><span class="params">(<span class="number">7</span>)</span></span>;                       <span class="comment">// Error: 就地初始化不允许小括号初始化</span></span><br><span class="line">    string s&#123; <span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span> &#125;;        <span class="comment">// Ok</span></span><br><span class="line">    string t&#123; <span class="string">&quot;Hello&quot;</span> &#125;;            <span class="comment">// Ok</span></span><br><span class="line">    <span class="keyword">int</span> a[] = &#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> &#125;;            <span class="comment">// Error: 就地初始化中数组类型成员不能自动推断大小</span></span><br><span class="line">    <span class="keyword">int</span> b[<span class="number">3</span>] = &#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> &#125;;           <span class="comment">// Ok</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://wizardforcel.gitbooks.io/cpp-11-faq/content/42.html">类成员的内部初始化</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>初始化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>迭代器</title>
     <url>/2022/02/06/%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
     <content><![CDATA[<h1 id="迭代器使用"><a href="#迭代器使用" class="headerlink" title="迭代器使用"></a>迭代器使用</h1><ul>
@@ -624,25 +655,5 @@
       <categories>
         <category>C++</category>
       </categories>
-      <tags>
-        <tag>迭代器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>匿名对象</title>
-    <url>/2022/03/07/%E5%8C%BF%E5%90%8D%E5%AF%B9%E8%B1%A1/</url>
-    <content><![CDATA[<h1 id="匿名对象"><a href="#匿名对象" class="headerlink" title="匿名对象"></a>匿名对象</h1><ul>
-<li>一个只用一次的对象，这种不命名的对象叫匿名对象</li>
-<li>匿名对象没有变量名，没有被指针指向，用完后马上调用析构函数</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Circle</span>() &#123;</span><br><span class="line">        radius = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">Circle</span>(<span class="keyword">double</span> r) &#123;</span><br><span class="line">        radius = r;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">getArea</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">3.14</span> * radius * radius;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">double</span> radius;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Circle c1 = Circle&#123; <span class="number">1.1</span> &#125;;</span><br><span class="line">    <span class="keyword">auto</span> c2 = Circle&#123; <span class="number">2.2</span> &#125;;    <span class="comment">// 用匿名对象做拷贝列表初始化</span></span><br><span class="line"></span><br><span class="line">    Circle c3&#123;&#125;;</span><br><span class="line">    c3 = Circle&#123; <span class="number">3.3</span> &#125;;         <span class="comment">// 用匿名对象赋值</span></span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; Circle&#123; <span class="number">4.2</span> &#125;.<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">Circle</span>().<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">Circle</span>(<span class="number">5</span>).<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    cin.<span class="built_in">get</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>初始化</tag>
-      </tags>
   </entry>
 </search>
