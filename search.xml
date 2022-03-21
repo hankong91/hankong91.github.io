@@ -1,96 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hexo+Github搭建个人博客</title>
-    <url>/2022/02/02/Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h1 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h1><ul>
-<li>Hexo需要Node.js支持</li>
-<li>Node.js下载地址：<a href="https://nodejs.org/en/">nodejs.org</a></li>
-<li>安装完以后会有两个组件，Node.js + npm包管理器</li>
-</ul>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">$ <span class="keyword">node</span> <span class="title">-v</span></span><br><span class="line">v16.<span class="number">13.1</span></span><br><span class="line"></span><br><span class="line">$ npm -v</span><br><span class="line"><span class="number">8.1</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="安装cnpm，淘宝镜像源"><a href="#安装cnpm，淘宝镜像源" class="headerlink" title="安装cnpm，淘宝镜像源"></a>安装cnpm，淘宝镜像源</h1><ul>
-<li>借助npm安装Hexo博客框架，但由于国内镜像源速度慢，可以利用npm安装一个cnpm，淘宝的源</li>
-</ul>
-<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https:<span class="regexp">//</span>registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105234517559.png"></p>
-<h1 id="使用cnpm安装Hexo博客"><a href="#使用cnpm安装Hexo博客" class="headerlink" title="使用cnpm安装Hexo博客"></a>使用cnpm安装Hexo博客</h1><figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ cnpm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235001374.png"></p>
-<h1 id="使用Hexo搭建博客"><a href="#使用Hexo搭建博客" class="headerlink" title="使用Hexo搭建博客"></a>使用Hexo搭建博客</h1><ul>
-<li>创建博客目录</li>
-<li>初始化博客</li>
-</ul>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">init</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235806763.png"></p>
-<ul>
-<li>启动博客</li>
-</ul>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235937501.png"></p>
-<ul>
-<li>浏览器访问<a href="http://localhost:4000/">http://localhost:4000/</a></li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000154817.png"></p>
-<ul>
-<li>新建一篇博客，并编辑</li>
-</ul>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo n <span class="string">&quot;My First Blog&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000542115.png"></p>
-<ul>
-<li>清理，重新生成，并启动博客</li>
-</ul>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo clean</span><br><span class="line"><span class="variable">$ </span>hexo g</span><br><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001429254.png"></p>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001505606.png"></p>
-<h1 id="将博客部署到远端，比如GitHub"><a href="#将博客部署到远端，比如GitHub" class="headerlink" title="将博客部署到远端，比如GitHub"></a>将博客部署到远端，比如GitHub</h1><ul>
-<li>创建一个新的仓库，注意：仓库名必须为GitHub用户名+github.io</li>
-<li>使用cnpm安装git部署插件</li>
-</ul>
-<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">$ cnpm install <span class="comment">--save hexo-deployer-git</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106002928759.png"></p>
-<ul>
-<li>修改博客目录下的_config.yml</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230537645.png"></p>
-<ul>
-<li>部署到远端</li>
-</ul>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo d</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>会提示你输入GitHub用户名和密码，但是重点来了，这里试了好几次，明明用户名和密码都正确，就是部署不上去，提示Authentication failed &amp; Error: Spawn failed</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230617045.png"></p>
-<ul>
-<li>不知道是不是HTTPS的问题，不过以前也确实没用过HTTPS的方式，又尝试了SSH的方式，修改如下，注意如果以前没有在GitHub上添加过SSH Keys的话需要添加下，参考链接：<a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generating a new SSH key and adding it to the ssh-agent</a></li>
-<li>重新修改_config.yml如下</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231656787.png"></p>
-<ul>
-<li>重新部署成功</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231858319.png"></p>
-<ul>
-<li>将仓库地址复制到浏览器中打开，就可以正常打开个人博客</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117232211582.png"></p>
-]]></content>
-      <categories>
-        <category>博客搭建</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>C++中的变量初始化</title>
     <url>/2022/02/05/C++%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
     <content><![CDATA[<h1 id="默认初始化"><a href="#默认初始化" class="headerlink" title="默认初始化"></a>默认初始化</h1><ul>
@@ -217,6 +127,123 @@
       </categories>
   </entry>
   <entry>
+    <title>Hexo+Github搭建个人博客</title>
+    <url>/2022/02/02/Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h1><ul>
+<li>Hexo需要Node.js支持</li>
+<li>Node.js下载地址：<a href="https://nodejs.org/en/">nodejs.org</a></li>
+<li>安装完以后会有两个组件，Node.js + npm包管理器</li>
+</ul>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">$ <span class="keyword">node</span> <span class="title">-v</span></span><br><span class="line">v16.<span class="number">13.1</span></span><br><span class="line"></span><br><span class="line">$ npm -v</span><br><span class="line"><span class="number">8.1</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="安装cnpm，淘宝镜像源"><a href="#安装cnpm，淘宝镜像源" class="headerlink" title="安装cnpm，淘宝镜像源"></a>安装cnpm，淘宝镜像源</h1><ul>
+<li>借助npm安装Hexo博客框架，但由于国内镜像源速度慢，可以利用npm安装一个cnpm，淘宝的源</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https:<span class="regexp">//</span>registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105234517559.png"></p>
+<h1 id="使用cnpm安装Hexo博客"><a href="#使用cnpm安装Hexo博客" class="headerlink" title="使用cnpm安装Hexo博客"></a>使用cnpm安装Hexo博客</h1><figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ cnpm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235001374.png"></p>
+<h1 id="使用Hexo搭建博客"><a href="#使用Hexo搭建博客" class="headerlink" title="使用Hexo搭建博客"></a>使用Hexo搭建博客</h1><ul>
+<li>创建博客目录</li>
+<li>初始化博客</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">init</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235806763.png"></p>
+<ul>
+<li>启动博客</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235937501.png"></p>
+<ul>
+<li>浏览器访问<a href="http://localhost:4000/">http://localhost:4000/</a></li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000154817.png"></p>
+<ul>
+<li>新建一篇博客，并编辑</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo n <span class="string">&quot;My First Blog&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000542115.png"></p>
+<ul>
+<li>清理，重新生成，并启动博客</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo clean</span><br><span class="line"><span class="variable">$ </span>hexo g</span><br><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001429254.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001505606.png"></p>
+<h1 id="将博客部署到远端，比如GitHub"><a href="#将博客部署到远端，比如GitHub" class="headerlink" title="将博客部署到远端，比如GitHub"></a>将博客部署到远端，比如GitHub</h1><ul>
+<li>创建一个新的仓库，注意：仓库名必须为GitHub用户名+github.io</li>
+<li>使用cnpm安装git部署插件</li>
+</ul>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">$ cnpm install <span class="comment">--save hexo-deployer-git</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106002928759.png"></p>
+<ul>
+<li>修改博客目录下的_config.yml</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230537645.png"></p>
+<ul>
+<li>部署到远端</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo d</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>会提示你输入GitHub用户名和密码，但是重点来了，这里试了好几次，明明用户名和密码都正确，就是部署不上去，提示Authentication failed &amp; Error: Spawn failed</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230617045.png"></p>
+<ul>
+<li>不知道是不是HTTPS的问题，不过以前也确实没用过HTTPS的方式，又尝试了SSH的方式，修改如下，注意如果以前没有在GitHub上添加过SSH Keys的话需要添加下，参考链接：<a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generating a new SSH key and adding it to the ssh-agent</a></li>
+<li>重新修改_config.yml如下</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231656787.png"></p>
+<ul>
+<li>重新部署成功</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231858319.png"></p>
+<ul>
+<li>将仓库地址复制到浏览器中打开，就可以正常打开个人博客</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117232211582.png"></p>
+]]></content>
+      <categories>
+        <category>博客搭建</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>const</title>
+    <url>/2022/02/06/const/</url>
+    <content><![CDATA[<h1 id="const对象的多文件访问"><a href="#const对象的多文件访问" class="headerlink" title="const对象的多文件访问"></a>const对象的多文件访问</h1><ul>
+<li>若需要多个文件访问const对象，则对于const变量不管是声明还是定义都添加extern关键字</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp定义并初始化一个常量, 改常量能被其他文件访问</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>若无const，则定义时没有限制要加上extern</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp</span></span><br><span class="line"><span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
+
+<h1 id="顶层const-amp-底层const"><a href="#顶层const-amp-底层const" class="headerlink" title="顶层const &amp; 底层const"></a>顶层const &amp; 底层const</h1><ul>
+<li>顶层const：指针本身是一个常量，一般也可表示任意的对象是常量</li>
+<li>底层const：指针所指向的对象是一个常量</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p1 = &amp;i;       <span class="comment">// 不能改变p1的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = <span class="number">1</span>;         <span class="comment">// 不能改变ci的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p2 = &amp;ci;      <span class="comment">// 允许改变p2的值, 这是一个底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *<span class="keyword">const</span> p3 = p2; <span class="comment">// 右侧const是顶层const, 左侧const是底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *r = i;         <span class="comment">// 用于声明引用的const都是底层const</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>const</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>move和完美转发</title>
     <url>/2022/02/24/move%E5%92%8C%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/</url>
     <content><![CDATA[<h1 id="move"><a href="#move" class="headerlink" title="move"></a>move</h1><ul>
@@ -282,33 +309,6 @@
         <tag>右值引用</tag>
         <tag>move</tag>
         <tag>完美转发,forward</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>const</title>
-    <url>/2022/02/06/const/</url>
-    <content><![CDATA[<h1 id="const对象的多文件访问"><a href="#const对象的多文件访问" class="headerlink" title="const对象的多文件访问"></a>const对象的多文件访问</h1><ul>
-<li>若需要多个文件访问const对象，则对于const变量不管是声明还是定义都添加extern关键字</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp定义并初始化一个常量, 改常量能被其他文件访问</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>若无const，则定义时没有限制要加上extern</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file.cpp</span></span><br><span class="line"><span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line"><span class="comment">// file.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> bufsize;</span><br></pre></td></tr></table></figure>
-
-<h1 id="顶层const-amp-底层const"><a href="#顶层const-amp-底层const" class="headerlink" title="顶层const &amp; 底层const"></a>顶层const &amp; 底层const</h1><ul>
-<li>顶层const：指针本身是一个常量，一般也可表示任意的对象是常量</li>
-<li>底层const：指针所指向的对象是一个常量</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p1 = &amp;i;       <span class="comment">// 不能改变p1的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = <span class="number">1</span>;         <span class="comment">// 不能改变ci的值, 这是一个顶层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p2 = &amp;ci;      <span class="comment">// 允许改变p2的值, 这是一个底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *<span class="keyword">const</span> p3 = p2; <span class="comment">// 右侧const是顶层const, 左侧const是底层const</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *r = i;         <span class="comment">// 用于声明引用的const都是底层const</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>const</tag>
       </tags>
   </entry>
   <entry>
@@ -612,6 +612,32 @@
       </tags>
   </entry>
   <entry>
+    <title>拷贝、赋值和销毁</title>
+    <url>/2022/03/22/%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E5%92%8C%E9%94%80%E6%AF%81/</url>
+    <content><![CDATA[<h1 id="拷贝控制操作"><a href="#拷贝控制操作" class="headerlink" title="拷贝控制操作"></a>拷贝控制操作</h1><ul>
+<li>拷贝控制操作：拷贝构造函数、拷贝赋值运算符、移动构造函数、移动赋值运算符、析构函数</li>
+<li>拷贝和移动构造函数：定义了当用同类型的另一个对象初始化本对象时做什么</li>
+<li>拷贝和移动赋值运算符：定义了将一个对象赋予同类型的另一个对象时做什么</li>
+<li>析构函数：定义了当此类型对象销毁时做什么</li>
+<li>编译器会自动定义缺失的操作</li>
+<li>拷贝过程：对类类型的成员，会使用其拷贝构造函数来拷贝，内置类型的成员则直接拷贝，虽然不能直接拷贝数组，但合成的拷贝构造函数会逐元素地拷贝一个数组类型的成员</li>
+<li>拷贝初始化通常使用拷贝构造函数来完成，但是若一个类有一个移动构造函数，则拷贝构造函数有时会调用移动构造函数而不是拷贝构造函数来完成</li>
+<li>拷贝构造函数的参数必须是引用类型，否则会进入死循环</li>
+</ul>
+<h1 id="编译器是否自动生成拷贝构造函数"><a href="#编译器是否自动生成拷贝构造函数" class="headerlink" title="编译器是否自动生成拷贝构造函数"></a>编译器是否自动生成拷贝构造函数</h1><ul>
+<li>若未定义拷贝构造函数，则编译器在进行类对象拷贝构造的时候直接按成员变量赋值，并没有自动生成拷贝构造函数并调用</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> a_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> b_ = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A a1;</span><br><span class="line">    <span class="function">A <span class="title">a2</span><span class="params">(a1)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">13</span>:     A a1;</span><br><span class="line"> lea         ecx,[ebp<span class="number">-10</span>h]  </span><br><span class="line"> call        <span class="number">003</span>C14A1  </span><br><span class="line">    <span class="number">14</span>:     <span class="function">A <span class="title">a2</span><span class="params">(a1)</span></span>;</span><br><span class="line"> mov         eax,dword ptr [ebp<span class="number">-10</span>h]  </span><br><span class="line"> mov         dword ptr [ebp<span class="number">-20</span>h],eax  <span class="comment">// 拷贝4个字节</span></span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-0</span>Ch]  </span><br><span class="line"> mov         dword ptr [ebp<span class="number">-1</span>Ch],ecx  <span class="comment">// 拷贝4个字节</span></span><br><span class="line"><span class="comment">// 等价于 a2.a_ = a1.a_; a2.b_ = a2.b_;</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>构造函数</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>类内就地初始化</title>
     <url>/2022/03/08/%E7%B1%BB%E5%86%85%E5%B0%B1%E5%9C%B0%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
     <content><![CDATA[<h1 id="类内就地初始化"><a href="#类内就地初始化" class="headerlink" title="类内就地初始化"></a>类内就地初始化</h1><ul>
@@ -639,6 +665,26 @@
       </tags>
   </entry>
   <entry>
+    <title>继承基类的构造函数</title>
+    <url>/2022/03/09/%E7%BB%A7%E6%89%BF%E5%9F%BA%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h1 id="继承基类的构造函数"><a href="#继承基类的构造函数" class="headerlink" title="继承基类的构造函数"></a>继承基类的构造函数</h1><ul>
+<li>C++11：派生类不能继承的特殊函数：析构函数和友元函数</li>
+<li>继承基类的构造函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// using A::A; 继承所有基类的Ctor</span></span><br><span class="line"><span class="comment">// 不能仅继承指定的某个基类Ctor</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="built_in">A</span>(<span class="keyword">int</span> i) &#123; &#125;</span><br><span class="line">    <span class="built_in">A</span>(<span class="keyword">double</span> d, <span class="keyword">int</span> i) &#123; &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> :</span> A &#123;</span><br><span class="line">    <span class="keyword">using</span> A::A;     <span class="comment">// C++11, 继承基类所有Ctor</span></span><br><span class="line">    <span class="comment">// 编译器自动生成 B(int i) : A(i) &#123; &#125;</span></span><br><span class="line">    <span class="keyword">int</span> d&#123; <span class="number">0</span> &#125;;     <span class="comment">// 就地初始化</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    B b&#123; <span class="number">1</span> &#125;;       <span class="comment">// 调用 A(int i)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>构造函数不能声明为const原因：直到构造函数完成初始化过程，对象才能真正取得其常量属性，因此构造函数在构造过程中可以向其写值</li>
+</ul>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>构造函数</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>迭代器</title>
     <url>/2022/02/06/%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
     <content><![CDATA[<h1 id="迭代器使用"><a href="#迭代器使用" class="headerlink" title="迭代器使用"></a>迭代器使用</h1><ul>
@@ -662,5 +708,27 @@
       <categories>
         <category>C++</category>
       </categories>
+  </entry>
+  <entry>
+    <title>静态成员</title>
+    <url>/2022/03/09/%E9%9D%99%E6%80%81%E6%88%90%E5%91%98/</url>
+    <content><![CDATA[<h1 id="静态成员"><a href="#静态成员" class="headerlink" title="静态成员"></a>静态成员</h1><ul>
+<li>静态成员的声明：在类定义中，关键字static声明不绑定到类实例的成员</li>
+<li>静态成员的定义：声明为constexpr类型的静态数据成员必须在类中声明并初始化，自C++17起，可不在类外定义；声明为inline（C++17起）或者const int类型的静态数据成员可以在类中声明并初始化；其他须在类外定义并初始化，且不带static关键字</li>
+<li>静态成员存储在数据段（全局区，类似于全局变量），整个程序运行过程中只有一份内存，注意，不能说存在类中，类只是代码</li>
+<li>对比全局变量，它可以设定访问权限，达到局部共享的目的</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// sizeof(A) = 4</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> a_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> A::b_ = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A x;</span><br><span class="line">    x.a_ = <span class="number">1</span>;</span><br><span class="line">    x.b_ = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">15</span>:     x.a_ = <span class="number">1</span>;</span><br><span class="line"> mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">1</span>  </span><br><span class="line">    <span class="number">16</span>:     x.b_ = <span class="number">2</span>;</span><br><span class="line"> mov         dword ptr ds:[<span class="number">00F</span>7C2FCh],<span class="number">2</span>  <span class="comment">// ds: 数据段</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://en.cppreference.com/w/cpp/language/static">static members</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>初始化</tag>
+      </tags>
   </entry>
 </search>

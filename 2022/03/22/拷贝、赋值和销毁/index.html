@@ -20,28 +20,28 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hankong91.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="重载和const形参，及函数重载的本质">
+<meta name="description" content="拷贝控制操作，编译器是否自动生成拷贝构造函数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="函数重载">
-<meta property="og:url" content="https://hankong91.github.io/2022/02/06/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/index.html">
+<meta property="og:title" content="拷贝、赋值和销毁">
+<meta property="og:url" content="https://hankong91.github.io/2022/03/22/%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E5%92%8C%E9%94%80%E6%AF%81/index.html">
 <meta property="og:site_name" content="寒空の博客">
-<meta property="og:description" content="重载和const形参，及函数重载的本质">
+<meta property="og:description" content="拷贝控制操作，编译器是否自动生成拷贝构造函数">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-02-06T13:24:53.000Z">
-<meta property="article:modified_time" content="2022-02-06T13:33:40.080Z">
+<meta property="article:published_time" content="2022-03-21T16:07:16.000Z">
+<meta property="article:modified_time" content="2022-03-21T16:11:50.539Z">
 <meta property="article:author" content="寒空">
-<meta property="article:tag" content="函数重载">
+<meta property="article:tag" content="构造函数">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://hankong91.github.io/2022/02/06/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/">
+<link rel="canonical" href="https://hankong91.github.io/2022/03/22/%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E5%92%8C%E9%94%80%E6%AF%81/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/02/06/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/","path":"2022/02/06/函数重载/","title":"函数重载"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/03/22/%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E5%92%8C%E9%94%80%E6%AF%81/","path":"2022/03/22/拷贝、赋值和销毁/","title":"拷贝、赋值和销毁"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>函数重载 | 寒空の博客</title>
+<title>拷贝、赋值和销毁 | 寒空の博客</title>
   
 
 
@@ -148,7 +148,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD%E5%92%8Cconst%E5%BD%A2%E5%8F%82"><span class="nav-number">1.</span> <span class="nav-text">重载和const形参</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="nav-number">2.</span> <span class="nav-text">函数重载的本质</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">拷贝控制操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E6%98%AF%E5%90%A6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">编译器是否自动生成拷贝构造函数</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -224,7 +224,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/02/06/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/">
+    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/03/22/%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E5%92%8C%E9%94%80%E6%AF%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/author.jpg">
@@ -237,7 +237,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          函数重载
+          拷贝、赋值和销毁
         </h1>
 
         <div class="post-meta-container">
@@ -249,7 +249,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-02-06 21:24:53 / 修改时间：21:33:40" itemprop="dateCreated datePublished" datetime="2022-02-06T21:24:53+08:00">2022-02-06</time>
+      <time title="创建时间：2022-03-22 00:07:16 / 修改时间：00:11:50" itemprop="dateCreated datePublished" datetime="2022-03-22T00:07:16+08:00">2022-03-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -267,7 +267,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>691</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -278,7 +278,7 @@
     </span>
 </div>
 
-            <div class="post-description">重载和const形参，及函数重载的本质</div>
+            <div class="post-description">拷贝控制操作，编译器是否自动生成拷贝构造函数</div>
         </div>
       </header>
 
@@ -286,20 +286,20 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="重载和const形参"><a href="#重载和const形参" class="headerlink" title="重载和const形参"></a>重载和const形参</h1><ul>
-<li>顶层const不影响传入函数的对象，因此一个拥有顶层const的形参无法和另一个没有顶层const的形参区分开来</li>
+        <h1 id="拷贝控制操作"><a href="#拷贝控制操作" class="headerlink" title="拷贝控制操作"></a>拷贝控制操作</h1><ul>
+<li>拷贝控制操作：拷贝构造函数、拷贝赋值运算符、移动构造函数、移动赋值运算符、析构函数</li>
+<li>拷贝和移动构造函数：定义了当用同类型的另一个对象初始化本对象时做什么</li>
+<li>拷贝和移动赋值运算符：定义了将一个对象赋予同类型的另一个对象时做什么</li>
+<li>析构函数：定义了当此类型对象销毁时做什么</li>
+<li>编译器会自动定义缺失的操作</li>
+<li>拷贝过程：对类类型的成员，会使用其拷贝构造函数来拷贝，内置类型的成员则直接拷贝，虽然不能直接拷贝数组，但合成的拷贝构造函数会逐元素地拷贝一个数组类型的成员</li>
+<li>拷贝初始化通常使用拷贝构造函数来完成，但是若一个类有一个移动构造函数，则拷贝构造函数有时会调用移动构造函数而不是拷贝构造函数来完成</li>
+<li>拷贝构造函数的参数必须是引用类型，否则会进入死循环</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone)</span></span>;</span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Phone)</span></span>;   <span class="comment">// 重复声明了Record lookup(Phone);</span></span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone *)</span></span>;</span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone * <span class="keyword">const</span>)</span></span>; <span class="comment">// 重复声明了Record lookup(Phone *);</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果形参是某种类型的指针或引用，则通过区分其指向的是常量对象还是非常量对象可以实现函数重载，此时const是底层的，因为const不能转换成其他类型，只能把const对象传递给const形参，但当传递一个非常量对象或者非常量对象的指针时，编译器会优先选择非常量的版本</li>
+<h1 id="编译器是否自动生成拷贝构造函数"><a href="#编译器是否自动生成拷贝构造函数" class="headerlink" title="编译器是否自动生成拷贝构造函数"></a>编译器是否自动生成拷贝构造函数</h1><ul>
+<li>若未定义拷贝构造函数，则编译器在进行类对象拷贝构造的时候直接按成员变量赋值，并没有自动生成拷贝构造函数并调用</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对于接受引用或指针的函数来说, 对象是常量还是非常量对应的形参不同</span></span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone &amp;)</span></span>;         <span class="comment">// 函数作用于Phone的引用</span></span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Phone &amp;)</span></span>;   <span class="comment">// 新函数, 作用于常量引用</span></span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone *)</span></span>;         <span class="comment">// 新函数, 作用于指向Phone的指针</span></span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Phone *)</span></span>;   <span class="comment">// 新函数, 作用与指向常量的指针</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="函数重载的本质"><a href="#函数重载的本质" class="headerlink" title="函数重载的本质"></a>函数重载的本质</h1><ul>
-<li>采用了name mangling或者叫name decoration技术，C++编译器默认会对符号名（比如函数名）进行改编、修饰，重载时会生成多个不同的函数名，不同编译器有不同的生成规则，通过逆向工程IDA打开可以看到不同函数名，反汇编后也可以看到跳转到了不同的函数地址</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;func(int)&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">double</span> a)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;func(double)&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">func</span>();</span><br><span class="line"><span class="number">00B</span>31<span class="function">E8E E8 A5 F5 FF FF       call        <span class="title">func</span> <span class="params">(<span class="number">0B</span>31438h)</span>  </span></span><br><span class="line"><span class="function">    <span class="title">func</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="number">00B</span>31E93 <span class="number">6</span>A <span class="number">01</span>                push        <span class="number">1</span>  </span><br><span class="line"><span class="number">00B</span>31<span class="function">E95 E8 C1 F5 FF FF       call        <span class="title">func</span> <span class="params">(<span class="number">0B</span>3145Bh)</span>  </span></span><br><span class="line"><span class="function">00B31E9A 83 C4 04             add         esp,4  </span></span><br><span class="line"><span class="function">    <span class="title">func</span><span class="params">(<span class="number">1.0</span>)</span></span>;</span><br><span class="line"><span class="number">00B</span>31E9D <span class="number">83</span> EC <span class="number">08</span>             sub         esp,<span class="number">8</span>  </span><br><span class="line"><span class="number">00B</span>31EA0 F2 <span class="number">0F</span> <span class="number">10</span> <span class="number">05</span> <span class="number">48</span> <span class="number">8B</span> B3 <span class="number">00</span> movsd       xmm0,mmword ptr [__real@<span class="number">3f</span>f0000000000000 (<span class="number">0B</span>38B48h)]  </span><br><span class="line"><span class="number">00B</span>31EA8 F2 <span class="number">0F</span> <span class="number">11</span> <span class="number">04</span> <span class="number">24</span>       movsd       mmword ptr [esp],xmm0  </span><br><span class="line"><span class="number">00B</span>31<span class="function">EAD E8 B3 F5 FF FF       call        <span class="title">func</span> <span class="params">(<span class="number">0B</span>31465h)</span>  </span></span><br><span class="line"><span class="function">00B31EB2 83 C4 08             add         esp,8  </span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> a_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> b_ = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A a1;</span><br><span class="line">    <span class="function">A <span class="title">a2</span><span class="params">(a1)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">13</span>:     A a1;</span><br><span class="line"> lea         ecx,[ebp<span class="number">-10</span>h]  </span><br><span class="line"> call        <span class="number">003</span>C14A1  </span><br><span class="line">    <span class="number">14</span>:     <span class="function">A <span class="title">a2</span><span class="params">(a1)</span></span>;</span><br><span class="line"> mov         eax,dword ptr [ebp<span class="number">-10</span>h]  </span><br><span class="line"> mov         dword ptr [ebp<span class="number">-20</span>h],eax  <span class="comment">// 拷贝4个字节</span></span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-0</span>Ch]  </span><br><span class="line"> mov         dword ptr [ebp<span class="number">-1</span>Ch],ecx  <span class="comment">// 拷贝4个字节</span></span><br><span class="line"><span class="comment">// 等价于 a2.a_ = a1.a_; a2.b_ = a2.b_;</span></span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -318,7 +318,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://hankong91.github.io/2022/02/06/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/" title="函数重载">https://hankong91.github.io/2022/02/06/函数重载/</a>
+      <a href="https://hankong91.github.io/2022/03/22/%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E5%92%8C%E9%94%80%E6%AF%81/" title="拷贝、赋值和销毁">https://hankong91.github.io/2022/03/22/拷贝、赋值和销毁/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -327,21 +327,18 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/" rel="tag"># 函数重载</a>
+              <a href="/tags/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" rel="tag"># 构造函数</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/02/06/const/" rel="prev" title="const">
-                  <i class="fa fa-chevron-left"></i> const
+                <a href="/2022/03/09/%E7%BB%A7%E6%89%BF%E5%9F%BA%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" rel="prev" title="继承基类的构造函数">
+                  <i class="fa fa-chevron-left"></i> 继承基类的构造函数
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/02/06/%E8%BF%AD%E4%BB%A3%E5%99%A8/" rel="next" title="迭代器">
-                  迭代器 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
