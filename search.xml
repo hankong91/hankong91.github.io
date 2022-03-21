@@ -731,4 +731,50 @@
         <tag>初始化</tag>
       </tags>
   </entry>
+  <entry>
+    <title>final</title>
+    <url>/2022/03/22/final/</url>
+    <content><![CDATA[<h1 id="final"><a href="#final" class="headerlink" title="final"></a>final</h1><ul>
+<li>C++11：防止继承的发生，在类名后面增加final关键字</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NoDerived</span> <span class="keyword">final</span> &#123;</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>C++11：指定派生类不能覆写虚函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> :</span> Base &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="keyword">final</span></span>;   <span class="comment">// A::foo 被覆写且是最终覆写</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">()</span> <span class="keyword">final</span></span>;   <span class="comment">// 错误: 非虚函数不能被覆写或是final</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> <span class="keyword">final</span> :</span> A &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="keyword">override</span></span>;    <span class="comment">// 错误: foo不能被覆写</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>final</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>多态和虚函数</title>
+    <url>/2022/03/22/%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><ul>
+<li>广义的多态：不同类型的实体/对象对同一消息有不同的响应</li>
+<li>多态有两种形式：重载多态和子类型多态</li>
+<li>子类型多态：通过虚函数实现</li>
+</ul>
+<h1 id="虚函数实现原理"><a href="#虚函数实现原理" class="headerlink" title="虚函数实现原理"></a>虚函数实现原理</h1><ul>
+<li>虚函数的实现原理是虚表，这个虚表里面存储着最终需要调用的虚函数的地址，这个虚表也叫虚函数表</li>
+<li>当类中包含虚函数时，类的大小增加一个指针的大小，用于保存虚表的地址，且该指针存在于最前面的地址，当调用虚函数时会通过该指针查找对应虚函数的地址，实现多态调用</li>
+<li>只要有虚函数，所有相同对象实例共享同一张虚表，即所有相同对象实例的虚表指针地址指向同一张虚表，注意，不同对象实例虚表指针不同，即使是基类和子类其虚表指针也是不同的</li>
+<li>若子类没有重写父类的虚函数，则虚函数表中该虚函数的地址为父类虚函数的地址</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    B* p = <span class="keyword">new</span> <span class="built_in">D</span>();</span><br><span class="line">    p-&gt;<span class="built_in">func</span>();</span><br><span class="line">    p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">26</span>:     p-&gt;<span class="built_in">func</span>();</span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// ebp-8是指针p的地址</span></span><br><span class="line"> call        <span class="number">00F</span>81109  	            <span class="comment">// 非虚函数直接调用B::func()</span></span><br><span class="line">    <span class="number">27</span>:     p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"> mov         eax,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// eax是对象D的地址</span></span><br><span class="line"> mov         edx,dword ptr [eax]    <span class="comment">// 取出对象D最前面的4个地址值给edx, 即取出虚函数表的地址</span></span><br><span class="line"> mov         esi,esp  </span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  </span><br><span class="line"> mov         eax,dword ptr [edx]    <span class="comment">// 取出虚函数表的最前面4个地址给eax, 即取出D::vfunc()函数地址</span></span><br><span class="line"> call        eax                    <span class="comment">// 间接调用D::vfunc()</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>多态</tag>
+        <tag>虚函数</tag>
+      </tags>
+  </entry>
 </search>
