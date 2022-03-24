@@ -217,6 +217,27 @@
       </tags>
   </entry>
   <entry>
+    <title>final</title>
+    <url>/2022/03/22/final/</url>
+    <content><![CDATA[<h1 id="final"><a href="#final" class="headerlink" title="final"></a>final</h1><ul>
+<li>C++11：防止继承的发生，在类名后面增加final关键字</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NoDerived</span> <span class="keyword">final</span> &#123;</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>C++11：指定派生类不能覆写虚函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> :</span> Base &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="keyword">final</span></span>;   <span class="comment">// A::foo 被覆写且是最终覆写</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">()</span> <span class="keyword">final</span></span>;   <span class="comment">// 错误: 非虚函数不能被覆写或是final</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> <span class="keyword">final</span> :</span> A &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="keyword">override</span></span>;    <span class="comment">// 错误: foo不能被覆写</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>final</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>const</title>
     <url>/2022/02/06/const/</url>
     <content><![CDATA[<h1 id="const对象的多文件访问"><a href="#const对象的多文件访问" class="headerlink" title="const对象的多文件访问"></a>const对象的多文件访问</h1><ul>
@@ -312,6 +333,23 @@
       </tags>
   </entry>
   <entry>
+    <title>this指针</title>
+    <url>/2022/03/24/this%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<h1 id="this指针"><a href="#this指针" class="headerlink" title="this指针"></a>this指针</h1><ul>
+<li>类中的函数编译后存放在代码段中，不存放在类对象实例的存储空间</li>
+<li>为了使对象调用函数时访问对应对象的成员，必须知道该对象的地址，会隐式传入this指针，表明当前对象地址</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _m = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        _m = <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">func</span>();</span><br><span class="line"></span><br><span class="line">    A a;</span><br><span class="line">    a.<span class="built_in">foo</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 普通函数调用</span></span><br><span class="line">    <span class="number">17</span>:     <span class="built_in">func</span>();</span><br><span class="line"> call        <span class="number">00361375</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 成员函数调用</span></span><br><span class="line">    <span class="number">20</span>:     a.<span class="built_in">foo</span>();</span><br><span class="line"> lea         ecx,[ebp<span class="number">-0</span>Ch]  <span class="comment">// ebp-0Ch为a的地址, 先赋值给ecx寄存器</span></span><br><span class="line"> call        <span class="number">00361370</span>  </span><br><span class="line">     </span><br><span class="line">     </span><br><span class="line">     <span class="number">8</span>:     <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> mov         dword ptr [ebp<span class="number">-8</span>],ecx  <span class="comment">// ebp-8保存了this指针的地址, 即将a的地址赋值给了this指针</span></span><br><span class="line">     <span class="number">9</span>:         _m = <span class="number">3</span>;</span><br><span class="line"> mov         eax,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// eax存放了a的地址</span></span><br><span class="line"> mov         dword ptr [eax],<span class="number">3</span>      <span class="comment">// eax的地址存放了a中_m成员变量的地址, 即完成了对调用对象赋值</span></span><br><span class="line">    <span class="number">10</span>:     &#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>this</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于extern &quot;C&quot;</title>
     <url>/2022/03/01/%E5%85%B3%E4%BA%8Eextern%20C/</url>
     <content><![CDATA[<h1 id="extern-“C”"><a href="#extern-“C”" class="headerlink" title="extern “C”"></a>extern “C”</h1><ul>
@@ -385,6 +423,16 @@
       </tags>
   </entry>
   <entry>
+    <title>区别调用构造函数和函数声明</title>
+    <url>/2022/03/25/%E5%8C%BA%E5%88%AB%E8%B0%83%E7%94%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E/</url>
+    <content><![CDATA[<h1 id="区别调用构造函数和函数声明"><a href="#区别调用构造函数和函数声明" class="headerlink" title="区别调用构造函数和函数声明"></a>区别调用构造函数和函数声明</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _member = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">A</span>() &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Call A()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">A</span>(<span class="keyword">int</span> member) : _member(member)&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Call A(int)&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">A g_a1;                 <span class="comment">// Call A()</span></span><br><span class="line"><span class="function">A <span class="title">g_a2</span><span class="params">()</span></span>;               <span class="comment">// 函数声明</span></span><br><span class="line"><span class="function">A <span class="title">g_a3</span><span class="params">(<span class="number">10</span>)</span></span>;             <span class="comment">// Call A(int)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A g_a1;             <span class="comment">// Call A()</span></span><br><span class="line">    <span class="function">A <span class="title">g_a2</span><span class="params">()</span></span>;           <span class="comment">// 函数声明</span></span><br><span class="line">    <span class="function">A <span class="title">g_a3</span><span class="params">(<span class="number">10</span>)</span></span>;         <span class="comment">// Call A(int)</span></span><br><span class="line"></span><br><span class="line">    A* p1 = <span class="keyword">new</span> A;      <span class="comment">// Call A()</span></span><br><span class="line">    A* p2 = <span class="keyword">new</span> <span class="built_in">A</span>();    <span class="comment">// Call A()</span></span><br><span class="line">    A* p3 = <span class="keyword">new</span> <span class="built_in">A</span>(<span class="number">10</span>);  <span class="comment">// Call A(int)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>匿名对象</title>
     <url>/2022/03/07/%E5%8C%BF%E5%90%8D%E5%AF%B9%E8%B1%A1/</url>
     <content><![CDATA[<h1 id="匿名对象"><a href="#匿名对象" class="headerlink" title="匿名对象"></a>匿名对象</h1><ul>
@@ -397,6 +445,31 @@
       <categories>
         <category>C++</category>
       </categories>
+  </entry>
+  <entry>
+    <title>多态和虚函数</title>
+    <url>/2022/03/22/%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><ul>
+<li>广义的多态：不同类型的实体/对象对同一消息有不同的响应</li>
+<li>多态有两种形式：重载多态和子类型多态</li>
+<li>子类型多态：通过虚函数实现</li>
+</ul>
+<h1 id="虚函数实现原理"><a href="#虚函数实现原理" class="headerlink" title="虚函数实现原理"></a>虚函数实现原理</h1><ul>
+<li>虚函数的实现原理是虚表，这个虚表里面存储着最终需要调用的虚函数的地址，这个虚表也叫虚函数表</li>
+<li>当类中包含虚函数时，类的大小增加一个指针的大小，用于保存虚表的地址，且该指针存在于最前面的地址，当调用虚函数时会通过该指针查找对应虚函数的地址，实现多态调用</li>
+<li>只要有虚函数，所有相同对象实例共享同一张虚表，即所有相同对象实例的虚表指针地址指向同一张虚表，注意，不同对象实例虚表指针不同，即使是基类和子类其虚表指针也是不同的</li>
+<li>若子类没有重写父类的虚函数，则虚函数表中该虚函数的地址为父类虚函数的地址</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    B* p = <span class="keyword">new</span> <span class="built_in">D</span>();</span><br><span class="line">    p-&gt;<span class="built_in">func</span>();</span><br><span class="line">    p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">26</span>:     p-&gt;<span class="built_in">func</span>();</span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// ebp-8是指针p的地址</span></span><br><span class="line"> call        <span class="number">00F</span>81109  	            <span class="comment">// 非虚函数直接调用B::func()</span></span><br><span class="line">    <span class="number">27</span>:     p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"> mov         eax,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// eax是对象D的地址</span></span><br><span class="line"> mov         edx,dword ptr [eax]    <span class="comment">// 取出对象D最前面的4个地址值给edx, 即取出虚函数表的地址</span></span><br><span class="line"> mov         esi,esp  </span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  </span><br><span class="line"> mov         eax,dword ptr [edx]    <span class="comment">// 取出虚函数表的最前面4个地址给eax, 即取出D::vfunc()函数地址</span></span><br><span class="line"> call        eax                    <span class="comment">// 间接调用D::vfunc()</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>多态</tag>
+        <tag>虚函数</tag>
+      </tags>
   </entry>
   <entry>
     <title>左值和右值</title>
@@ -638,6 +711,24 @@
       </tags>
   </entry>
   <entry>
+    <title>构造函数是否定于与其成员变量的默认初始化值</title>
+    <url>/2022/03/25/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E5%AE%9A%E4%BA%8E%E4%B8%8E%E5%85%B6%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%9A%84%E9%BB%98%E8%AE%A4%E5%88%9D%E5%A7%8B%E5%8C%96%E5%80%BC/</url>
+    <content><![CDATA[<h1 id="未定义构造函数"><a href="#未定义构造函数" class="headerlink" title="未定义构造函数"></a>未定义构造函数</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 未定义构造函数</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _member;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 全局区: 初始化为0</span></span><br><span class="line">A g_a;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 栈: 使用变量时编译报错</span></span><br><span class="line">    A a;</span><br><span class="line">    <span class="comment">// 堆: 未初始化</span></span><br><span class="line">    A* p1 = <span class="keyword">new</span> A;</span><br><span class="line">    <span class="comment">// 堆: 初始化为0</span></span><br><span class="line">    A* p2 = <span class="keyword">new</span> <span class="built_in">A</span>();</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; g_a._member &lt;&lt; endl;    <span class="comment">// 0</span></span><br><span class="line">    <span class="comment">// 直接编译报错: error C4700: uninitialized local variable &#x27;a&#x27; used</span></span><br><span class="line">    <span class="comment">// cout &lt;&lt; a._member &lt;&lt; endl;</span></span><br><span class="line">    cout &lt;&lt; p1-&gt;_member &lt;&lt; endl;    <span class="comment">// -842150451</span></span><br><span class="line">    cout &lt;&lt; p2-&gt;_member &lt;&lt; endl;    <span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="定义空的构造函数"><a href="#定义空的构造函数" class="headerlink" title="定义空的构造函数"></a>定义空的构造函数</h1><ul>
+<li>如果自定义了构造函数，除了全局区，其他内存空间的成员变量默认都不会被初始化，需要开发人员手动初始化</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义空的构造函数</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _member;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">A</span>() &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 全局区: 初始化为0</span></span><br><span class="line">A g_a;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 编译器均认为要去调用用户的构造函数去初始化</span></span><br><span class="line">    <span class="comment">// 栈: 未初始化</span></span><br><span class="line">    A a;</span><br><span class="line">    <span class="comment">// 堆: 未初始化</span></span><br><span class="line">    A* p1 = <span class="keyword">new</span> A;</span><br><span class="line">    <span class="comment">// 堆: 未初始化</span></span><br><span class="line">    A* p2 = <span class="keyword">new</span> <span class="built_in">A</span>();</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; g_a._member &lt;&lt; endl;    <span class="comment">// 0</span></span><br><span class="line">    cout &lt;&lt; a._member &lt;&lt; endl;      <span class="comment">// -858993460</span></span><br><span class="line">    cout &lt;&lt; p1-&gt;_member &lt;&lt; endl;    <span class="comment">// -842150451</span></span><br><span class="line">    cout &lt;&lt; p2-&gt;_member &lt;&lt; endl;    <span class="comment">// -842150451</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>构造函数</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>类内就地初始化</title>
     <url>/2022/03/08/%E7%B1%BB%E5%86%85%E5%B0%B1%E5%9C%B0%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
     <content><![CDATA[<h1 id="类内就地初始化"><a href="#类内就地初始化" class="headerlink" title="类内就地初始化"></a>类内就地初始化</h1><ul>
@@ -732,49 +823,28 @@
       </tags>
   </entry>
   <entry>
-    <title>final</title>
-    <url>/2022/03/22/final/</url>
-    <content><![CDATA[<h1 id="final"><a href="#final" class="headerlink" title="final"></a>final</h1><ul>
-<li>C++11：防止继承的发生，在类名后面增加final关键字</li>
+    <title>默认构造函数是否自动生成</title>
+    <url>/2022/03/24/%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/</url>
+    <content><![CDATA[<h1 id="默认构造函数是否自动生成"><a href="#默认构造函数是否自动生成" class="headerlink" title="默认构造函数是否自动生成"></a>默认构造函数是否自动生成</h1><ul>
+<li>只有在某些特定情况下，编译器才会为类生成空的无参构造函数，并不是说默认情况下，编译器会为每一个类生成空的无参构造函数</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NoDerived</span> <span class="keyword">final</span> &#123;</span> &#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _member;</span><br><span class="line">    <span class="built_in">A</span>() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    a._member = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">13</span>:     A a;</span><br><span class="line"> lea         ecx,[a]  </span><br><span class="line"> <span class="function">call        <span class="title">A::A</span> <span class="params">(<span class="number">05B</span>137Fh)</span>  <span class="comment">// 调用构造函数</span></span></span><br><span class="line"><span class="function">    14:     a._member =</span> <span class="number">10</span>;</span><br><span class="line"> mov         dword ptr [a],<span class="number">0</span>Ah  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 若去掉A的构造函数</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _member;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    a._member = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">10</span>:     A a;</span><br><span class="line">    <span class="number">11</span>:     a._member = <span class="number">10</span>;</span><br><span class="line"> mov         dword ptr [a],<span class="number">0</span>Ah  <span class="comment">// 未调用构造函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 若增加成员内部初始化, 也会调用构造函数, 用于初始化成员变量</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _member = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    a._member = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>C++11：指定派生类不能覆写虚函数</li>
+<h1 id="编译器自动生成的构造函数"><a href="#编译器自动生成的构造函数" class="headerlink" title="编译器自动生成的构造函数"></a>编译器自动生成的构造函数</h1><ul>
+<li>只有在某些特定情况下，编译器才会为类生成空的无参构造函数</li>
+<li>成员变量在声明的同时进行了初始化，需要初始化成员变量</li>
+<li>有定义虚函数，需要初始化虚函数表</li>
+<li>虚继承了其他类，需要初始化虚函数表</li>
+<li>包含了对象类型成员，且这个成员有构造函数（编译器生成或者自定义）</li>
+<li>父类有构造函数（编译器生成或者自定义）</li>
+<li>总结：对象创建后，需要做一些额外的操作时，比如内存操作、函数调用等，编译器一般都会为其自动生成无参的构造函数</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> :</span> Base &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="keyword">final</span></span>;   <span class="comment">// A::foo 被覆写且是最终覆写</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">()</span> <span class="keyword">final</span></span>;   <span class="comment">// 错误: 非虚函数不能被覆写或是final</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> <span class="keyword">final</span> :</span> A &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="keyword">override</span></span>;    <span class="comment">// 错误: foo不能被覆写</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
 ]]></content>
       <categories>
         <category>C++</category>
       </categories>
       <tags>
-        <tag>final</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>多态和虚函数</title>
-    <url>/2022/03/22/%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><ul>
-<li>广义的多态：不同类型的实体/对象对同一消息有不同的响应</li>
-<li>多态有两种形式：重载多态和子类型多态</li>
-<li>子类型多态：通过虚函数实现</li>
-</ul>
-<h1 id="虚函数实现原理"><a href="#虚函数实现原理" class="headerlink" title="虚函数实现原理"></a>虚函数实现原理</h1><ul>
-<li>虚函数的实现原理是虚表，这个虚表里面存储着最终需要调用的虚函数的地址，这个虚表也叫虚函数表</li>
-<li>当类中包含虚函数时，类的大小增加一个指针的大小，用于保存虚表的地址，且该指针存在于最前面的地址，当调用虚函数时会通过该指针查找对应虚函数的地址，实现多态调用</li>
-<li>只要有虚函数，所有相同对象实例共享同一张虚表，即所有相同对象实例的虚表指针地址指向同一张虚表，注意，不同对象实例虚表指针不同，即使是基类和子类其虚表指针也是不同的</li>
-<li>若子类没有重写父类的虚函数，则虚函数表中该虚函数的地址为父类虚函数的地址</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    B* p = <span class="keyword">new</span> <span class="built_in">D</span>();</span><br><span class="line">    p-&gt;<span class="built_in">func</span>();</span><br><span class="line">    p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">26</span>:     p-&gt;<span class="built_in">func</span>();</span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// ebp-8是指针p的地址</span></span><br><span class="line"> call        <span class="number">00F</span>81109  	            <span class="comment">// 非虚函数直接调用B::func()</span></span><br><span class="line">    <span class="number">27</span>:     p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"> mov         eax,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// eax是对象D的地址</span></span><br><span class="line"> mov         edx,dword ptr [eax]    <span class="comment">// 取出对象D最前面的4个地址值给edx, 即取出虚函数表的地址</span></span><br><span class="line"> mov         esi,esp  </span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  </span><br><span class="line"> mov         eax,dword ptr [edx]    <span class="comment">// 取出虚函数表的最前面4个地址给eax, 即取出D::vfunc()函数地址</span></span><br><span class="line"> call        eax                    <span class="comment">// 间接调用D::vfunc()</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>多态</tag>
-        <tag>虚函数</tag>
+        <tag>默认构造函数</tag>
       </tags>
   </entry>
 </search>
