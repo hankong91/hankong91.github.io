@@ -847,4 +847,113 @@
         <tag>默认构造函数</tag>
       </tags>
   </entry>
+  <entry>
+    <title>菱形继承</title>
+    <url>/2022/03/25/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF/</url>
+    <content><![CDATA[<h1 id="菱形继承"><a href="#菱形继承" class="headerlink" title="菱形继承"></a>菱形继承</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> a_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> :</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">C</span> :</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> c_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B, C &#123;</span><br><span class="line">    <span class="keyword">int</span> d_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时 sizeof(D) = 20</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>带来的问题：最底下子类从基类继承的成员变量冗余、重复；最底下子类无法直接访问基类的成员，有二义性，除非加上其中一个父类的访问作用域</li>
+<li>解决办法：使用虚继承，让B、C两个类共用A中的成员，且B、C都必须虚继承A</li>
+<li>注意：使用虚继承，也会引入虚表，在B、C类的对象中，会首先存放一个虚表指针，接下来存放B、C类的对应成员变量，最后存放A类的成员变量，且虚表指针指向的虚表，第一个值存放虚表指针与本类起始的偏移量（一般为0），第二个值存放虚基类第一个成员变量与本类起始的偏移量，以此类推</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> a_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> :</span> <span class="keyword">virtual</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">C</span> :</span> <span class="keyword">virtual</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> c_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B, C &#123;</span><br><span class="line">    <span class="keyword">int</span> d_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时 sizeof(D) = 24</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>运算符重载</title>
+    <url>/2022/03/25/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/</url>
+    <content><![CDATA[<h1 id="运算符重载"><a href="#运算符重载" class="headerlink" title="运算符重载"></a>运算符重载</h1><ul>
+<li>第一个版本</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) : <span class="built_in">x_</span>(x), <span class="built_in">y_</span>(y) &#123;&#125;</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        x_ = point.x_;</span><br><span class="line">        y_ = point.y_;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point <span class="keyword">operator</span>+(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Point</span>(x_ + point.x_, y_ + point.y_);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> x_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> y_ = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Point p1&#123; <span class="number">10</span>, <span class="number">20</span> &#125;;</span><br><span class="line">    Point p2&#123; <span class="number">20</span>, <span class="number">30</span> &#125;;</span><br><span class="line">    Point p3&#123; <span class="number">30</span>, <span class="number">40</span> &#125;;</span><br><span class="line"></span><br><span class="line">    p3 = p1 + p2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当写成(p1 + p2) = p3;时，将p3赋值给一个p1 + p2的临时对象无意义，希望报错，可以返回const Point类型，第二个版本</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) : <span class="built_in">x_</span>(x), <span class="built_in">y_</span>(y) &#123;&#125;</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        x_ = point.x_;</span><br><span class="line">        y_ = point.y_;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> Point <span class="keyword">operator</span>+(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Point</span>(x_ + point.x_, y_ + point.y_);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> x_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> y_ = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当写成Point p4 = p1 + p2 + p3;，p1 + p2返回的是一个const对象，继续调用operator+，只能调用const成员函数，继续修改为const成员函数，第三个版本</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) : <span class="built_in">x_</span>(x), <span class="built_in">y_</span>(y) &#123;&#125;</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        x_ = point.x_;</span><br><span class="line">        y_ = point.y_;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> Point <span class="keyword">operator</span>+(<span class="keyword">const</span> Point&amp; point) <span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Point</span>(x_ + point.x_, y_ + point.y_);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> x_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> y_ = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C++11新增的几个常见关键字</title>
+    <url>/2022/03/25/C++11%E6%96%B0%E5%A2%9E%E7%9A%84%E5%87%A0%E4%B8%AA%E5%B8%B8%E8%A7%81%E5%85%B3%E9%94%AE%E5%AD%97/</url>
+    <content><![CDATA[<h1 id="auto"><a href="#auto" class="headerlink" title="auto"></a>auto</h1><ul>
+<li>自动类型推导auto</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;typeinfo&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">auto</span> au_a = a;</span><br><span class="line">cout &lt;&lt; <span class="built_in"><span class="keyword">typeid</span></span>(au_a).<span class="built_in">name</span>() &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果初始化表达式是引用或者const，则去除引用或者const语义</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// auto不管&amp;和const</span></span><br><span class="line"><span class="keyword">int</span> a&#123;<span class="number">10</span>&#125;; <span class="keyword">int</span> &amp;b = a;</span><br><span class="line"><span class="keyword">auto</span> c = b; <span class="comment">// c的类型为int而非int&amp;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> d&#123;<span class="number">10</span>&#125;;</span><br><span class="line"><span class="keyword">auto</span> e = d;	<span class="comment">// e的类型为int而非const int</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果auto关键字带上&amp;，则不去除引用或者const语义</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a&#123;<span class="number">10</span>&#125;; <span class="keyword">int</span> &amp;b = a;</span><br><span class="line"><span class="keyword">auto</span>&amp; c = b; <span class="comment">// c的类型为int&amp;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> d&#123;<span class="number">10</span>&#125;;</span><br><span class="line"><span class="keyword">auto</span>&amp; e = d;	<span class="comment">// e的类型const int&amp;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>C++14：auto可以作为函数的返回值类型和参数类型</li>
+</ul>
+<h1 id="decltype"><a href="#decltype" class="headerlink" title="decltype"></a>decltype</h1><ul>
+<li>自动类型推导decltype</li>
+<li>在编译时期推导一个表达式类型，而不用初始化</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func1</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="number">10</span>; &#125;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">func2</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="string">&#x27;a&#x27;</span>; &#125;    <span class="comment">// C++14</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">decltype</span>(<span class="built_in">func1</span>()) x;</span><br><span class="line">    <span class="keyword">decltype</span>(<span class="built_in">func2</span>()) y = <span class="built_in">func2</span>();</span><br><span class="line">    cout &lt;&lt; <span class="built_in"><span class="keyword">typeid</span></span>(x).<span class="built_in">name</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="built_in"><span class="keyword">typeid</span></span>(y).<span class="built_in">name</span>() &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">s</span><span class="params">(<span class="string">&quot;Hello World&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">decltype</span>(s.<span class="built_in">size</span>()) index = <span class="number">0</span>; index != s.<span class="built_in">size</span>(); ++index) &#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>decltype主要用于泛型编程</li>
+</ul>
+<h1 id="constexpr"><a href="#constexpr" class="headerlink" title="constexpr"></a>constexpr</h1><ul>
+<li>常量表达式是编译期可以计算值的一个表达式</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// C++数组的大小要求是编译期的一个常量</span></span><br><span class="line"><span class="keyword">int</span> n = <span class="number">1</span>;</span><br><span class="line">array&lt;<span class="keyword">int</span>, n&gt; a1;   <span class="comment">// error: n is not a constant expression</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> cn = <span class="number">2</span>;</span><br><span class="line">array&lt;<span class="keyword">int</span>, cn&gt; a2;  <span class="comment">// Ok: cn is a constant expression</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// const修饰的对象未必是编译期常量</span></span><br><span class="line"><span class="keyword">int</span> n = <span class="number">1</span>;</span><br><span class="line">array&lt;<span class="keyword">int</span>, n&gt; a1;   <span class="comment">// error: n is not a constant expression</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> cn = <span class="number">2</span>;</span><br><span class="line">array&lt;<span class="keyword">int</span>, cn&gt; a2;  <span class="comment">// Ok: cn is a constant expression</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> rcn = n;  <span class="comment">// rcn is runtime constant, compiler does</span></span><br><span class="line">                    <span class="comment">// not know its value at compile-time</span></span><br><span class="line">rcn++;              <span class="comment">// error: rcn is read-only</span></span><br><span class="line">array&lt;<span class="keyword">int</span>, rcn&gt; a3; <span class="comment">// error: rcn is not know at compile-time</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>constexpr说明符声明可在编译时计算函数或者变量的值</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (a &gt; b) ? a : b;     <span class="comment">// C++14, 才允许constexpr函数中有分支循环等</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> rcm = m++;    <span class="comment">// rcm是运行期常量</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> cm = <span class="number">3</span>;       <span class="comment">// rcn是编译期常量, 等价于: constexpr int cm = 4</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> a1[<span class="built_in">max</span>(m, rcm)];            <span class="comment">// error: m &amp; rcm 不是编译期常量</span></span><br><span class="line">    array&lt;<span class="keyword">char</span>, max(cm, 5)&gt; a2;     <span class="comment">// OK</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>const vs constexpr</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="keyword">const</span>: 告知程序员, <span class="keyword">const</span>修饰的内容是不会被修改的, 主要目的是帮助程序员避免bug</span><br><span class="line"><span class="number">2.</span> <span class="keyword">constexpr</span>: 用在所有被要求使用<span class="string">&quot;constant expression&quot;</span>的地方, 就是<span class="keyword">constexpr</span>修饰的东西能够在编译期计算得到值, 主要目的是让编译器能够优化代码提升性能</span><br></pre></td></tr></table></figure>
+
+<h1 id="typeid"><a href="#typeid" class="headerlink" title="typeid"></a>typeid</h1><ul>
+<li>运行时查询类型的信息</li>
+<li>用于获取对象所属类的信息</li>
+<li>返回一个type_info对象的引用</li>
+<li>typeid(AType).name()返回实现定义的，各个编译器自己定义</li>
+</ul>
+<h1 id="原始字面量R"><a href="#原始字面量R" class="headerlink" title="原始字面量R"></a>原始字面量R</h1><ul>
+<li>定义原始字符串的字面量，定义方式为：R”xxx(原始字符串)xxx”，其中（）两边的字符串可以省略</li>
+<li>原始字面量R可以直接表示字符串的实际含义，而不需要额外对字符串做转译或连接等操作</li>
+<li>编程过程中，使用的字符串中常带有一些特殊字符，对于这些字符往往要做专门的处理，使用了原始字面量就可以轻松的解决这个问题，比如打印路径或者需要换行的场景</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    string str1&#123; <span class="string">&quot;D:\hello\world\test.txt&quot;</span> &#125;;</span><br><span class="line">    string str2&#123; <span class="string">&quot;D:\\hello\\world\\test.txt&quot;</span> &#125;;</span><br><span class="line">    string str3&#123; <span class="string">R&quot;(D:\hello\world\test.txt)&quot;</span> &#125;;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; str1 &lt;&lt; endl;   <span class="comment">// D:helloworld    est.txt</span></span><br><span class="line">    cout &lt;&lt; str2 &lt;&lt; endl;   <span class="comment">// D:\hello\world\test.txt</span></span><br><span class="line">    cout &lt;&lt; str3 &lt;&lt; endl;   <span class="comment">// D:\hello\world\test.txt</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R”xxx(raw string)xxx”中，原始字符串必须用括号（）括起来，括号的前后可以加其他字符串，所加的字符串会被忽略，并且加的字符串必须在括号两边同时出现</li>
+</ul>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++11</tag>
+      </tags>
+  </entry>
 </search>

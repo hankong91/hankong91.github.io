@@ -20,27 +20,27 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hankong91.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="内联函数">
+<meta name="description" content="菱形继承，及解决办法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内联函数">
-<meta property="og:url" content="https://hankong91.github.io/2022/03/07/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:title" content="菱形继承">
+<meta property="og:url" content="https://hankong91.github.io/2022/03/25/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF/index.html">
 <meta property="og:site_name" content="寒空の博客">
-<meta property="og:description" content="内联函数">
+<meta property="og:description" content="菱形继承，及解决办法">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-03-06T16:20:17.000Z">
-<meta property="article:modified_time" content="2022-03-06T16:35:01.617Z">
+<meta property="article:published_time" content="2022-03-25T13:04:55.000Z">
+<meta property="article:modified_time" content="2022-03-25T13:17:38.273Z">
 <meta property="article:author" content="寒空">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://hankong91.github.io/2022/03/07/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0/">
+<link rel="canonical" href="https://hankong91.github.io/2022/03/25/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/03/07/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0/","path":"2022/03/07/内联函数/","title":"内联函数"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/03/25/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF/","path":"2022/03/25/菱形继承/","title":"菱形继承"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>内联函数 | 寒空の博客</title>
+<title>菱形继承 | 寒空の博客</title>
   
 
 
@@ -147,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">内联函数</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF"><span class="nav-number">1.</span> <span class="nav-text">菱形继承</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -223,7 +223,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/03/07/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0/">
+    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/03/25/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/author.jpg">
@@ -236,7 +236,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          内联函数
+          菱形继承
         </h1>
 
         <div class="post-meta-container">
@@ -248,7 +248,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-03-07 00:20:17 / 修改时间：00:35:01" itemprop="dateCreated datePublished" datetime="2022-03-07T00:20:17+08:00">2022-03-07</time>
+      <time title="创建时间：2022-03-25 21:04:55 / 修改时间：21:17:38" itemprop="dateCreated datePublished" datetime="2022-03-25T21:04:55+08:00">2022-03-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -266,7 +266,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>630</span>
+      <span>560</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -277,7 +277,7 @@
     </span>
 </div>
 
-            <div class="post-description">内联函数</div>
+            <div class="post-description">菱形继承，及解决办法</div>
         </div>
       </header>
 
@@ -285,12 +285,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h1><ul>
-<li>使用inline修饰函数的声明或者实现，可以使其变成内联函数，建议声明和实现都增加inline修饰</li>
-<li>编译器会将函数调用直接展开为函数体代码，可以减少函数调用开销，但会增大代码体积</li>
-<li>尽量不要内联超过10行代码的函数，有些函数即使声明为inline，也不一定会被编译器内联，比如递归函数</li>
+        <h1 id="菱形继承"><a href="#菱形继承" class="headerlink" title="菱形继承"></a>菱形继承</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> a_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> :</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">C</span> :</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> c_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B, C &#123;</span><br><span class="line">    <span class="keyword">int</span> d_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时 sizeof(D) = 20</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>带来的问题：最底下子类从基类继承的成员变量冗余、重复；最底下子类无法直接访问基类的成员，有二义性，除非加上其中一个父类的访问作用域</li>
+<li>解决办法：使用虚继承，让B、C两个类共用A中的成员，且B、C都必须虚继承A</li>
+<li>注意：使用虚继承，也会引入虚表，在B、C类的对象中，会首先存放一个虚表指针，接下来存放B、C类的对应成员变量，最后存放A类的成员变量，且虚表指针指向的虚表，第一个值存放虚表指针与本类起始的偏移量（一般为0），第二个值存放虚基类第一个成员变量与本类起始的偏移量，以此类推</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> v1, <span class="keyword">int</span> v2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> v1 + v2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> c = <span class="built_in">sum</span>(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">    cout &lt;&lt; c &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 未使用inline, 反汇编会看到调用call sum</span></span><br><span class="line">    <span class="number">10</span>:     <span class="keyword">int</span> c = <span class="built_in">sum</span>(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line"><span class="number">00031014</span> <span class="number">6</span>A <span class="number">14</span>                push        <span class="number">14</span>h  </span><br><span class="line"><span class="number">00031016</span> <span class="number">6</span>A <span class="number">0</span>A                push        <span class="number">0</span>Ah  </span><br><span class="line"><span class="number">00031018</span> <span class="function">E8 E3 FF FF FF       call        <span class="title">sum</span> <span class="params">(<span class="number">031000</span>h)</span>  </span></span><br><span class="line"><span class="function">0003101D 83 C4 08             add         esp,8  </span></span><br><span class="line"><span class="function">00031020 89 45 FC             mov         dword ptr [c],eax  </span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 使用inline, 反汇编会看到内联展开</span></span></span><br><span class="line"><span class="function"><span class="comment">// VS需要在Release模式下, 并且关闭编译器优化, 同时使能内联展开</span></span></span><br><span class="line"><span class="function">    10:     int c =</span> <span class="built_in">sum</span>(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line"><span class="number">00481004</span> B8 <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>       mov         eax,<span class="number">0</span>Ah  </span><br><span class="line"><span class="number">00481009</span> <span class="number">83</span> C0 <span class="number">14</span>             add         eax,<span class="number">14</span>h  </span><br><span class="line"><span class="number">0048100</span>C <span class="number">89</span> <span class="number">45</span> FC             mov         dword ptr [c],eax  </span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> a_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> :</span> <span class="keyword">virtual</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">C</span> :</span> <span class="keyword">virtual</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> c_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B, C &#123;</span><br><span class="line">    <span class="keyword">int</span> d_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时 sizeof(D) = 24</span></span><br></pre></td></tr></table></figure>
+
+
     </div>
 
     
@@ -307,7 +311,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://hankong91.github.io/2022/03/07/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0/" title="内联函数">https://hankong91.github.io/2022/03/07/内联函数/</a>
+      <a href="https://hankong91.github.io/2022/03/25/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF/" title="菱形继承">https://hankong91.github.io/2022/03/25/菱形继承/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -320,13 +324,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/03/01/%E5%85%B3%E4%BA%8Eextern%20C/" rel="prev" title="关于extern "C"">
-                  <i class="fa fa-chevron-left"></i> 关于extern "C"
+                <a href="/2022/03/25/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E5%AE%9A%E4%BA%8E%E4%B8%8E%E5%85%B6%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%9A%84%E9%BB%98%E8%AE%A4%E5%88%9D%E5%A7%8B%E5%8C%96%E5%80%BC/" rel="prev" title="构造函数是否定于与其成员变量的默认初始化值">
+                  <i class="fa fa-chevron-left"></i> 构造函数是否定于与其成员变量的默认初始化值
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/03/07/C++%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" rel="next" title="C++中的类型转换">
-                  C++中的类型转换 <i class="fa fa-chevron-right"></i>
+                <a href="/2022/03/25/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/" rel="next" title="运算符重载">
+                  运算符重载 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
