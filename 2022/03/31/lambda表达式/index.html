@@ -20,28 +20,28 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hankong91.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="默认构造函数是否自动生成的问题">
+<meta name="description" content="lambda表达式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="默认构造函数是否自动生成">
-<meta property="og:url" content="https://hankong91.github.io/2022/03/24/%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/index.html">
+<meta property="og:title" content="lambda表达式">
+<meta property="og:url" content="https://hankong91.github.io/2022/03/31/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
 <meta property="og:site_name" content="寒空の博客">
-<meta property="og:description" content="默认构造函数是否自动生成的问题">
+<meta property="og:description" content="lambda表达式">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-03-24T15:54:22.000Z">
-<meta property="article:modified_time" content="2022-03-24T16:42:03.698Z">
+<meta property="article:published_time" content="2022-03-31T15:11:40.000Z">
+<meta property="article:modified_time" content="2022-03-31T15:13:09.639Z">
 <meta property="article:author" content="寒空">
-<meta property="article:tag" content="默认构造函数">
+<meta property="article:tag" content="lambda">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://hankong91.github.io/2022/03/24/%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/">
+<link rel="canonical" href="https://hankong91.github.io/2022/03/31/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/03/24/%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/","path":"2022/03/24/默认构造函数是否自动生成/","title":"默认构造函数是否自动生成"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/03/31/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/","path":"2022/03/31/lambda表达式/","title":"lambda表达式"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>默认构造函数是否自动生成 | 寒空の博客</title>
+<title>lambda表达式 | 寒空の博客</title>
   
 
 
@@ -148,7 +148,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">默认构造函数是否自动生成</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">编译器自动生成的构造函数</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">lambda表达式</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -224,7 +224,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/03/24/%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/">
+    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/03/31/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/author.jpg">
@@ -237,7 +237,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          默认构造函数是否自动生成
+          lambda表达式
         </h1>
 
         <div class="post-meta-container">
@@ -247,15 +247,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2022-03-24 23:54:22" itemprop="dateCreated datePublished" datetime="2022-03-24T23:54:22+08:00">2022-03-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-03-25 00:42:03" itemprop="dateModified" datetime="2022-03-25T00:42:03+08:00">2022-03-25</time>
+      <time title="创建时间：2022-03-31 23:11:40 / 修改时间：23:13:09" itemprop="dateCreated datePublished" datetime="2022-03-31T23:11:40+08:00">2022-03-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -273,7 +267,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>771</span>
+      <span>1.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -284,7 +278,7 @@
     </span>
 </div>
 
-            <div class="post-description">默认构造函数是否自动生成的问题</div>
+            <div class="post-description">lambda表达式</div>
         </div>
       </header>
 
@@ -292,19 +286,20 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="默认构造函数是否自动生成"><a href="#默认构造函数是否自动生成" class="headerlink" title="默认构造函数是否自动生成"></a>默认构造函数是否自动生成</h1><ul>
-<li>只有在某些特定情况下，编译器才会为类生成空的无参构造函数，并不是说默认情况下，编译器会为每一个类生成空的无参构造函数</li>
+        <h1 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h1><ul>
+<li>C++11：一个lambda表达式表示一个可调用的代码单元，可理解为一个未命名的内联函数。但与函数不同，lambda可能定义在函数内部</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _member;</span><br><span class="line">    <span class="built_in">A</span>() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    a._member = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">13</span>:     A a;</span><br><span class="line"> lea         ecx,[a]  </span><br><span class="line"> <span class="function">call        <span class="title">A::A</span> <span class="params">(<span class="number">05B</span>137Fh)</span>  <span class="comment">// 调用构造函数</span></span></span><br><span class="line"><span class="function">    14:     a._member =</span> <span class="number">10</span>;</span><br><span class="line"> mov         dword ptr [a],<span class="number">0</span>Ah  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 若去掉A的构造函数</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _member;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    a._member = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">10</span>:     A a;</span><br><span class="line">    <span class="number">11</span>:     a._member = <span class="number">10</span>;</span><br><span class="line"> mov         dword ptr [a],<span class="number">0</span>Ah  <span class="comment">// 未调用构造函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 若增加成员内部初始化, 也会调用构造函数, 用于初始化成员变量</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _member = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    a._member = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// [capture list](parameter list) -&gt; return type &#123; function body &#125;</span></span><br><span class="line"><span class="keyword">auto</span> f = [] &#123; <span class="keyword">return</span> <span class="number">42</span>; &#125;;</span><br><span class="line"><span class="comment">// 等价于auto f = []() -&gt; int &#123; return 42; &#125;;</span></span><br><span class="line">cout &lt;&lt; <span class="built_in">f</span>() &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
 
-<h1 id="编译器自动生成的构造函数"><a href="#编译器自动生成的构造函数" class="headerlink" title="编译器自动生成的构造函数"></a>编译器自动生成的构造函数</h1><ul>
-<li>只有在某些特定情况下，编译器才会为类生成空的无参构造函数</li>
-<li>成员变量在声明的同时进行了初始化，需要初始化成员变量</li>
-<li>有定义虚函数，需要初始化虚函数表</li>
-<li>虚继承了其他类，需要初始化虚函数表</li>
-<li>包含了对象类型成员，且这个成员有构造函数（编译器生成或者自定义）</li>
-<li>父类有构造函数（编译器生成或者自定义）</li>
-<li>总结：对象创建后，需要做一些额外的操作时，比如内存操作、函数调用等，编译器一般都会为其自动生成无参的构造函数</li>
+<ul>
+<li>可以忽略参数列表和返回类型，但必须永远包含捕获列表和函数体</li>
+<li>向lambda传递参数，通常实参和形参的类型必须匹配，而且lambda不能有默认参数</li>
+<li>当定义一个lambda时，编译器生成一个与lambda对应的新的（未命名）类类型。当向一个函数传递一个lambda时，同时定义了一个新类型和该类型的一个对象</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in"><span class="keyword">void</span></span>(*p)() = [] &#123;</span><br><span class="line">    &#125;;</span><br><span class="line">    cout &lt;&lt; <span class="built_in"><span class="keyword">typeid</span></span>(p).<span class="built_in">name</span>() &lt;&lt; endl;  <span class="comment">// void (__cdecl*)(void)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> f = [] &#123;</span><br><span class="line">    &#125;;</span><br><span class="line">    cout &lt;&lt; <span class="built_in"><span class="keyword">typeid</span></span>(f).<span class="built_in">name</span>() &lt;&lt; endl;  <span class="comment">// class &lt;lambda_682ee71b6214d955ff79d311d300cf75&gt;</span></span><br><span class="line"></span><br><span class="line">    function&lt;<span class="built_in"><span class="keyword">void</span></span>()&gt; func = [] &#123;</span><br><span class="line">    &#125;;</span><br><span class="line">    cout &lt;&lt; <span class="built_in"><span class="keyword">typeid</span></span>(func).<span class="built_in">name</span>() &lt;&lt; endl;    <span class="comment">// class std::function&lt;void __cdecl(void)&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">p</span>();</span><br><span class="line">    <span class="built_in">f</span>();</span><br><span class="line">    <span class="built_in">func</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">31</span>:     <span class="built_in">p</span>();</span><br><span class="line"> call        dword ptr [p]  </span><br><span class="line"> cmp         esi,esp  </span><br><span class="line"> call        __RTC_CheckEsp (<span class="number">0</span>C81217h)  </span><br><span class="line">    <span class="number">32</span>:     <span class="built_in">f</span>();</span><br><span class="line"> lea         ecx,[f]  </span><br><span class="line"> call        &lt;lambda_fcb7316eaff70820ffe7d710fae3140e&gt;::<span class="built_in"><span class="keyword">operator</span></span>() (<span class="number">0</span>C83E30h)  </span><br><span class="line">    <span class="number">33</span>:     <span class="built_in">func</span>();</span><br><span class="line"> lea         ecx,[func]  </span><br><span class="line"> call        std::_Func_class&lt;<span class="keyword">void</span>&gt;::<span class="built_in"><span class="keyword">operator</span></span>() (<span class="number">0</span>C8169Ah)  </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>对于全局变量，存在于全局区，变量不需要捕获，并且可以直接修改</li>
 </ul>
 
     </div>
@@ -323,7 +318,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://hankong91.github.io/2022/03/24/%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/" title="默认构造函数是否自动生成">https://hankong91.github.io/2022/03/24/默认构造函数是否自动生成/</a>
+      <a href="https://hankong91.github.io/2022/03/31/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" title="lambda表达式">https://hankong91.github.io/2022/03/31/lambda表达式/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -332,20 +327,20 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" rel="tag"># 默认构造函数</a>
+              <a href="/tags/lambda/" rel="tag"># lambda</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/03/24/this%E6%8C%87%E9%92%88/" rel="prev" title="this指针">
-                  <i class="fa fa-chevron-left"></i> this指针
+                <a href="/2022/03/31/%E7%94%A8%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A%E5%A3%B0%E6%98%8E/" rel="prev" title="用于数组的结构化绑定声明">
+                  <i class="fa fa-chevron-left"></i> 用于数组的结构化绑定声明
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/03/25/%E5%8C%BA%E5%88%AB%E8%B0%83%E7%94%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E/" rel="next" title="区别调用构造函数和函数声明">
-                  区别调用构造函数和函数声明 <i class="fa fa-chevron-right"></i>
+                <a href="/2022/03/31/C++%E4%B8%AD%E7%9A%84array/" rel="next" title="C++中的array">
+                  C++中的array <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
