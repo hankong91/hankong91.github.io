@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>C++11新增的几个常见关键字</title>
-    <url>/2022/03/25/C++11%E6%96%B0%E5%A2%9E%E7%9A%84%E5%87%A0%E4%B8%AA%E5%B8%B8%E8%A7%81%E5%85%B3%E9%94%AE%E5%AD%97/</url>
+    <url>/2022/03/25/C++/C++11%E6%96%B0%E5%A2%9E%E7%9A%84%E5%87%A0%E4%B8%AA%E5%B8%B8%E8%A7%81%E5%85%B3%E9%94%AE%E5%AD%97/</url>
     <content><![CDATA[<h1 id="auto"><a href="#auto" class="headerlink" title="auto"></a>auto</h1><ul>
 <li>自动类型推导auto</li>
 </ul>
@@ -71,7 +71,7 @@
   </entry>
   <entry>
     <title>C++中的array</title>
-    <url>/2022/03/31/C++%E4%B8%AD%E7%9A%84array/</url>
+    <url>/2022/03/31/C++/C++%E4%B8%AD%E7%9A%84array/</url>
     <content><![CDATA[<h1 id="C-中的array"><a href="#C-中的array" class="headerlink" title="C++中的array"></a>C++中的array</h1><ul>
 <li>C Style Array（C++ raw array, 也叫做C++原生数组）</li>
 </ul>
@@ -102,7 +102,7 @@
   </entry>
   <entry>
     <title>C++中的变量初始化</title>
-    <url>/2022/02/05/C++%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
+    <url>/2022/02/05/C++/C++%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
     <content><![CDATA[<h1 id="默认初始化"><a href="#默认初始化" class="headerlink" title="默认初始化"></a>默认初始化</h1><ul>
 <li>定义变量时没有指定初值时进行的初始化操作。如int a; MyClass obj;等，这些变量被定义了而不是仅仅被声明，而且没有显示的赋初始值。特别的，如果采用动态分配内存的方式创建的变量，不加括号（如int *p = new int;）也是默认初始化，加了括号（如int *p = new int();）为值初始化。变量的值与变量定义的位置有关</li>
 </ul>
@@ -185,7 +185,7 @@
   </entry>
   <entry>
     <title>C++中的类型转换</title>
-    <url>/2022/03/07/C++%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</url>
+    <url>/2022/03/07/C++/C++%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</url>
     <content><![CDATA[<h1 id="隐式类型转换"><a href="#隐式类型转换" class="headerlink" title="隐式类型转换"></a>隐式类型转换</h1><ul>
 <li>隐式类型转换是自动执行的，无需显式的操作符</li>
 <li>从小整数类型（char、short）转换到int，或者从float转换到double，这种提升型的转换通常不会造成数值差异</li>
@@ -227,98 +227,8 @@
       </categories>
   </entry>
   <entry>
-    <title>Hexo+Github搭建个人博客</title>
-    <url>/2022/02/02/Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h1 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h1><ul>
-<li>Hexo需要Node.js支持</li>
-<li>Node.js下载地址：<a href="https://nodejs.org/en/">nodejs.org</a></li>
-<li>安装完以后会有两个组件，Node.js + npm包管理器</li>
-</ul>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">$ <span class="keyword">node</span> <span class="title">-v</span></span><br><span class="line">v16.<span class="number">13.1</span></span><br><span class="line"></span><br><span class="line">$ npm -v</span><br><span class="line"><span class="number">8.1</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="安装cnpm，淘宝镜像源"><a href="#安装cnpm，淘宝镜像源" class="headerlink" title="安装cnpm，淘宝镜像源"></a>安装cnpm，淘宝镜像源</h1><ul>
-<li>借助npm安装Hexo博客框架，但由于国内镜像源速度慢，可以利用npm安装一个cnpm，淘宝的源</li>
-</ul>
-<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https:<span class="regexp">//</span>registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105234517559.png"></p>
-<h1 id="使用cnpm安装Hexo博客"><a href="#使用cnpm安装Hexo博客" class="headerlink" title="使用cnpm安装Hexo博客"></a>使用cnpm安装Hexo博客</h1><figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ cnpm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235001374.png"></p>
-<h1 id="使用Hexo搭建博客"><a href="#使用Hexo搭建博客" class="headerlink" title="使用Hexo搭建博客"></a>使用Hexo搭建博客</h1><ul>
-<li>创建博客目录</li>
-<li>初始化博客</li>
-</ul>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">init</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235806763.png"></p>
-<ul>
-<li>启动博客</li>
-</ul>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235937501.png"></p>
-<ul>
-<li>浏览器访问<a href="http://localhost:4000/">http://localhost:4000/</a></li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000154817.png"></p>
-<ul>
-<li>新建一篇博客，并编辑</li>
-</ul>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo n <span class="string">&quot;My First Blog&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000542115.png"></p>
-<ul>
-<li>清理，重新生成，并启动博客</li>
-</ul>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo clean</span><br><span class="line"><span class="variable">$ </span>hexo g</span><br><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001429254.png"></p>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001505606.png"></p>
-<h1 id="将博客部署到远端，比如GitHub"><a href="#将博客部署到远端，比如GitHub" class="headerlink" title="将博客部署到远端，比如GitHub"></a>将博客部署到远端，比如GitHub</h1><ul>
-<li>创建一个新的仓库，注意：仓库名必须为GitHub用户名+github.io</li>
-<li>使用cnpm安装git部署插件</li>
-</ul>
-<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">$ cnpm install <span class="comment">--save hexo-deployer-git</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106002928759.png"></p>
-<ul>
-<li>修改博客目录下的_config.yml</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230537645.png"></p>
-<ul>
-<li>部署到远端</li>
-</ul>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo d</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>会提示你输入GitHub用户名和密码，但是重点来了，这里试了好几次，明明用户名和密码都正确，就是部署不上去，提示Authentication failed &amp; Error: Spawn failed</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230617045.png"></p>
-<ul>
-<li>不知道是不是HTTPS的问题，不过以前也确实没用过HTTPS的方式，又尝试了SSH的方式，修改如下，注意如果以前没有在GitHub上添加过SSH Keys的话需要添加下，参考链接：<a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generating a new SSH key and adding it to the ssh-agent</a></li>
-<li>重新修改_config.yml如下</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231656787.png"></p>
-<ul>
-<li>重新部署成功</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231858319.png"></p>
-<ul>
-<li>将仓库地址复制到浏览器中打开，就可以正常打开个人博客</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117232211582.png"></p>
-]]></content>
-      <categories>
-        <category>博客搭建</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>const</title>
-    <url>/2022/02/06/const/</url>
+    <url>/2022/02/06/C++/const/</url>
     <content><![CDATA[<h1 id="const对象的多文件访问"><a href="#const对象的多文件访问" class="headerlink" title="const对象的多文件访问"></a>const对象的多文件访问</h1><ul>
 <li>若需要多个文件访问const对象，则对于const变量不管是声明还是定义都添加extern关键字</li>
 </ul>
@@ -344,8 +254,29 @@
       </tags>
   </entry>
   <entry>
+    <title>final</title>
+    <url>/2022/03/22/C++/final/</url>
+    <content><![CDATA[<h1 id="final"><a href="#final" class="headerlink" title="final"></a>final</h1><ul>
+<li>C++11：防止继承的发生，在类名后面增加final关键字</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NoDerived</span> <span class="keyword">final</span> &#123;</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>C++11：指定派生类不能覆写虚函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> :</span> Base &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="keyword">final</span></span>;   <span class="comment">// A::foo 被覆写且是最终覆写</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">()</span> <span class="keyword">final</span></span>;   <span class="comment">// 错误: 非虚函数不能被覆写或是final</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> <span class="keyword">final</span> :</span> A &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="keyword">override</span></span>;    <span class="comment">// 错误: foo不能被覆写</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>final</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>lambda表达式</title>
-    <url>/2022/03/31/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    <url>/2022/03/31/C++/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
     <content><![CDATA[<h1 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h1><ul>
 <li>C++11：一个lambda表达式表示一个可调用的代码单元，可理解为一个未命名的内联函数。但与函数不同，lambda可能定义在函数内部</li>
 </ul>
@@ -370,29 +301,8 @@
       </tags>
   </entry>
   <entry>
-    <title>final</title>
-    <url>/2022/03/22/final/</url>
-    <content><![CDATA[<h1 id="final"><a href="#final" class="headerlink" title="final"></a>final</h1><ul>
-<li>C++11：防止继承的发生，在类名后面增加final关键字</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NoDerived</span> <span class="keyword">final</span> &#123;</span> &#125;;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>C++11：指定派生类不能覆写虚函数</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> :</span> Base &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="keyword">final</span></span>;   <span class="comment">// A::foo 被覆写且是最终覆写</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">()</span> <span class="keyword">final</span></span>;   <span class="comment">// 错误: 非虚函数不能被覆写或是final</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> <span class="keyword">final</span> :</span> A &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="keyword">override</span></span>;    <span class="comment">// 错误: foo不能被覆写</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>final</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>move和完美转发</title>
-    <url>/2022/02/24/move%E5%92%8C%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/</url>
+    <url>/2022/02/24/C++/move%E5%92%8C%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/</url>
     <content><![CDATA[<h1 id="move"><a href="#move" class="headerlink" title="move"></a>move</h1><ul>
 <li>在<a href="https://hankong91.github.io/2022/02/17/%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/">左值和右值</a>一文中提到了移动语义，通过移动构造函数解决了临时变量拷贝产生的性能损失问题，且移动语义是通过右值引用来匹配临时值</li>
 <li>普通的左值是否也能通过移动语义来优化性能，C++11为了解决这个问题，提供了std::move方法将左值转换为右值，从而方便应用移动语义</li>
@@ -459,8 +369,25 @@
       </tags>
   </entry>
   <entry>
+    <title>this指针</title>
+    <url>/2022/03/24/C++/this%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<h1 id="this指针"><a href="#this指针" class="headerlink" title="this指针"></a>this指针</h1><ul>
+<li>类中的函数编译后存放在代码段中，不存放在类对象实例的存储空间</li>
+<li>为了使对象调用函数时访问对应对象的成员，必须知道该对象的地址，会隐式传入this指针，表明当前对象地址</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _m = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        _m = <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">func</span>();</span><br><span class="line"></span><br><span class="line">    A a;</span><br><span class="line">    a.<span class="built_in">foo</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 普通函数调用</span></span><br><span class="line">    <span class="number">17</span>:     <span class="built_in">func</span>();</span><br><span class="line"> call        <span class="number">00361375</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 成员函数调用</span></span><br><span class="line">    <span class="number">20</span>:     a.<span class="built_in">foo</span>();</span><br><span class="line"> lea         ecx,[ebp<span class="number">-0</span>Ch]  <span class="comment">// ebp-0Ch为a的地址, 先赋值给ecx寄存器</span></span><br><span class="line"> call        <span class="number">00361370</span>  </span><br><span class="line">     </span><br><span class="line">     </span><br><span class="line">     <span class="number">8</span>:     <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> mov         dword ptr [ebp<span class="number">-8</span>],ecx  <span class="comment">// ebp-8保存了this指针的地址, 即将a的地址赋值给了this指针</span></span><br><span class="line">     <span class="number">9</span>:         _m = <span class="number">3</span>;</span><br><span class="line"> mov         eax,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// eax存放了a的地址</span></span><br><span class="line"> mov         dword ptr [eax],<span class="number">3</span>      <span class="comment">// eax的地址存放了a中_m成员变量的地址, 即完成了对调用对象赋值</span></span><br><span class="line">    <span class="number">10</span>:     &#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>this</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于extern &quot;C&quot;</title>
-    <url>/2022/03/01/%E5%85%B3%E4%BA%8Eextern%20C/</url>
+    <url>/2022/03/01/C++/%E5%85%B3%E4%BA%8Eextern%20C/</url>
     <content><![CDATA[<h1 id="extern-“C”"><a href="#extern-“C”" class="headerlink" title="extern “C”"></a>extern “C”</h1><ul>
 <li>被extern “C”修饰的代码会按照C语言的方式去编译，C语言不支持函数name mangling</li>
 <li>extern “C”的主要作用就是为了能够正确实现C++代码调用其他C语言代码。加上extern “C”后，会指示编译器这部分代码按C语言（而不是C++）的方式进行编译。由于C++支持函数重载，因此编译器编译函数的过程中会将函数的参数类型也加到编译后的代码中，而不仅仅是函数名；而C语言并不支持函数重载，因此编译C语言代码的函数时不会带上函数的参数类型，一般只包括函数名</li>
@@ -493,25 +420,8 @@
       </categories>
   </entry>
   <entry>
-    <title>this指针</title>
-    <url>/2022/03/24/this%E6%8C%87%E9%92%88/</url>
-    <content><![CDATA[<h1 id="this指针"><a href="#this指针" class="headerlink" title="this指针"></a>this指针</h1><ul>
-<li>类中的函数编译后存放在代码段中，不存放在类对象实例的存储空间</li>
-<li>为了使对象调用函数时访问对应对象的成员，必须知道该对象的地址，会隐式传入this指针，表明当前对象地址</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _m = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        _m = <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">func</span>();</span><br><span class="line"></span><br><span class="line">    A a;</span><br><span class="line">    a.<span class="built_in">foo</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 普通函数调用</span></span><br><span class="line">    <span class="number">17</span>:     <span class="built_in">func</span>();</span><br><span class="line"> call        <span class="number">00361375</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 成员函数调用</span></span><br><span class="line">    <span class="number">20</span>:     a.<span class="built_in">foo</span>();</span><br><span class="line"> lea         ecx,[ebp<span class="number">-0</span>Ch]  <span class="comment">// ebp-0Ch为a的地址, 先赋值给ecx寄存器</span></span><br><span class="line"> call        <span class="number">00361370</span>  </span><br><span class="line">     </span><br><span class="line">     </span><br><span class="line">     <span class="number">8</span>:     <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> mov         dword ptr [ebp<span class="number">-8</span>],ecx  <span class="comment">// ebp-8保存了this指针的地址, 即将a的地址赋值给了this指针</span></span><br><span class="line">     <span class="number">9</span>:         _m = <span class="number">3</span>;</span><br><span class="line"> mov         eax,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// eax存放了a的地址</span></span><br><span class="line"> mov         dword ptr [eax],<span class="number">3</span>      <span class="comment">// eax的地址存放了a中_m成员变量的地址, 即完成了对调用对象赋值</span></span><br><span class="line">    <span class="number">10</span>:     &#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>this</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>内联函数</title>
-    <url>/2022/03/07/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0/</url>
+    <url>/2022/03/07/C++/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h1 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h1><ul>
 <li>使用inline修饰函数的声明或者实现，可以使其变成内联函数，建议声明和实现都增加inline修饰</li>
 <li>编译器会将函数调用直接展开为函数体代码，可以减少函数调用开销，但会增大代码体积</li>
@@ -524,7 +434,7 @@
   </entry>
   <entry>
     <title>函数重载</title>
-    <url>/2022/02/06/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/</url>
+    <url>/2022/02/06/C++/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/</url>
     <content><![CDATA[<h1 id="重载和const形参"><a href="#重载和const形参" class="headerlink" title="重载和const形参"></a>重载和const形参</h1><ul>
 <li>顶层const不影响传入函数的对象，因此一个拥有顶层const的形参无法和另一个没有顶层const的形参区分开来</li>
 </ul>
@@ -549,8 +459,32 @@
       </tags>
   </entry>
   <entry>
+    <title>区别调用构造函数和函数声明</title>
+    <url>/2022/03/25/C++/%E5%8C%BA%E5%88%AB%E8%B0%83%E7%94%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E/</url>
+    <content><![CDATA[<h1 id="区别调用构造函数和函数声明"><a href="#区别调用构造函数和函数声明" class="headerlink" title="区别调用构造函数和函数声明"></a>区别调用构造函数和函数声明</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _member = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">A</span>() &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Call A()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">A</span>(<span class="keyword">int</span> member) : _member(member)&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Call A(int)&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">A g_a1;                 <span class="comment">// Call A()</span></span><br><span class="line"><span class="function">A <span class="title">g_a2</span><span class="params">()</span></span>;               <span class="comment">// 函数声明</span></span><br><span class="line"><span class="function">A <span class="title">g_a3</span><span class="params">(<span class="number">10</span>)</span></span>;             <span class="comment">// Call A(int)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A g_a1;             <span class="comment">// Call A()</span></span><br><span class="line">    <span class="function">A <span class="title">g_a2</span><span class="params">()</span></span>;           <span class="comment">// 函数声明</span></span><br><span class="line">    <span class="function">A <span class="title">g_a3</span><span class="params">(<span class="number">10</span>)</span></span>;         <span class="comment">// Call A(int)</span></span><br><span class="line"></span><br><span class="line">    A* p1 = <span class="keyword">new</span> A;      <span class="comment">// Call A()</span></span><br><span class="line">    A* p2 = <span class="keyword">new</span> <span class="built_in">A</span>();    <span class="comment">// Call A()</span></span><br><span class="line">    A* p3 = <span class="keyword">new</span> <span class="built_in">A</span>(<span class="number">10</span>);  <span class="comment">// Call A(int)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>匿名对象</title>
+    <url>/2022/03/07/C++/%E5%8C%BF%E5%90%8D%E5%AF%B9%E8%B1%A1/</url>
+    <content><![CDATA[<h1 id="匿名对象"><a href="#匿名对象" class="headerlink" title="匿名对象"></a>匿名对象</h1><ul>
+<li>一个只用一次的对象，这种不命名的对象叫匿名对象</li>
+<li>匿名对象没有变量名，没有被指针指向，用完后马上调用析构函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Circle</span>() &#123;</span><br><span class="line">        radius = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">Circle</span>(<span class="keyword">double</span> r) &#123;</span><br><span class="line">        radius = r;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">getArea</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">3.14</span> * radius * radius;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">double</span> radius;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Circle c1 = Circle&#123; <span class="number">1.1</span> &#125;;</span><br><span class="line">    <span class="keyword">auto</span> c2 = Circle&#123; <span class="number">2.2</span> &#125;;    <span class="comment">// 用匿名对象做拷贝列表初始化</span></span><br><span class="line"></span><br><span class="line">    Circle c3&#123;&#125;;</span><br><span class="line">    c3 = Circle&#123; <span class="number">3.3</span> &#125;;         <span class="comment">// 用匿名对象赋值</span></span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; Circle&#123; <span class="number">4.2</span> &#125;.<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">Circle</span>().<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">Circle</span>(<span class="number">5</span>).<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    cin.<span class="built_in">get</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>多态和虚函数</title>
-    <url>/2022/03/22/%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0/</url>
+    <url>/2022/03/22/C++/%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><ul>
 <li>广义的多态：不同类型的实体/对象对同一消息有不同的响应</li>
 <li>多态有两种形式：重载多态和子类型多态</li>
@@ -574,90 +508,8 @@
       </tags>
   </entry>
   <entry>
-    <title>匿名对象</title>
-    <url>/2022/03/07/%E5%8C%BF%E5%90%8D%E5%AF%B9%E8%B1%A1/</url>
-    <content><![CDATA[<h1 id="匿名对象"><a href="#匿名对象" class="headerlink" title="匿名对象"></a>匿名对象</h1><ul>
-<li>一个只用一次的对象，这种不命名的对象叫匿名对象</li>
-<li>匿名对象没有变量名，没有被指针指向，用完后马上调用析构函数</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Circle</span>() &#123;</span><br><span class="line">        radius = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">Circle</span>(<span class="keyword">double</span> r) &#123;</span><br><span class="line">        radius = r;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">getArea</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">3.14</span> * radius * radius;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">double</span> radius;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Circle c1 = Circle&#123; <span class="number">1.1</span> &#125;;</span><br><span class="line">    <span class="keyword">auto</span> c2 = Circle&#123; <span class="number">2.2</span> &#125;;    <span class="comment">// 用匿名对象做拷贝列表初始化</span></span><br><span class="line"></span><br><span class="line">    Circle c3&#123;&#125;;</span><br><span class="line">    c3 = Circle&#123; <span class="number">3.3</span> &#125;;         <span class="comment">// 用匿名对象赋值</span></span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; Circle&#123; <span class="number">4.2</span> &#125;.<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">Circle</span>().<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">Circle</span>(<span class="number">5</span>).<span class="built_in">getArea</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    cin.<span class="built_in">get</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>区别调用构造函数和函数声明</title>
-    <url>/2022/03/25/%E5%8C%BA%E5%88%AB%E8%B0%83%E7%94%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E/</url>
-    <content><![CDATA[<h1 id="区别调用构造函数和函数声明"><a href="#区别调用构造函数和函数声明" class="headerlink" title="区别调用构造函数和函数声明"></a>区别调用构造函数和函数声明</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _member = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">A</span>() &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Call A()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">A</span>(<span class="keyword">int</span> member) : _member(member)&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Call A(int)&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">A g_a1;                 <span class="comment">// Call A()</span></span><br><span class="line"><span class="function">A <span class="title">g_a2</span><span class="params">()</span></span>;               <span class="comment">// 函数声明</span></span><br><span class="line"><span class="function">A <span class="title">g_a3</span><span class="params">(<span class="number">10</span>)</span></span>;             <span class="comment">// Call A(int)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A g_a1;             <span class="comment">// Call A()</span></span><br><span class="line">    <span class="function">A <span class="title">g_a2</span><span class="params">()</span></span>;           <span class="comment">// 函数声明</span></span><br><span class="line">    <span class="function">A <span class="title">g_a3</span><span class="params">(<span class="number">10</span>)</span></span>;         <span class="comment">// Call A(int)</span></span><br><span class="line"></span><br><span class="line">    A* p1 = <span class="keyword">new</span> A;      <span class="comment">// Call A()</span></span><br><span class="line">    A* p2 = <span class="keyword">new</span> <span class="built_in">A</span>();    <span class="comment">// Call A()</span></span><br><span class="line">    A* p3 = <span class="keyword">new</span> <span class="built_in">A</span>(<span class="number">10</span>);  <span class="comment">// Call A(int)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>异常</title>
-    <url>/2022/03/01/%E5%BC%82%E5%B8%B8/</url>
-    <content><![CDATA[<h1 id="异常机制"><a href="#异常机制" class="headerlink" title="异常机制"></a>异常机制</h1><ul>
-<li>异常处理是C++的一项语言机制，用于在程序中处理异常事件。异常事件在C++中表示为异常对象，异常事件发生时，程序使用throw关键字抛出异常表达式，抛出点称为异常出现点，由操作系统为程序设置当前异常对象，然后执行程序的当前异常处理代码块</li>
-<li>在包含了异常出现点的最内层的try块，依次匹配catch语句中的异常对象，若匹配成功，则执行catch块内的异常处理语句，然后接着执行try…catch…块之后的代码。如果在当前的try…catch…块内找不到匹配该异常对象的catch语句，则由更外层的try…catch…块来处理该异常。如果当前函数内所有的try…catch…块都不能匹配该异常，则递归回退到调用栈的上一层去处理该异常。如果一直退到主函数main()都不能处理该异常，则调用系统函数terminate()终止程序</li>
-<li>异常处理机制的优点：可将异常信息从被调函数带回给主函数</li>
-<li>若对异常对象的内容不感兴趣，可省略catch参数，只保留类型</li>
-</ul>
-<h1 id="throw"><a href="#throw" class="headerlink" title="throw"></a>throw</h1><ul>
-<li>执行throw语句时，throw表达式将作为对象被复制构造为一个新的对象，称为异常对象。异常对象放在内存的特殊位置，该位置既不是栈也不是堆，在Windows上是放在线程信息块TIB中。这个构造出来的新对象与本级的try所对应的catch语句进行类型匹配</li>
-<li>异常对象是一种特殊的对象，编译器依据异常抛出表达式复制构造异常对象，这要求抛出异常表达式不能是一个不完全类型（一个类型在声明之后定义之前为一个不完全类型，不完全类型意味着该类型没有完整的数据与操作描述），而且可以进行复制构造，这就要求异常抛出表达式的复制构造函数（或移动构造函数）、析构函数不能是私有的</li>
-</ul>
-<h1 id="noexcept"><a href="#noexcept" class="headerlink" title="noexcept"></a>noexcept</h1><ul>
-<li>noexcept修饰符是C++11新提供的异常说明符，用于声明一个函数不会抛出异常。编译器能够针对不抛出异常的函数进行优化，另一个显而易见的好处是你明确了某个函数不会抛出异常，别人调用你的函数时就知道不用针对这个函数进行异常捕获。在C++98中关于异常处理的程序中可能会看到这样的代码</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> <span class="title">throw</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">double</span>)</span> </span>&#123; ... &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> <span class="title">throw</span><span class="params">()</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>这是throw作为函数异常说明，前者表示func()这个函数可能会抛出int或double类型的异常，后者表示func()函数不会抛出异常。事实上前者很少被使用，在C++11这种做法已经被摒弃，而后者则被C++11的noexcept异常声明所代替</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> <span class="keyword">noexcept</span> </span>&#123; ... &#125;</span><br><span class="line"><span class="comment">// 等价于void func() throw() &#123; ... &#125;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在C++11中，编译器并不会在编译期检查函数的noexcept声明，因此被声明为noexcept的函数若携带异常抛出语句还是可以通过编译的。在函数运行时若抛出了异常，编译器可以选择直接调用terminate()函数来终结程序的运行，因此noexcept的一个作用是阻止异常的传播，提高安全性</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// noexcept声明符的语法: noexcept或者noexcept(布尔表达式)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="keyword">noexcept</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="title">noexcept</span><span class="params">(<span class="literal">true</span>)</span> </span>&#123;&#125;    <span class="comment">// noexcept(true)等价于noexcept</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;&#125;                   <span class="comment">// 可能会抛出异常</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span> </span>&#123;&#125;   <span class="comment">// noexcept(false)等价于什么也不写, 可能会抛出异常</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// noexcept不能用于区分重载函数</span></span><br><span class="line"><span class="comment">// noexcept函数中抛出异常, 等价于调用std::terminate()</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123; <span class="comment">/* 潜在抛出异常 */</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span> <span class="keyword">noexcept</span> </span>&#123;</span><br><span class="line">    <span class="built_in">f</span>();        <span class="comment">// 合法: 即使f抛出</span></span><br><span class="line">    <span class="keyword">throw</span> <span class="number">42</span>;   <span class="comment">// 合法: 等效于调用 std::terminate()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a href="https://www.cnblogs.com/QG-whz/p/5136883.html">C++异常机制概述</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>noexcept</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>带有初始化语句的if/switch语句</title>
-    <url>/2022/03/31/%E5%B8%A6%E6%9C%89%E5%88%9D%E5%A7%8B%E5%8C%96%E8%AF%AD%E5%8F%A5%E7%9A%84if-switch%E8%AF%AD%E5%8F%A5/</url>
-    <content><![CDATA[<h1 id="带有初始化语句的if-switch语句"><a href="#带有初始化语句的if-switch语句" class="headerlink" title="带有初始化语句的if/switch语句"></a>带有初始化语句的if/switch语句</h1><ul>
-<li>C++17：if条件中用到的新变量在if块内初始化</li>
-<li>本应限制于if块内的变量侵入了周边的作用域，若编译器确知变量作用域限制于if块，则可更好的优化代码</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 1. 不带初始化的if语句</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> x = <span class="built_in">foo</span>(<span class="number">42</span>);</span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">40</span>) &#123;</span><br><span class="line">        <span class="comment">// do somthing whth x</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;x &gt; 40&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// do somthing whth x</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;x &lt;= 40&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// auto x = 3;</span></span><br><span class="line"></span><br><span class="line">    cin.<span class="built_in">get</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 不带初始化的if语句</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">auto</span> x = <span class="built_in">foo</span>(<span class="number">42</span>); x &gt; <span class="number">40</span>) &#123;</span><br><span class="line">        <span class="comment">// do somthing whth x</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;x &gt; 40&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// do somthing whth x</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;x &lt;= 40&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> x = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    cin.<span class="built_in">get</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>switch语句</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in"><span class="keyword">switch</span></span> (<span class="keyword">int</span> i = <span class="built_in">rand</span>(); i) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>左值和右值</title>
-    <url>/2022/02/17/%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/</url>
+    <url>/2022/02/17/C++/%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/</url>
     <content><![CDATA[<h1 id="概念和语法"><a href="#概念和语法" class="headerlink" title="概念和语法"></a>概念和语法</h1><ul>
 <li>C++98/03中的左值引用是这样的：</li>
 </ul>
@@ -800,8 +652,66 @@
       </tags>
   </entry>
   <entry>
+    <title>带有初始化语句的if/switch语句</title>
+    <url>/2022/03/31/C++/%E5%B8%A6%E6%9C%89%E5%88%9D%E5%A7%8B%E5%8C%96%E8%AF%AD%E5%8F%A5%E7%9A%84if-switch%E8%AF%AD%E5%8F%A5/</url>
+    <content><![CDATA[<h1 id="带有初始化语句的if-switch语句"><a href="#带有初始化语句的if-switch语句" class="headerlink" title="带有初始化语句的if/switch语句"></a>带有初始化语句的if/switch语句</h1><ul>
+<li>C++17：if条件中用到的新变量在if块内初始化</li>
+<li>本应限制于if块内的变量侵入了周边的作用域，若编译器确知变量作用域限制于if块，则可更好的优化代码</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 1. 不带初始化的if语句</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> x = <span class="built_in">foo</span>(<span class="number">42</span>);</span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">40</span>) &#123;</span><br><span class="line">        <span class="comment">// do somthing whth x</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;x &gt; 40&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// do somthing whth x</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;x &lt;= 40&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// auto x = 3;</span></span><br><span class="line"></span><br><span class="line">    cin.<span class="built_in">get</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 不带初始化的if语句</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">auto</span> x = <span class="built_in">foo</span>(<span class="number">42</span>); x &gt; <span class="number">40</span>) &#123;</span><br><span class="line">        <span class="comment">// do somthing whth x</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;x &gt; 40&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// do somthing whth x</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;x &lt;= 40&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> x = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    cin.<span class="built_in">get</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>switch语句</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in"><span class="keyword">switch</span></span> (<span class="keyword">int</span> i = <span class="built_in">rand</span>(); i) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>异常</title>
+    <url>/2022/03/01/C++/%E5%BC%82%E5%B8%B8/</url>
+    <content><![CDATA[<h1 id="异常机制"><a href="#异常机制" class="headerlink" title="异常机制"></a>异常机制</h1><ul>
+<li>异常处理是C++的一项语言机制，用于在程序中处理异常事件。异常事件在C++中表示为异常对象，异常事件发生时，程序使用throw关键字抛出异常表达式，抛出点称为异常出现点，由操作系统为程序设置当前异常对象，然后执行程序的当前异常处理代码块</li>
+<li>在包含了异常出现点的最内层的try块，依次匹配catch语句中的异常对象，若匹配成功，则执行catch块内的异常处理语句，然后接着执行try…catch…块之后的代码。如果在当前的try…catch…块内找不到匹配该异常对象的catch语句，则由更外层的try…catch…块来处理该异常。如果当前函数内所有的try…catch…块都不能匹配该异常，则递归回退到调用栈的上一层去处理该异常。如果一直退到主函数main()都不能处理该异常，则调用系统函数terminate()终止程序</li>
+<li>异常处理机制的优点：可将异常信息从被调函数带回给主函数</li>
+<li>若对异常对象的内容不感兴趣，可省略catch参数，只保留类型</li>
+</ul>
+<h1 id="throw"><a href="#throw" class="headerlink" title="throw"></a>throw</h1><ul>
+<li>执行throw语句时，throw表达式将作为对象被复制构造为一个新的对象，称为异常对象。异常对象放在内存的特殊位置，该位置既不是栈也不是堆，在Windows上是放在线程信息块TIB中。这个构造出来的新对象与本级的try所对应的catch语句进行类型匹配</li>
+<li>异常对象是一种特殊的对象，编译器依据异常抛出表达式复制构造异常对象，这要求抛出异常表达式不能是一个不完全类型（一个类型在声明之后定义之前为一个不完全类型，不完全类型意味着该类型没有完整的数据与操作描述），而且可以进行复制构造，这就要求异常抛出表达式的复制构造函数（或移动构造函数）、析构函数不能是私有的</li>
+</ul>
+<h1 id="noexcept"><a href="#noexcept" class="headerlink" title="noexcept"></a>noexcept</h1><ul>
+<li>noexcept修饰符是C++11新提供的异常说明符，用于声明一个函数不会抛出异常。编译器能够针对不抛出异常的函数进行优化，另一个显而易见的好处是你明确了某个函数不会抛出异常，别人调用你的函数时就知道不用针对这个函数进行异常捕获。在C++98中关于异常处理的程序中可能会看到这样的代码</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> <span class="title">throw</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">double</span>)</span> </span>&#123; ... &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> <span class="title">throw</span><span class="params">()</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这是throw作为函数异常说明，前者表示func()这个函数可能会抛出int或double类型的异常，后者表示func()函数不会抛出异常。事实上前者很少被使用，在C++11这种做法已经被摒弃，而后者则被C++11的noexcept异常声明所代替</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> <span class="keyword">noexcept</span> </span>&#123; ... &#125;</span><br><span class="line"><span class="comment">// 等价于void func() throw() &#123; ... &#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在C++11中，编译器并不会在编译期检查函数的noexcept声明，因此被声明为noexcept的函数若携带异常抛出语句还是可以通过编译的。在函数运行时若抛出了异常，编译器可以选择直接调用terminate()函数来终结程序的运行，因此noexcept的一个作用是阻止异常的传播，提高安全性</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// noexcept声明符的语法: noexcept或者noexcept(布尔表达式)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="keyword">noexcept</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="title">noexcept</span><span class="params">(<span class="literal">true</span>)</span> </span>&#123;&#125;    <span class="comment">// noexcept(true)等价于noexcept</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;&#125;                   <span class="comment">// 可能会抛出异常</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span> </span>&#123;&#125;   <span class="comment">// noexcept(false)等价于什么也不写, 可能会抛出异常</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// noexcept不能用于区分重载函数</span></span><br><span class="line"><span class="comment">// noexcept函数中抛出异常, 等价于调用std::terminate()</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123; <span class="comment">/* 潜在抛出异常 */</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span> <span class="keyword">noexcept</span> </span>&#123;</span><br><span class="line">    <span class="built_in">f</span>();        <span class="comment">// 合法: 即使f抛出</span></span><br><span class="line">    <span class="keyword">throw</span> <span class="number">42</span>;   <span class="comment">// 合法: 等效于调用 std::terminate()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://www.cnblogs.com/QG-whz/p/5136883.html">C++异常机制概述</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>noexcept</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>引用</title>
-    <url>/2022/02/06/%E5%BC%95%E7%94%A8/</url>
+    <url>/2022/02/06/C++/%E5%BC%95%E7%94%A8/</url>
     <content><![CDATA[<h1 id="引用的使用"><a href="#引用的使用" class="headerlink" title="引用的使用"></a>引用的使用</h1><ul>
 <li>引用（reference），为对象起了另外一个名字</li>
 <li>引用并非对象，相反的，它只是为一个已存在的对象所起的另外一个名字</li>
@@ -831,7 +741,7 @@
   </entry>
   <entry>
     <title>拷贝、赋值和销毁</title>
-    <url>/2022/03/22/%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E5%92%8C%E9%94%80%E6%AF%81/</url>
+    <url>/2022/03/22/C++/%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E5%92%8C%E9%94%80%E6%AF%81/</url>
     <content><![CDATA[<h1 id="拷贝控制操作"><a href="#拷贝控制操作" class="headerlink" title="拷贝控制操作"></a>拷贝控制操作</h1><ul>
 <li>拷贝控制操作：拷贝构造函数、拷贝赋值运算符、移动构造函数、移动赋值运算符、析构函数</li>
 <li>拷贝和移动构造函数：定义了当用同类型的另一个对象初始化本对象时做什么</li>
@@ -857,7 +767,7 @@
   </entry>
   <entry>
     <title>构造函数是否定于与其成员变量的默认初始化值</title>
-    <url>/2022/03/25/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E5%AE%9A%E4%BA%8E%E4%B8%8E%E5%85%B6%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%9A%84%E9%BB%98%E8%AE%A4%E5%88%9D%E5%A7%8B%E5%8C%96%E5%80%BC/</url>
+    <url>/2022/03/25/C++/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E5%AE%9A%E4%BA%8E%E4%B8%8E%E5%85%B6%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%9A%84%E9%BB%98%E8%AE%A4%E5%88%9D%E5%A7%8B%E5%8C%96%E5%80%BC/</url>
     <content><![CDATA[<h1 id="未定义构造函数"><a href="#未定义构造函数" class="headerlink" title="未定义构造函数"></a>未定义构造函数</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 未定义构造函数</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> _member;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 全局区: 初始化为0</span></span><br><span class="line">A g_a;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 栈: 使用变量时编译报错</span></span><br><span class="line">    A a;</span><br><span class="line">    <span class="comment">// 堆: 未初始化</span></span><br><span class="line">    A* p1 = <span class="keyword">new</span> A;</span><br><span class="line">    <span class="comment">// 堆: 初始化为0</span></span><br><span class="line">    A* p2 = <span class="keyword">new</span> <span class="built_in">A</span>();</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; g_a._member &lt;&lt; endl;    <span class="comment">// 0</span></span><br><span class="line">    <span class="comment">// 直接编译报错: error C4700: uninitialized local variable &#x27;a&#x27; used</span></span><br><span class="line">    <span class="comment">// cout &lt;&lt; a._member &lt;&lt; endl;</span></span><br><span class="line">    cout &lt;&lt; p1-&gt;_member &lt;&lt; endl;    <span class="comment">// -842150451</span></span><br><span class="line">    cout &lt;&lt; p2-&gt;_member &lt;&lt; endl;    <span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h1 id="定义空的构造函数"><a href="#定义空的构造函数" class="headerlink" title="定义空的构造函数"></a>定义空的构造函数</h1><ul>
@@ -875,7 +785,7 @@
   </entry>
   <entry>
     <title>用于数组的结构化绑定声明</title>
-    <url>/2022/03/31/%E7%94%A8%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A%E5%A3%B0%E6%98%8E/</url>
+    <url>/2022/03/31/C++/%E7%94%A8%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A%E5%A3%B0%E6%98%8E/</url>
     <content><![CDATA[<h1 id="用于数组的结构化绑定声明"><a href="#用于数组的结构化绑定声明" class="headerlink" title="用于数组的结构化绑定声明"></a>用于数组的结构化绑定声明</h1><ul>
 <li>C++17：结构化绑定声明是一个声明语句，意味着声明了一些标识符并对标识符做了初始化，将制定的一些名字绑定到初始化器的子对象或者元素上</li>
 </ul>
@@ -888,7 +798,7 @@
   </entry>
   <entry>
     <title>类内就地初始化</title>
-    <url>/2022/03/08/%E7%B1%BB%E5%86%85%E5%B0%B1%E5%9C%B0%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
+    <url>/2022/03/08/C++/%E7%B1%BB%E5%86%85%E5%B0%B1%E5%9C%B0%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
     <content><![CDATA[<h1 id="类内就地初始化"><a href="#类内就地初始化" class="headerlink" title="类内就地初始化"></a>类内就地初始化</h1><ul>
 <li>C++03：只有静态常量整形成员才能在类中就地初始化</li>
 <li>C++11：非静态成员可以在它声明的时候初始化，类内初始值的限制：或者放在花括号里，或者放在等号右边，不能使用圆括号</li>
@@ -915,7 +825,7 @@
   </entry>
   <entry>
     <title>继承基类的构造函数</title>
-    <url>/2022/03/09/%E7%BB%A7%E6%89%BF%E5%9F%BA%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</url>
+    <url>/2022/03/09/C++/%E7%BB%A7%E6%89%BF%E5%9F%BA%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h1 id="继承基类的构造函数"><a href="#继承基类的构造函数" class="headerlink" title="继承基类的构造函数"></a>继承基类的构造函数</h1><ul>
 <li>C++11：派生类不能继承的特殊函数：析构函数和友元函数</li>
 <li>继承基类的构造函数</li>
@@ -935,7 +845,7 @@
   </entry>
   <entry>
     <title>菱形继承</title>
-    <url>/2022/03/25/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF/</url>
+    <url>/2022/03/25/C++/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF/</url>
     <content><![CDATA[<h1 id="菱形继承"><a href="#菱形继承" class="headerlink" title="菱形继承"></a>菱形继承</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> a_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> :</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">C</span> :</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> c_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B, C &#123;</span><br><span class="line">    <span class="keyword">int</span> d_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时 sizeof(D) = 20</span></span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -951,8 +861,31 @@
       </categories>
   </entry>
   <entry>
+    <title>运算符重载</title>
+    <url>/2022/03/25/C++/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/</url>
+    <content><![CDATA[<h1 id="运算符重载"><a href="#运算符重载" class="headerlink" title="运算符重载"></a>运算符重载</h1><ul>
+<li>第一个版本</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) : <span class="built_in">x_</span>(x), <span class="built_in">y_</span>(y) &#123;&#125;</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        x_ = point.x_;</span><br><span class="line">        y_ = point.y_;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point <span class="keyword">operator</span>+(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Point</span>(x_ + point.x_, y_ + point.y_);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> x_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> y_ = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Point p1&#123; <span class="number">10</span>, <span class="number">20</span> &#125;;</span><br><span class="line">    Point p2&#123; <span class="number">20</span>, <span class="number">30</span> &#125;;</span><br><span class="line">    Point p3&#123; <span class="number">30</span>, <span class="number">40</span> &#125;;</span><br><span class="line"></span><br><span class="line">    p3 = p1 + p2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当写成(p1 + p2) = p3;时，将p3赋值给一个p1 + p2的临时对象无意义，希望报错，可以返回const Point类型，第二个版本</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) : <span class="built_in">x_</span>(x), <span class="built_in">y_</span>(y) &#123;&#125;</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        x_ = point.x_;</span><br><span class="line">        y_ = point.y_;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> Point <span class="keyword">operator</span>+(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Point</span>(x_ + point.x_, y_ + point.y_);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> x_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> y_ = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当写成Point p4 = p1 + p2 + p3;，p1 + p2返回的是一个const对象，继续调用operator+，只能调用const成员函数，继续修改为const成员函数，第三个版本</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) : <span class="built_in">x_</span>(x), <span class="built_in">y_</span>(y) &#123;&#125;</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        x_ = point.x_;</span><br><span class="line">        y_ = point.y_;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> Point <span class="keyword">operator</span>+(<span class="keyword">const</span> Point&amp; point) <span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Point</span>(x_ + point.x_, y_ + point.y_);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> x_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> y_ = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>迭代器</title>
-    <url>/2022/02/06/%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
+    <url>/2022/02/06/C++/%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
     <content><![CDATA[<h1 id="迭代器使用"><a href="#迭代器使用" class="headerlink" title="迭代器使用"></a>迭代器使用</h1><ul>
 <li>提供对对象的间接访问，所有标准容器都可以使用迭代器，但是仅有少数几种才能同时支持下标运算符</li>
 <li>二分搜索例子</li>
@@ -977,7 +910,7 @@
   </entry>
   <entry>
     <title>静态成员</title>
-    <url>/2022/03/09/%E9%9D%99%E6%80%81%E6%88%90%E5%91%98/</url>
+    <url>/2022/03/09/C++/%E9%9D%99%E6%80%81%E6%88%90%E5%91%98/</url>
     <content><![CDATA[<h1 id="静态成员"><a href="#静态成员" class="headerlink" title="静态成员"></a>静态成员</h1><ul>
 <li>静态成员的声明：在类定义中，关键字static声明不绑定到类实例的成员</li>
 <li>静态成员的定义：声明为constexpr类型的静态数据成员必须在类中声明并初始化，自C++17起，可不在类外定义；声明为inline（C++17起）或者const int类型的静态数据成员可以在类中声明并初始化；其他须在类外定义并初始化，且不带static关键字</li>
@@ -998,31 +931,8 @@
       </tags>
   </entry>
   <entry>
-    <title>运算符重载</title>
-    <url>/2022/03/25/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/</url>
-    <content><![CDATA[<h1 id="运算符重载"><a href="#运算符重载" class="headerlink" title="运算符重载"></a>运算符重载</h1><ul>
-<li>第一个版本</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) : <span class="built_in">x_</span>(x), <span class="built_in">y_</span>(y) &#123;&#125;</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        x_ = point.x_;</span><br><span class="line">        y_ = point.y_;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point <span class="keyword">operator</span>+(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Point</span>(x_ + point.x_, y_ + point.y_);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> x_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> y_ = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Point p1&#123; <span class="number">10</span>, <span class="number">20</span> &#125;;</span><br><span class="line">    Point p2&#123; <span class="number">20</span>, <span class="number">30</span> &#125;;</span><br><span class="line">    Point p3&#123; <span class="number">30</span>, <span class="number">40</span> &#125;;</span><br><span class="line"></span><br><span class="line">    p3 = p1 + p2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>当写成(p1 + p2) = p3;时，将p3赋值给一个p1 + p2的临时对象无意义，希望报错，可以返回const Point类型，第二个版本</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) : <span class="built_in">x_</span>(x), <span class="built_in">y_</span>(y) &#123;&#125;</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        x_ = point.x_;</span><br><span class="line">        y_ = point.y_;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> Point <span class="keyword">operator</span>+(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Point</span>(x_ + point.x_, y_ + point.y_);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> x_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> y_ = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>当写成Point p4 = p1 + p2 + p3;，p1 + p2返回的是一个const对象，继续调用operator+，只能调用const成员函数，继续修改为const成员函数，第三个版本</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) : <span class="built_in">x_</span>(x), <span class="built_in">y_</span>(y) &#123;&#125;</span><br><span class="line">    <span class="built_in">Point</span>(<span class="keyword">const</span> Point&amp; point) &#123;</span><br><span class="line">        x_ = point.x_;</span><br><span class="line">        y_ = point.y_;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> Point <span class="keyword">operator</span>+(<span class="keyword">const</span> Point&amp; point) <span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Point</span>(x_ + point.x_, y_ + point.y_);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> x_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> y_ = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>默认构造函数是否自动生成</title>
-    <url>/2022/03/24/%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/</url>
+    <url>/2022/03/24/C++/%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/</url>
     <content><![CDATA[<h1 id="默认构造函数是否自动生成"><a href="#默认构造函数是否自动生成" class="headerlink" title="默认构造函数是否自动生成"></a>默认构造函数是否自动生成</h1><ul>
 <li>只有在某些特定情况下，编译器才会为类生成空的无参构造函数，并不是说默认情况下，编译器会为每一个类生成空的无参构造函数</li>
 </ul>
@@ -1043,6 +953,333 @@
       </categories>
       <tags>
         <tag>默认构造函数</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo+Github搭建个人博客</title>
+    <url>/2022/02/02/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h1><ul>
+<li>Hexo需要Node.js支持</li>
+<li>Node.js下载地址：<a href="https://nodejs.org/en/">nodejs.org</a></li>
+<li>安装完以后会有两个组件，Node.js + npm包管理器</li>
+</ul>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">$ <span class="keyword">node</span> <span class="title">-v</span></span><br><span class="line">v16.<span class="number">13.1</span></span><br><span class="line"></span><br><span class="line">$ npm -v</span><br><span class="line"><span class="number">8.1</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="安装cnpm，淘宝镜像源"><a href="#安装cnpm，淘宝镜像源" class="headerlink" title="安装cnpm，淘宝镜像源"></a>安装cnpm，淘宝镜像源</h1><ul>
+<li>借助npm安装Hexo博客框架，但由于国内镜像源速度慢，可以利用npm安装一个cnpm，淘宝的源</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https:<span class="regexp">//</span>registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105234517559.png"></p>
+<h1 id="使用cnpm安装Hexo博客"><a href="#使用cnpm安装Hexo博客" class="headerlink" title="使用cnpm安装Hexo博客"></a>使用cnpm安装Hexo博客</h1><figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ cnpm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235001374.png"></p>
+<h1 id="使用Hexo搭建博客"><a href="#使用Hexo搭建博客" class="headerlink" title="使用Hexo搭建博客"></a>使用Hexo搭建博客</h1><ul>
+<li>创建博客目录</li>
+<li>初始化博客</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">init</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235806763.png"></p>
+<ul>
+<li>启动博客</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220105235937501.png"></p>
+<ul>
+<li>浏览器访问<a href="http://localhost:4000/">http://localhost:4000/</a></li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000154817.png"></p>
+<ul>
+<li>新建一篇博客，并编辑</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo n <span class="string">&quot;My First Blog&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106000542115.png"></p>
+<ul>
+<li>清理，重新生成，并启动博客</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo clean</span><br><span class="line"><span class="variable">$ </span>hexo g</span><br><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001429254.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106001505606.png"></p>
+<h1 id="将博客部署到远端，比如GitHub"><a href="#将博客部署到远端，比如GitHub" class="headerlink" title="将博客部署到远端，比如GitHub"></a>将博客部署到远端，比如GitHub</h1><ul>
+<li>创建一个新的仓库，注意：仓库名必须为GitHub用户名+github.io</li>
+<li>使用cnpm安装git部署插件</li>
+</ul>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">$ cnpm install <span class="comment">--save hexo-deployer-git</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220106002928759.png"></p>
+<ul>
+<li>修改博客目录下的_config.yml</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230537645.png"></p>
+<ul>
+<li>部署到远端</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo d</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>会提示你输入GitHub用户名和密码，但是重点来了，这里试了好几次，明明用户名和密码都正确，就是部署不上去，提示Authentication failed &amp; Error: Spawn failed</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117230617045.png"></p>
+<ul>
+<li>不知道是不是HTTPS的问题，不过以前也确实没用过HTTPS的方式，又尝试了SSH的方式，修改如下，注意如果以前没有在GitHub上添加过SSH Keys的话需要添加下，参考链接：<a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generating a new SSH key and adding it to the ssh-agent</a></li>
+<li>重新修改_config.yml如下</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231656787.png"></p>
+<ul>
+<li>重新部署成功</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117231858319.png"></p>
+<ul>
+<li>将仓库地址复制到浏览器中打开，就可以正常打开个人博客</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/blog/image-20220117232211582.png"></p>
+]]></content>
+      <categories>
+        <category>博客搭建</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Chap01_计算机网络和因特网</title>
+    <url>/2022/04/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap01_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%92%8C%E5%9B%A0%E7%89%B9%E7%BD%91/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220723232932841.png"></p>
+<h1 id="什么是因特网"><a href="#什么是因特网" class="headerlink" title="什么是因特网"></a>什么是因特网</h1><h2 id="具体构成描述"><a href="#具体构成描述" class="headerlink" title="具体构成描述"></a>具体构成描述</h2><ul>
+<li>所有传统的设备（桌面PC、Linux工作站以及所谓的服务器等），和非传统设备（便携机、智能手机、平板电脑等）都称主机（host）或端系统（end system）</li>
+<li>端系统通过通信链路（communication link）和分组交换机（packet switch）连接在一起</li>
+<li>当一台端系统要向另一台端系统发送数据时，发送端系统将数据分段，并为每段加上首部字节。由此形成的信息包用计算机网络的术语来说称为分组（packet）</li>
+<li>分组交换机的两种最主要类型：路由器（router）和链路层交换机（link-layer switch），链路层交换机通常用于接入网中，而路由器常用于网络核心中</li>
+<li>从发送端系统到接收端系统，一个分组所经历的一系列通信链路和分组交换机称为通过该网络的路径（route或path）</li>
+</ul>
+<h2 id="服务描述"><a href="#服务描述" class="headerlink" title="服务描述"></a>服务描述</h2><ul>
+<li>与因特网相连的端系统提供了一个套接字接口（socket interface），该接口规定了运行在一个端系统上的程序请求因特网基础设施向运行在另一个端系统上的特定目的程序交付数据的方式</li>
+</ul>
+<h2 id="什么是协议"><a href="#什么是协议" class="headerlink" title="什么是协议"></a>什么是协议</h2><ul>
+<li>协议（protocol）定义了在两个或多个通信实体之间交换的报文的格式和顺序，以及报文发送和/或接收一条报文或其他事件所采取的的动作</li>
+<li>在两台物理连接的计算机中，硬件实现的协议控制了在两块网络接口卡的“线上”的比特流；在端系统中，拥塞控制协议控制了在发送方和接收方之间传输的分组发送的速率；路由器中的协议决定了分组从源到目的地的路径</li>
+</ul>
+<h1 id="网络边缘"><a href="#网络边缘" class="headerlink" title="网络边缘"></a>网络边缘</h1><h2 id="接入网"><a href="#接入网" class="headerlink" title="接入网"></a>接入网</h2><ul>
+<li>接入网：指将端系统物理连接到其边缘路由器（edge router）的网络，边缘路由器是端系统到任何其它远程端系统的路径上的第一台路由器</li>
+<li>家庭接入：DSL、电缆、FTTH、拨号和卫星</li>
+<li>宽带住宅接入有两种最流行的类型：数字用户线（Digital Subscriber Line，DSL）和电缆。住户通常从提供本地电话接入的本地电话公司处获得DSL因特网接入。因此，当使用DSL时，用户的本地电话公司也是它的ISP。每个用户的DSL调制解调器使用现有的电话线与位于电话公司的本地中心局（CO）中的数字用户线接入复用器（DSLAM）交换数据</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220616232311968.png"></p>
+<ul>
+<li>DSL利用电话公司现有的本地电话基础设施，而电缆因特网接入（cable Internet access）利用了有线电视公司现有的有限电视基础设施。住宅从提供有线电视的公司获得了电缆因特网接入</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220616232627053.png"></p>
+<ul>
+<li>光纤到户（Fiber To The Home，FTTH），从本地中心局直接到家庭提供了一条光纤路径</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220616233020297.png"></p>
+<ul>
+<li>企业（和家庭）接入：以太网和WiFi</li>
+<li>广域无线接入：3G和LTE</li>
+</ul>
+<h2 id="物理媒体"><a href="#物理媒体" class="headerlink" title="物理媒体"></a>物理媒体</h2><ul>
+<li>对于每个发射器 - 接收器对，通过跨越一种物理媒体传播电磁波或光脉冲来发送比特数据</li>
+<li>常见的物理媒体：双绞铜线、同轴电缆、光纤、陆地无线电信道、卫星无线电信道</li>
+</ul>
+<h1 id="网络核心"><a href="#网络核心" class="headerlink" title="网络核心"></a>网络核心</h1><h2 id="分组交换"><a href="#分组交换" class="headerlink" title="分组交换"></a>分组交换</h2><ul>
+<li>在各种网络应用中，端系统彼此交换报文（message）。报文能够包含协议设计者需要的任何东西，可以执行一种控制功能，也可以包含数据。为了从源端系统向目的端系统发送一个报文，源将报文划分为较小的数据块，称之为分组（packet）。在源和目的地之间，每个分组都通过通信链路和分组交换机（packet switch）传送。（交换机主要有两类：路由器（router）和链路层交换机（link-layer switch）。）</li>
+<li>存储转发传输：多数存储交换机在链路的输入端使用存储转发传输（store-and-forward transmission）机制。存储转发传输是指在交换机能够开始向输出链路传输该分组的第一个比特之前，必须收到整个分组</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220619211857314.png"></p>
+<ul>
+<li><p>排队时延和分组丢失：每台分组交换机有多条链路与之相连。对于每条相连的链路，该分组交换机具有一个输出缓存（output buffer，也称为输出队列（output queue）），它用于存储路由器准备发往那条链路的分组。该输出缓存在分组交换中起着重要的作用。如果到达的分组需要传输到某条链路，但发现该链路正忙于传输其他分组，该到达分组必须在输出缓存中等待。因此，除了存储转发时延以外，分组还要承受输出缓存的排队时延（queuing delay）。这些时延是变化的，变化的程度取决于网络的拥塞程度。因为缓存空间的大小是有限的，一个到达的分组可能发现该缓存已被其他等待传输的分组完全充满了。在此情况下，将出现分组丢失（丢包）（packet loss），到达的分组或已经排队的分组之一将被丢弃</p>
+</li>
+<li><p>转发表：在因特网中，每个端系统具有一个称为IP地址的地址。当源主机要向目的端系统发送一个分组时，源在该分组的首部包含了目的地的IP地址。如同邮政地址那样，该地址具有一种等级结构。当一个分组到达网络中的路由器时，路由器检查该分组的目的地址的一部分，并向一台相邻路由器转发该分组。更特别的是，每台路由器具有一个转发表（forwarding table），用于将目的地址（或目的地址的一部分）映射成为输出链路。当某分组到达一台路由器时，路由器检查该地址，并用这个目的地址搜索其转发表，以发现适当的出链路，路由器则将分组导向该出链路</p>
+</li>
+<li><p>路由选择协议（routing protocol），用于自动地设置这些转发表。一个路由选择协议可以决定从每台路由器到每个目的地址的最短路径，并使用这些最短路径来配置路由器中的转发表</p>
+</li>
+</ul>
+<h2 id="电路交换"><a href="#电路交换" class="headerlink" title="电路交换"></a>电路交换</h2><ul>
+<li>通过网络链路和交换机移动数据有两种基本方法：电路交换（circuit switching）和分组交换（packet switching）</li>
+<li>在电路交换网络中，在端系统间通信会话期间，预留了端系统沿路径通信所需要的资源（缓存，链路传输速率）。在分组交换中，这些资源则不是预留的，会话的报文按需使用这些资源，其后果可能是不得不等待（即排队）接入通信链路</li>
+<li>链路中的电路是通过频分复用或时分复用来实现</li>
+</ul>
+<h2 id="网络的网络"><a href="#网络的网络" class="headerlink" title="网络的网络"></a>网络的网络</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220712235442973.png"></p>
+<h1 id="分组交换网络中的时延、丢包和吞吐量"><a href="#分组交换网络中的时延、丢包和吞吐量" class="headerlink" title="分组交换网络中的时延、丢包和吞吐量"></a>分组交换网络中的时延、丢包和吞吐量</h1><h2 id="分组交换网中的时延概述"><a href="#分组交换网中的时延概述" class="headerlink" title="分组交换网中的时延概述"></a>分组交换网中的时延概述</h2><ul>
+<li>当一个分组从一个节点（主机或路由器）沿着这条路径到后继节点（主机或路由器），该分组在沿途的每个节点经受了几种不同的时延。这些时延最为重要的是节点处理时延、排队时延、传输时延和传播时延</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220723010027829.png"></p>
+<ul>
+<li>作为源和目的地之间的端到端路由的一部分，一个分组从上游节点通过路由器A向路由器B发送。我们的目标是在路由器A刻画出节点时延。值得注意的是，路由器A具有通往路由器B的出链路。该链路前面有一个队列（也称为缓存）。当分组从上游节点到达路由器A时，路由器A检查该分组的首部以决定它的适当出链路，并将该分组导向该链路。在这个例子传播中，对该分组的出链路是通向路由器B的那条链路。仅当在该链路没有其他分组正在传输并且没有其他分组排在该队列前面时，才能在这条链路上传输该分组；如果该链路当前正繁忙或有其他分组已经在该链路上排队，则新到达的分组将加入排队</li>
+<li>处理时延：检查分组首部和决定将该分组导向何处所需要的时间是处理时延的一部分。处理时延也能够包括其他因素，如检查比特级别的差错所需要的时间，该差错出现在从上游节点向路由器A传输这些分组比特的过程中。高速路由器的处理时延通常是微秒或更低的数量级。在这种节点处理之后，路由器将该分组引向通往路由器B链路之前的队列</li>
+<li>排队时延：在队列中，当分组在链路上等待传输时，它经受排队时延。一个特定分组的排队时延长度将取决于先期到达的正在排队等待向链路传输的分组数量。如果该队列是空的，并且当前没有其他分组正在传输，则该分组的排队时延为0。另一方面，如果流量很大，并且许多其他分组也在等待传输，该排队时延将很长。我们将很快看到，到达分组期待发现的分组数量是到达该队列的流量的强度和性质的函数。实际的排队时延可以是毫秒到微秒量级</li>
+<li>传输时延：假定分组以先到先服务方式传输，这在分组交换网中是常见的方式，仅当所有已经到达的分组被传输后，才能传输刚到达的分组。用L比特表示该分组的长度，用R bps（即b/s）表示从路由器A到路由器B的链路传输速率。例如，对于一条10Mbps的以太网链路，速率R=10Mbps；对于100Mbps的以太网链路，速率R=100Mbps。传输时延是L/R。这是将所有分组的比特推向链路（即传输，或者说发射）所需要的时间。实际的传输时延通常在毫秒到微秒量级</li>
+<li>传播时延：一且一个比特被推向链路，该比特需要向路由器B传播。从该链路的起点到路由器B传播所需要的时间是传播时延。该比特以该链路的传播速率传播。该传播速率取决于该链路的物理媒体（即光纤、双绞铜线等），其速率范围等于或略小于光速。该传播时延等于两台路由器之间的距离除以传播速率。即传播时延是d/s，其中d是路由器A和路由器B之间的距离，s是该链路的传播速率。一且该分组的最后一个比特传播到节点B，该比特及前面的所有比特被存储于路由器B。整个过程将随着路由器B执行转发而持续下去。在广域网中，传播时延为毫秒量级</li>
+<li>传输时延和传播时延的比较：传输时延是路由器推出分组所需要的时间，它是分组长度和链路传输速率的函数，而与两台路由器之间的距离无关。另一方面，传播时延是一个比特从一台路由器传播到另一台路由器所需要的时间，它是两台路由器之间距离的函数，而与分组长度或链路传输速率无关</li>
+</ul>
+<h2 id="排队时延和丢包"><a href="#排队时延和丢包" class="headerlink" title="排队时延和丢包"></a>排队时延和丢包</h2><ul>
+<li>排队时延很大程度取决于流量到达该队列的速率、链路的传输速率和到达流量的性质，即流量是周期性到达还是以突发性到达</li>
+<li>设计系统时流量强度不能大于1，随着流量强度接近1，平均排队时延迅速增加</li>
+<li>丢包：因为排队容量是有限的，随着流量强度接近1，排队时延并不真正趋于无穷大。相反，到达的分组将发现一个满的队列。由于没有地方存储这个分组，路由器将丢弃该分组</li>
+</ul>
+<h2 id="端到端时延"><a href="#端到端时延" class="headerlink" title="端到端时延"></a>端到端时延</h2><ul>
+<li>Traceroute：能够在因特网主机上运行。当用户指定一个目的主机名字时，源主机中的该程序朝着目的地发送多个特殊的分组。当这些分组向着目的地传送时，它们通过一系列路由器。当路由器接收到这些特殊分组之一时，它向源端回送一个短报文，该报文包括路由器的名字和地址</li>
+</ul>
+<h2 id="计算机网络中的吞吐量"><a href="#计算机网络中的吞吐量" class="headerlink" title="计算机网络中的吞吐量"></a>计算机网络中的吞吐量</h2><ul>
+<li>考虑从主机A到主机B跨越计算机网络传送一个大文件。在任何时间瞬间的瞬时吞吐量是主机B接收到该文件的速率（以bps计）</li>
+<li>如果该文件由F比特组成，主机B接收到所有F比特用去T秒，则文件传送的平均吞吐量是F/T bps</li>
+</ul>
+<h1 id="协议层次及其服务模型"><a href="#协议层次及其服务模型" class="headerlink" title="协议层次及其服务模型"></a>协议层次及其服务模型</h1><h2 id="分层的体系结构"><a href="#分层的体系结构" class="headerlink" title="分层的体系结构"></a>分层的体系结构</h2><ul>
+<li>网络设计者以分层（layer）的方式组织协议以及实现这些协议的网络硬件和软件，每层通过在该层执行某些动作或使用下层的服务来提供服务。例如，由第n层提供的服务可能包括报文从网络一边到另一边的可靠交付，这可能是通过使用第n-1层的边缘到边缘的不可靠报文传送服务，加上第n层的检测重传丢失报文的功能来实现的</li>
+<li>各层的所有协议被称为协议栈（protocol stack），因特网的协议栈由5个层次组成：物理层、链路层、网络层、传输层和应用层</li>
+<li>应用层：应用层是网络应用程序及它们的应用层协议存留的地方。应用层协议分布在多个端系统上，而一个端系统的应用程序使用协议与另一个端系统中的应用程序交换信息分组。我们把这种位于应用层信息分组称为报文（message）</li>
+<li>运输层：因特网的运输层在应用程序端点之间传送应用层报文。在因特网中，有两种运输协议，即TCP和UDP，利用其中的任一个都能运输应用层报文。TCP向它的应用程序提供了面向连接的服务。这种服务包括了应用层报文向目的地的确保传递和流量控制（即发送方/接收方速率匹配）。TCP也将长报文划分为短报文，并提供拥塞控制机制，因此当网络拥塞时，源抑制其传输速率。UDP协议向它的应用程序提供无连接服务。这是一种不提供不必要服务的服务，没有可靠性，没有流量控制，也没有拥塞控制。我们把运输层的分组称为报文段（segment）</li>
+<li>网络层：因特网的网络层负责将称为数据报（datagram）的网络层分组从一台主机移动到另一台主机。在一台源主机中的因特网运输层协议（TCP或UDP）向网络层递交运输层报文段和目的地址。因特网的网络层包括著名的网际协议IP，该协议定义了在数据报中的各个字段以及端系统和路由器如何作用于这些字段。IP仅有一个，所有具有网络层的因特网组件必须运行IP。因特网的网络层也包括决定路由的路由选择协议，它根据该路由将数据报从源传输到目的地</li>
+<li>链路层：因特网的网络层通过源和目的地之间的一系列路由器路由数据报。为了将分组从一个节点（主机或路由器）移动到路径上的下一个节点，网络层必须依靠该链路层的服务。特别是在每个节点，网络层将数据报下传给链路层，链路层沿着路径将数据报传递给下一个节点。在该下一个节点，链路层将数据报上传给网络层。由链路层提供的服务取决于应用于该链路的特定链路层协议。例如，某些协议基于链路提供可靠传递，从传输节点跨越一条链路到接收节点。值得注意的是，这种可靠的传递服务不同于TCP的可靠传递服务，TCP提供从一个端系统到另一个端系统的可靠交付。链路层的例子包括以太网、WiFi和电缆接入网的DOCSIS协议。因为数据报从源到目的地传送通常需要经过几条链路，一个数据报可能被沿途不同链路上的不同链路层协议处理。例如，一个数据报可能被一段链路上的以太网和下一段链路上的PPP所处理。网络层将受到来自每个不同的链路层协议的不同服务。我们把链路层分组称为顿（frame）</li>
+<li>物理层：虽然链路层的任务是将整个帧从一个网络元素移动到邻近的网络元素，而物理层的任务是将该帧中的一个个比特从一个节点移动到下一个节点</li>
+</ul>
+<h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220723232932840.png"></p>
+<ul>
+<li>在发送主机端，一个应用层报文（application-layer message）被传送给运输层。在最简单的情况下，运输层收取到报文并附上附加信息（所谓运输层首部信息），该首部将被接收端的运输层使用。应用层报文和运输层首部信息一道构成了运输层报文段（transport-layer segment）。运输层报文段因此封装了应用层报文。附加的信息也许包括了下列信息：允许接收端运输层向上向适当的应用程序交付报文的信息；差错检测位信息，该信息让接收方能够判断报文中的比特是否在途中已被改变。运输层则向网络层传递该报文段，网络层增加了如源和目的端系统地址等网络层首部信息，生成了网络层数据报（network-layer datagram）。该数据报接下来被传递给链路层，链路层（自然而然地）增加它自己的链路层首部信息并生成链路层顿（link-layer frame）。在每一层，一个分组具有两种类型的字段：首部字段和有效载荷字段（payload field）。有效载荷通常是来自上一层的分组</li>
+</ul>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Chap02_应用层</title>
+    <url>/2022/04/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap02_%E5%BA%94%E7%94%A8%E5%B1%82/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805220509153.png"></p>
+<h1 id="应用层协议原理"><a href="#应用层协议原理" class="headerlink" title="应用层协议原理"></a>应用层协议原理</h1><h2 id="网络应用程序体系结构"><a href="#网络应用程序体系结构" class="headerlink" title="网络应用程序体系结构"></a>网络应用程序体系结构</h2><ul>
+<li>应用程序体系结构：客户服务器（CS）体系结构或对等（P2P）体系结构</li>
+<li>在一个P2P体系结构（P2P architecture）中，对位于数据中心的专用服务器有最小的（或者没有）依赖。相反，应用程序在间断连接的主机对之间使用直接通信，这些主机对被称为对等方</li>
+</ul>
+<h2 id="进程通信"><a href="#进程通信" class="headerlink" title="进程通信"></a>进程通信</h2><ul>
+<li>进程与计算机网络之间的接口</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220804231238194.png"></p>
+<ul>
+<li>图2-3显示了两个经过因特网通信的进程之间的套接字通信（图2-3中假定由该进程使用的下面运输层协议是因特网的TCP协议）。如该图所示，套接字是同一台主机内应用层与运输层之间的接口。由于该套接字是建立网络应用程序的可编程接口，因此套接字也称为应用程序和网络之间的应用程序编程接口（Application Programming Interface，API）。应用程序开发者可以控制套接字在应用层端的一切，但是对该套接字的运输层端几乎没有控制权。应用程序开发者对于运输层的控制仅限于：选择运输层协议；也许能设定几个运输层参数，如最大缓存和最大报文段长度等。一旦应用程序开发者选择了一个运输层协议（如果可供选择的话），则应用程序就建立在由该协议提供的运输层服务之上</li>
+<li>进程寻址：在一台主机上运行的进程为了向在另一台主机上运行的进程发送分组，接收进程需要有一个地址。为了标识该接收进程，需要定义两种信息：主机的地址和在目的主机中指定接收进程的标识符。在因特网中，主机由其IP地址（IP address）标识。除了知道报文发送目的地的主机地址外，发送进程还必须指定运行在接收主机上的接收进程（更具体地说，接收套接字）。因为一般而言一台主机能够运行许多网络应用，这些信息是需要的。目的地端口号（port number）用于这个目的</li>
+</ul>
+<h2 id="可供应用程序使用的运输服务"><a href="#可供应用程序使用的运输服务" class="headerlink" title="可供应用程序使用的运输服务"></a>可供应用程序使用的运输服务</h2><ul>
+<li>大体从四个方面对应用程序服务要求进行分类：可靠数据传输、吞吐量、定时和安全性</li>
+<li>可靠数据传输：分组在计算机网络中可能丢失。例如，分组能够使路由器中的缓存溢出，或者当分组中的某些比特损坏后可能被丢弃。像电子邮件、文件传输、远程主机访问、Web文档传输以及金融应用等这样的应用，数据丢失可能会造成灾难性的后果。因此，为了支持这些应用，必须做一些工作以确保由应用程序的一端发送的数据正确、完全地交付给该应用程序的另一端。如果一个协议提供了这样的确保数据交付服务，就认为提供了可靠数据传输（reliable data transfer）。运输层协议能够潜在地向应用程序提供的一个重要服务是进程到进程的可靠数据传输。当一个运输协议提供这种服务时，发送进程只要将其数据传递进套接字，就可以完全相信该数据将能无差错地到达接收进程。当一个运输层协议不提供可靠数据传输时，由发送进程发送的某些数据可能到达不了接收进程。这可能能被容忍丢失的应用（loss-tolerant application）所接受，最值得注意的是多媒体应用，如交谈式音频/视频，它们能够承受一定量的数据丢失</li>
+<li>吞吐量：运输层协议能够以某种特定的速率提供确保的可用吞吐量。具有吞吐量要求的应用程序被称为带宽敏感应用，如因特网电话应用程序、多媒体应用。而弹性应用能够根据当时可用的带宽或多或少地利用可供使用的吞吐量</li>
+<li>定时：运输层协议也能提供定时保证。例如，发送方注人进套接字中的每个比特到达接收方的套接字不迟于100ms</li>
+<li>安全性：运输协议能够为应用程序提供一种或多种安全性服务。例如，在发送主机中，运输协议能够加密由发送进程传输的所有数据，在接收主机中，运输层协议能够在将数据交付给接收进程之前解密这些数据</li>
+</ul>
+<h2 id="因特网提供的运输服务"><a href="#因特网提供的运输服务" class="headerlink" title="因特网提供的运输服务"></a>因特网提供的运输服务</h2><ul>
+<li>因特网为应用程序提供了两个运输层协议：即UDP和TCP。每个协议为调用它们的应用程序提供了不同的服务集合</li>
+<li>TCP服务：包括面向连接服务和可靠数据传输服务</li>
+<li>面向连接的服务：在应用层数据报文开始流动之前，TCP让客户和服务器互相交换运输层控制信息。这个所谓的握手过程提醒客户和服务器，让它们为大量分组的到来做好准备。在握手阶段后，一个TCP连接（TCP connection）就在两个进程的套接字之间建立了。这条连接是全双工的，即连接双方的进程可以在此连接上同时进行报文收发。当应用程序结束报文发送时，必须拆除该连接</li>
+<li>可靠的数据传送服务：通信进程能够依靠TCP，无差错、按适当顺序交付所有发送的数据。当应用程序的一端将字节流传进套接字时，它能够依靠TCP将相同的字节流交付给接收方的套接字，而没有字节的丢失和冗余</li>
+<li>TCP协议还具有拥塞控制机制，这种服务不一定能为通信进程带来直接好处，但能为因特网带来整体好处。当发送方和接收方之间的网络出现拥塞时，TCP的拥塞控制机制会抑制发送进程（客户或服务器）。TCP拥塞控制也试图限制每个TCP连接，使它们达到公平共享网络带宽的目的</li>
+<li>无论TCP还是UDP都没有提供任何加密机制，这就是说发送进程传进其套接字的数据，与经网络传送到目的进程的数据相同。因此，举例来说如果某发送进程以明文方式（即没有加密）发送了一个口令进入它的套接字，该明文口令将经过发送方与接收方之间的所有链路传送，这就可能在任何中间链路被唤探和发现。所以因特网界已经研制了TCP的加强版本，称为安全套接字层（Secure Sockets Layer，SSL）。用SSL加强后的TCP不仅能够做传统的TCP所能做的一切，而且提供了关键的进程到进程的安全性服务，包括加密、数据完整性和端点鉴别。SSL不是与TCP和UDP在相同层次上的第三种因特网运输协议，而是一种对TCP的加强，这种强化是在应用层上实现的</li>
+<li>UDP服务：UDP是一种不提供不必要服务的轻量级运输协议，它仅提供最小服务。UDP是无连接的，因此在两个进程通信前没有握手过程。UDP协议提供一种不可靠数据传送服务，也就是说，当进程将一个报文发送进UDP套接字时，UDP协议并不保证该报文将到达接收进程。不仅如此，到达接收进程的报文也可能是乱序到达的</li>
+<li>UDP没有包括拥塞控制机制，所以UDP的发送端可以用它选定的任何速率向其下层（网络层）注入数据。然而，值得注意的是实际端到端吞吐量可能小于该速率，这可能是因为中间链路的带宽受限或因为拥塞而造成的</li>
+</ul>
+<h2 id="应用层协议"><a href="#应用层协议" class="headerlink" title="应用层协议"></a>应用层协议</h2><ul>
+<li>应用层协议（application-layer protocol）定义了运行在不同端系统上的应用程序进程如何相互传递报文。应用层协议定义了：交换的报文类型，例如请求报文和响应报文。各种报文类型的语法，如报文中的各个字段及这些字段是如何描述的。字段的语义，即这些字段中的信息的含义。确定一个进程何时以及如何发送报文，对报文进行响应的规则</li>
+</ul>
+<h1 id="Web和HTTP"><a href="#Web和HTTP" class="headerlink" title="Web和HTTP"></a>Web和HTTP</h1><h2 id="HTTP概况"><a href="#HTTP概况" class="headerlink" title="HTTP概况"></a>HTTP概况</h2><ul>
+<li>Web的应用层协议是超文本传输协议（HyperText Transfer Protocol，HTTP）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805203503930.png"></p>
+<ul>
+<li>HTTP使用TCP作为它的支撑运输协议（而不是在UDP上运行）。HTTP客户首先发起一个与服务器的TCP连接。一旦连接建立，该浏览器和服务器进程就可以通过套接字接口访问TCP。客户向它的套接字接口发送HTTP请求报文并从它的套接字接口接收HTTP响应报文。类似地，服务器从它的套接字接口接收HTTP请求报文和向它的套接字接口发送HTTP响应报文。一且客户向它的套接字接口发送了一个请求报文，该报文就脱离了客户控制并进入TCP的控制。TCP为HTTP提供可靠数据传输服务。这意味着，一个客户进程发出的每个HTTP请求报文最终能完整地到达服务器；类似地，服务器进程发出的每个HTTP响应报文最终能完整地到达客户。即HTTP协议不用担心数据丢失，也不关注TCP从网络的数据丢失和乱序故障中恢复的细节。那是TCP以及协议栈较低层协议的工作</li>
+<li>HTTP服务器并不保存关于客户的任何信息，HTTP是一个无状态协议（slateless protocol）</li>
+</ul>
+<h2 id="非持续连接和持续连接"><a href="#非持续连接和持续连接" class="headerlink" title="非持续连接和持续连接"></a>非持续连接和持续连接</h2><ul>
+<li>在许多因特网应用程序中，客户和服务器在一个相当长的时间范围内通信，其中客户发出一系列请求并且服务器对每个请求进行响应。依据应用程序以及该应用程序的使用方式，这一系列请求可以以规则的间隔周期性地或者间断性地一个接一个发出。当这种客户－服务器的交互是经TCP进行的，应用程序的研制者就需要做一个重要决定，即每个请求/响应对是经一个单独的TCP连接发送，还是所有的请求及其响应经相同的TCP连接发送呢？采用前一种方法，该应用程序被称为使用非持续连接（non-persistent connection）；采用后一种方法，该应用程序被称为使用持续连接（persistent connection）</li>
+<li>HTTP既能够使用非持续连接，也能够使用持续连接。尽管HTTP在其默认方式下使用持续连接，HTTP客户和服务器也能配置成使用非持续连接</li>
+<li>采用非持续连接的HTTP</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805204631299.png"></p>
+<ul>
+<li>非持续连接的使用，其中每个TCP连接在服务器发送一个对象后关闭，即该连接并不为其他的对象而持续下来。值得注意的是每个TCP连接只传输一个请求报文和一个响应报文。因此在本例中，当用户请求该Web页面时，要产生11个TCP连接</li>
+<li>非持续连接有一些缺点：第一，必须为每一个请求的对象建立和维护一个全新的连接。对于每个这样的连接，在客户和服务器中都要分配TCP的缓冲区和保持TCP变量，这给Web服务器带来了严重的负担，因为一台Web服务器可能同时服务于数以百计不同的客户的请求。第二，每一个对象经受两倍RTT的交付时延，即一个RTT用于创建TCP，另一个RTT用于请求和接收一个对象</li>
+<li>采用持续连接的HTTP：在采用HTTP1.1持续连接的情况下，服务器在发送响应后保持该TCP连接打开。在相同的客户与服务器之间，后续的请求和响应报文能够通过相同的连接进行传送。特别是，一个完整的Web页面（上例中的HTML基本文件加上10个图形）可以用单个持续TCP连接进行传送</li>
+</ul>
+<h2 id="HTTP报文格式"><a href="#HTTP报文格式" class="headerlink" title="HTTP报文格式"></a>HTTP报文格式</h2><ul>
+<li>HTTP请求报文</li>
+</ul>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> /somedir/page.html HTTP/<span class="number">1.1</span></span><br><span class="line">Host: www.someschool.edu</span><br><span class="line"><span class="keyword">Connection</span>: <span class="keyword">close</span></span><br><span class="line"><span class="keyword">User</span>-agent：Mozilla/<span class="number">5.0</span></span><br><span class="line">Accept-<span class="keyword">language</span>： fr</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>HTTP请求报文的第一行叫作请求行（request line），其后继的行叫作首部行（header line）。请求行有3个字段：方法字段、URL字段和HTTP版本字段。方法字段可以取几种不同的值，包括GET、POST、HEAD、PUT和DELETE。绝大部分的HTTP请求报文使用GET方法</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805205721367.png"></p>
+<ul>
+<li>HTTP响应报文</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">HTTP/1.1</span> <span class="number">200</span> <span class="string">OK</span></span><br><span class="line"><span class="attr">Connection:</span> <span class="string">close</span></span><br><span class="line"><span class="attr">Date:</span> <span class="string">Tue，</span> <span class="number">18</span> <span class="string">Aug</span> <span class="number">2015 15:44:04 </span><span class="string">GMT</span></span><br><span class="line"><span class="attr">Server:</span> <span class="string">Apache/2.2.3</span> <span class="string">（Centos）</span></span><br><span class="line"><span class="attr">Last-Modified:</span> <span class="string">Tuer</span> <span class="number">18</span> <span class="string">Aug</span> <span class="number">2015 15:11:03 </span><span class="string">GMT</span></span><br><span class="line"><span class="attr">Content-Length:</span> <span class="number">6821</span></span><br><span class="line"><span class="string">Content-Type：text/html</span></span><br><span class="line"><span class="string">(data</span> <span class="string">data</span> <span class="string">data</span> <span class="string">data</span> <span class="string">data</span> <span class="string">...)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>响应报文有三个部分：一个初始状态行（slatus line），6个首部行（header line），然后是实体体（entity body）。实体体部分是报文的主要部分，即它包含了所请求的对象本身（表示为data data data data data …）。状态行有3个字段：协议版本字段、状态码和相应状态信息。在这个例子中，状态行指示服务器正在使用HTTP/1.1，并且一切正常（即服务器已经找到并正在发送所请求的对象）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805210302360.png"></p>
+<h2 id="用户与服务器的交互：cookie"><a href="#用户与服务器的交互：cookie" class="headerlink" title="用户与服务器的交互：cookie"></a>用户与服务器的交互：cookie</h2><ul>
+<li>一个Web站点通常希望能够识别用户，可能是因为服务器希望限制用户的访问，或者因为它希望把内容与用户身份联系起来。为此，HTTP使用了cookie，cookie允许站点对用户进行跟踪。目前大多数商务Web站点都使用了cookie</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805210650673.png"></p>
+<h2 id="Web缓存"><a href="#Web缓存" class="headerlink" title="Web缓存"></a>Web缓存</h2><ul>
+<li>Web缓存器（Web cache）也叫代理服务器（proxy server），它是能够代表初始Web服务器来满足HTTP请求的网络实体。Web缓存器有自己的磁盘存储空间，并在存储空间中保存最近请求过的对象的副本</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805210937881.png"></p>
+<ul>
+<li>在因特网上部署Web缓存器有两个原因。首先，Web缓存器可以大大减少对客户请求的响应时间，特别是当客户与初始服务器之间的瓶颈带宽远低于客户与Web缓存器之间的瓶颈带宽时更是如此。如果在客户与Web缓存器之间有一个高速连接（情况常常如此），并且如果用户所请求的对象在Web缓存器上，则Web缓存器可以迅速将该对象交付给用户。其次，如我们马上用例子说明的那样，Web缓存器能够大大减少一个机构的接入链路到因特网的通信量。通过减少通信量，该机构就不必急于增加带宽，因此降低了费用。此外，Web缓存器能从整体上大大减低因特网上的Web流量，从而改善了所有应用的性能</li>
+</ul>
+<h2 id="条件GET方法"><a href="#条件GET方法" class="headerlink" title="条件GET方法"></a>条件GET方法</h2><ul>
+<li>尽管高速缓存能减少用户感受到的响应时间，但也引人了一个新的问题，即存放在缓存器中的对象副本可能是陈旧的。换句话说，保存在服务器中的对象自该副本缓存在客户上以后可能已经被修改了。幸运的是，HTTP协议有一种机制，允许缓存器证实它的对象是最新的。这种机制就是条件GET（conditional GET）方法。如果：请求报文使用GET方法；并且请求报文中包含一个”If-Modified-Since:”首部行。那么，这个HTTP请求报文就是一个条件GET请求报文</li>
+</ul>
+<h1 id="因特网中的电子邮件"><a href="#因特网中的电子邮件" class="headerlink" title="因特网中的电子邮件"></a>因特网中的电子邮件</h1><ul>
+<li>因特网电子邮件系统总体情况，有3个主要组成部分：用户代理（user agent）、邮件服务器（mail server）和简单邮件传输协议（Simple Mail Transfer Protocol，SMTP）</li>
+</ul>
+<h2 id="SMTP"><a href="#SMTP" class="headerlink" title="SMTP"></a>SMTP</h2><ul>
+<li>SMTP是因特网电子邮件的核心，用于从发送方的邮件服务器发送报文到接收方的邮件服务器</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805212401421.png"></p>
+<h2 id="与HTTP对比"><a href="#与HTTP对比" class="headerlink" title="与HTTP对比"></a>与HTTP对比</h2><ul>
+<li>这两个协议都用于从一台主机向另一台主机传送文件：HTTP从Web服务器向Web客户（通常是一个浏览器）传送文件（也称为对象）；SMTP从一个邮件服务器向另一个邮件服务器传送文件（即电子邮件报文）。当进行文件传送时，持续的HTTP和SMTP都使用持续连接。</li>
+<li>区别：HTTP主要是一个拉协议（pull protocol），即在方便的时候，某些人在Web服务器上装载信息，用户使用HTTP从该服务器拉取这些信息。另一方面，SMTP基本上是一个推协议（push protocol），即发送邮件服务器把文件推向接收邮件服务器</li>
+</ul>
+<h1 id="DNS：因特网的目的服务"><a href="#DNS：因特网的目的服务" class="headerlink" title="DNS：因特网的目的服务"></a>DNS：因特网的目的服务</h1><h2 id="DNS提供的服务"><a href="#DNS提供的服务" class="headerlink" title="DNS提供的服务"></a>DNS提供的服务</h2><ul>
+<li>识别主机有两种方式，通过主机名或者IP地址。需要一种能进行主机名到IP地址转换的目录服务。这就是域名系统（Domain Name System，DNS）的主要任务</li>
+<li>DNS：一个由分层的DNS服务器（DNS server）实现的分布式数据库；一个使得主机能够查询分布式数据库的应用层协议</li>
+<li>DNS服务器通常是运行BIND（Berkeley Internet Name Domain）软件的UNIX机器。DNS协议运行在UDP之上，使用53号端口</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805213943120.png"></p>
+<h2 id="DNS工作原理概述"><a href="#DNS工作原理概述" class="headerlink" title="DNS工作原理概述"></a>DNS工作原理概述</h2><ul>
+<li>运行在用户主机上的某些应用程序（如Web浏览器或邮件阅读器）需要将主机名转换为IP地址。这些应用程序将调用DNS的客户端，并指明需要被转换的主机名（在很多基于UNIX的机器上，应用程序为了执行这种转换需要调用函数gethostbyname()）。用户主机上的DNS接收到后，向网络中发送一个DNS查询报文。所有的DNS请求和回答报文使用UDP数据报经端口53发送。经过若干毫秒到若干秒的时延后，用户主机上的DNS接收到一个提供所希望映射的DNS回答报文。这个映射结果则被传递到调用DNS的应用程序。因此，从用户主机上调用应用程序的角度看，DNS是一个提供简单、直接的转换服务的黑盒子。但事实上，实现这个服务的黑盒子非常复杂，它由分布于全球的大量DNS服务器以及定义了DNS服务器与查询主机通信方式的应用层协议组成</li>
+<li>分布式、层次数据库</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805214241063.png"></p>
+<h1 id="P2P文件分发"><a href="#P2P文件分发" class="headerlink" title="P2P文件分发"></a>P2P文件分发</h1><ul>
+<li>从单一服务器向大量主机（称为对等方）分发一个大文件。在CS文件分发中，该服务器必须向每个对等方发送该文件的一个副本，即服务器承受了极大的负担，并且消耗了大量的服务器带宽。在P2P文件分发中，每个对等方能够向任何其他对等方重新分发它已经收到的该文件的任何部分，从而在分发过程中协助该服务器</li>
+<li>BitTorrent是一种用于文件分发的流行P2P协议。用BitTorremt的术语来讲，参与一个特定文件分发的所有对等方的集合被称为一个洪流（torrent）。在一个洪流中的对等方彼此下载等长度的文件块（chunk），典型的块长度为256KB。当一个对等方首次加人一个洪流时，它没有块。随着时间的流逝，它累积了越来越多的块。当它下载块时，也为其他对等方上载了多个块。一旦某对等方获得了整个文件，它也许（自私地）离开洪流，或（大公无私地）留在该洪流中并继续向其他对等方上载块。同时，任何对等方可能在任何时候仅具有块的子集就离开该洪流，并在以后重新加入该洪流中</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805214807153.png"></p>
+<h1 id="视频流和内容分发网"><a href="#视频流和内容分发网" class="headerlink" title="视频流和内容分发网"></a>视频流和内容分发网</h1><ul>
+<li>在HTTP流中，视频只是存储在HTTP服务器中作为一个普通的文件，每个文件有一个特定的URL。当用户要看该视频时，客户与服务器创建一个TCP连接并发送对该URI的HTTP GET请求。服务器则以底层网络协议和流量条件允许的尽可能快的速率，在一个HTTP响应报文中发送该视频文件。在客户一侧，字节被收集在客户应用缓存中。一且该缓存中的字节数量超过预先设定的门限，客户应用程序就开始播放，特别是，流式视频应用程序周期性地从客户应用程序缓存中抓取顿，对这些解压缩并且在用户屏幕上展现。因此，流式视频应用接收到视频就进行播放，同时缓存该视频后面部分的顿</li>
+<li>HTTP流具有严重缺陷，即所有客户接收到相同编码的视频，尽管对不同的客户或者对于相同客户的不同时间而言，客户可用的带宽大小有很大不同。这导致了一种新型基于HTTP的流的研发，它常常被称为经HTTP的动态适应性流（Dynamic Adaptive Streaming over HTTP，DASH）。在DASH中，视频编码为几个不同的版本，其中每个版本具有不同的比特率，对应于不同的质量水平。客户动态地请求来自不同版本且长度为几秒的视频段数据块。当可用带宽量较高时，客户自然地选择来自高速率版本的块；当可用带宽量较低时，客户自然地选择来自低速率版本的块。客户用HTTP GET请求报文一次选择个不同的块</li>
+<li>为了应对向分布于全世界的用户分发巨量视频数据的挑战，几乎所有主要的视频流公司都利用内容分发网（Content Distribution Network，CDN）。CDN管理分布在多个地理位置上的服务器，在它的服务器中存储视频（和其他类型的Web内容，包括文档、图片和音频）的副本，并且所有试图将每个用户请求定向到一个将提供最好的用户体验的CDN位置</li>
+</ul>
+<h1 id="套接字编程：生成网络应用"><a href="#套接字编程：生成网络应用" class="headerlink" title="套接字编程：生成网络应用"></a>套接字编程：生成网络应用</h1><h2 id="UDP套接字编程"><a href="#UDP套接字编程" class="headerlink" title="UDP套接字编程"></a>UDP套接字编程</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805215845788.png"></p>
+<h2 id="TCP套接字编程"><a href="#TCP套接字编程" class="headerlink" title="TCP套接字编程"></a>TCP套接字编程</h2><ul>
+<li>与UDP不同，TCP是一个面向连接的协议。这意味着在客户和服务器能够开始互相发送数据之前，它们先要握手和创建一个TCP连接。TCP连接的一端与客户套接字相联系，另一端与服务器套接字相联系。当创建该TCP连接时，我们将其与客户套接字地址（IP地址和端口号）和服务器套接字地址（IP地址和端口号）关联起来。使用创建的TCP连接，当一侧要向另一侧发送数据时，它只需经过其套接字将数据丢进TCP连接。这与UDP不同，UDP服务器在将分组丢进套接字之前必须为其附上一个目的地地址</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805220403472.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805220509152.png"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>计算机网络</tag>
       </tags>
   </entry>
 </search>

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-z.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-z.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hankong91.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="计算机网络_自顶向下方法，Chap01_计算机网络和因特网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chap01_计算机网络和因特网">
+<meta property="og:url" content="https://hankong91.github.io/2022/04/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap01_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%92%8C%E5%9B%A0%E7%89%B9%E7%BD%91/index.html">
+<meta property="og:site_name" content="寒空の博客">
+<meta property="og:description" content="计算机网络_自顶向下方法，Chap01_计算机网络和因特网">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220723232932841.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220616232311968.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220616232627053.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220616233020297.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220619211857314.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220712235442973.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220723010027829.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220723232932840.png">
+<meta property="article:published_time" content="2022-04-05T14:29:54.000Z">
+<meta property="article:modified_time" content="2022-08-05T14:54:25.155Z">
+<meta property="article:author" content="寒空">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220723232932841.png">
+
+
+<link rel="canonical" href="https://hankong91.github.io/2022/04/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap01_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%92%8C%E5%9B%A0%E7%89%B9%E7%BD%91/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/04/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap01_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%92%8C%E5%9B%A0%E7%89%B9%E7%BD%91/","path":"2022/04/05/计算机网络/Chap01_计算机网络和因特网/","title":"Chap01_计算机网络和因特网"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Chap01_计算机网络和因特网 | 寒空の博客</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">寒空の博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">21</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">32</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%9B%A0%E7%89%B9%E7%BD%91"><span class="nav-number">1.</span> <span class="nav-text">什么是因特网</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%9E%84%E6%88%90%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">具体构成描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.2.</span> <span class="nav-text">服务描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.3.</span> <span class="nav-text">什么是协议</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%BE%B9%E7%BC%98"><span class="nav-number">2.</span> <span class="nav-text">网络边缘</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5%E7%BD%91"><span class="nav-number">2.1.</span> <span class="nav-text">接入网</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%AA%92%E4%BD%93"><span class="nav-number">2.2.</span> <span class="nav-text">物理媒体</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%A0%B8%E5%BF%83"><span class="nav-number">3.</span> <span class="nav-text">网络核心</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2"><span class="nav-number">3.1.</span> <span class="nav-text">分组交换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E4%BA%A4%E6%8D%A2"><span class="nav-number">3.2.</span> <span class="nav-text">电路交换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BD%91%E7%BB%9C"><span class="nav-number">3.3.</span> <span class="nav-text">网络的网络</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E6%97%B6%E5%BB%B6%E3%80%81%E4%B8%A2%E5%8C%85%E5%92%8C%E5%90%9E%E5%90%90%E9%87%8F"><span class="nav-number">4.</span> <span class="nav-text">分组交换网络中的时延、丢包和吞吐量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2%E7%BD%91%E4%B8%AD%E7%9A%84%E6%97%B6%E5%BB%B6%E6%A6%82%E8%BF%B0"><span class="nav-number">4.1.</span> <span class="nav-text">分组交换网中的时延概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E9%98%9F%E6%97%B6%E5%BB%B6%E5%92%8C%E4%B8%A2%E5%8C%85"><span class="nav-number">4.2.</span> <span class="nav-text">排队时延和丢包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E5%88%B0%E7%AB%AF%E6%97%B6%E5%BB%B6"><span class="nav-number">4.3.</span> <span class="nav-text">端到端时延</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E5%90%9E%E5%90%90%E9%87%8F"><span class="nav-number">4.4.</span> <span class="nav-text">计算机网络中的吞吐量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E5%B1%82%E6%AC%A1%E5%8F%8A%E5%85%B6%E6%9C%8D%E5%8A%A1%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">协议层次及其服务模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B1%82%E7%9A%84%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">5.1.</span> <span class="nav-text">分层的体系结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%81%E8%A3%85"><span class="nav-number">5.2.</span> <span class="nav-text">封装</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="寒空"
+      src="/images/author.jpg">
+  <p class="site-author-name" itemprop="name">寒空</p>
+  <div class="site-description" itemprop="description">放弃不难，但坚持一定很酷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hankong91" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hankong91" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/NSRyan" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;NSRyan" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/04/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap01_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%92%8C%E5%9B%A0%E7%89%B9%E7%BD%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="寒空">
+      <meta itemprop="description" content="放弃不难，但坚持一定很酷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒空の博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Chap01_计算机网络和因特网
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-05 22:29:54" itemprop="dateCreated datePublished" datetime="2022-04-05T22:29:54+08:00">2022-04-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-05 22:54:25" itemprop="dateModified" datetime="2022-08-05T22:54:25+08:00">2022-08-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">计算机网络_自顶向下方法，Chap01_计算机网络和因特网</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220723232932841.png"></p>
+<h1 id="什么是因特网"><a href="#什么是因特网" class="headerlink" title="什么是因特网"></a>什么是因特网</h1><h2 id="具体构成描述"><a href="#具体构成描述" class="headerlink" title="具体构成描述"></a>具体构成描述</h2><ul>
+<li>所有传统的设备（桌面PC、Linux工作站以及所谓的服务器等），和非传统设备（便携机、智能手机、平板电脑等）都称主机（host）或端系统（end system）</li>
+<li>端系统通过通信链路（communication link）和分组交换机（packet switch）连接在一起</li>
+<li>当一台端系统要向另一台端系统发送数据时，发送端系统将数据分段，并为每段加上首部字节。由此形成的信息包用计算机网络的术语来说称为分组（packet）</li>
+<li>分组交换机的两种最主要类型：路由器（router）和链路层交换机（link-layer switch），链路层交换机通常用于接入网中，而路由器常用于网络核心中</li>
+<li>从发送端系统到接收端系统，一个分组所经历的一系列通信链路和分组交换机称为通过该网络的路径（route或path）</li>
+</ul>
+<h2 id="服务描述"><a href="#服务描述" class="headerlink" title="服务描述"></a>服务描述</h2><ul>
+<li>与因特网相连的端系统提供了一个套接字接口（socket interface），该接口规定了运行在一个端系统上的程序请求因特网基础设施向运行在另一个端系统上的特定目的程序交付数据的方式</li>
+</ul>
+<h2 id="什么是协议"><a href="#什么是协议" class="headerlink" title="什么是协议"></a>什么是协议</h2><ul>
+<li>协议（protocol）定义了在两个或多个通信实体之间交换的报文的格式和顺序，以及报文发送和/或接收一条报文或其他事件所采取的的动作</li>
+<li>在两台物理连接的计算机中，硬件实现的协议控制了在两块网络接口卡的“线上”的比特流；在端系统中，拥塞控制协议控制了在发送方和接收方之间传输的分组发送的速率；路由器中的协议决定了分组从源到目的地的路径</li>
+</ul>
+<h1 id="网络边缘"><a href="#网络边缘" class="headerlink" title="网络边缘"></a>网络边缘</h1><h2 id="接入网"><a href="#接入网" class="headerlink" title="接入网"></a>接入网</h2><ul>
+<li>接入网：指将端系统物理连接到其边缘路由器（edge router）的网络，边缘路由器是端系统到任何其它远程端系统的路径上的第一台路由器</li>
+<li>家庭接入：DSL、电缆、FTTH、拨号和卫星</li>
+<li>宽带住宅接入有两种最流行的类型：数字用户线（Digital Subscriber Line，DSL）和电缆。住户通常从提供本地电话接入的本地电话公司处获得DSL因特网接入。因此，当使用DSL时，用户的本地电话公司也是它的ISP。每个用户的DSL调制解调器使用现有的电话线与位于电话公司的本地中心局（CO）中的数字用户线接入复用器（DSLAM）交换数据</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220616232311968.png"></p>
+<ul>
+<li>DSL利用电话公司现有的本地电话基础设施，而电缆因特网接入（cable Internet access）利用了有线电视公司现有的有限电视基础设施。住宅从提供有线电视的公司获得了电缆因特网接入</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220616232627053.png"></p>
+<ul>
+<li>光纤到户（Fiber To The Home，FTTH），从本地中心局直接到家庭提供了一条光纤路径</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220616233020297.png"></p>
+<ul>
+<li>企业（和家庭）接入：以太网和WiFi</li>
+<li>广域无线接入：3G和LTE</li>
+</ul>
+<h2 id="物理媒体"><a href="#物理媒体" class="headerlink" title="物理媒体"></a>物理媒体</h2><ul>
+<li>对于每个发射器 - 接收器对，通过跨越一种物理媒体传播电磁波或光脉冲来发送比特数据</li>
+<li>常见的物理媒体：双绞铜线、同轴电缆、光纤、陆地无线电信道、卫星无线电信道</li>
+</ul>
+<h1 id="网络核心"><a href="#网络核心" class="headerlink" title="网络核心"></a>网络核心</h1><h2 id="分组交换"><a href="#分组交换" class="headerlink" title="分组交换"></a>分组交换</h2><ul>
+<li>在各种网络应用中，端系统彼此交换报文（message）。报文能够包含协议设计者需要的任何东西，可以执行一种控制功能，也可以包含数据。为了从源端系统向目的端系统发送一个报文，源将报文划分为较小的数据块，称之为分组（packet）。在源和目的地之间，每个分组都通过通信链路和分组交换机（packet switch）传送。（交换机主要有两类：路由器（router）和链路层交换机（link-layer switch）。）</li>
+<li>存储转发传输：多数存储交换机在链路的输入端使用存储转发传输（store-and-forward transmission）机制。存储转发传输是指在交换机能够开始向输出链路传输该分组的第一个比特之前，必须收到整个分组</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220619211857314.png"></p>
+<ul>
+<li><p>排队时延和分组丢失：每台分组交换机有多条链路与之相连。对于每条相连的链路，该分组交换机具有一个输出缓存（output buffer，也称为输出队列（output queue）），它用于存储路由器准备发往那条链路的分组。该输出缓存在分组交换中起着重要的作用。如果到达的分组需要传输到某条链路，但发现该链路正忙于传输其他分组，该到达分组必须在输出缓存中等待。因此，除了存储转发时延以外，分组还要承受输出缓存的排队时延（queuing delay）。这些时延是变化的，变化的程度取决于网络的拥塞程度。因为缓存空间的大小是有限的，一个到达的分组可能发现该缓存已被其他等待传输的分组完全充满了。在此情况下，将出现分组丢失（丢包）（packet loss），到达的分组或已经排队的分组之一将被丢弃</p>
+</li>
+<li><p>转发表：在因特网中，每个端系统具有一个称为IP地址的地址。当源主机要向目的端系统发送一个分组时，源在该分组的首部包含了目的地的IP地址。如同邮政地址那样，该地址具有一种等级结构。当一个分组到达网络中的路由器时，路由器检查该分组的目的地址的一部分，并向一台相邻路由器转发该分组。更特别的是，每台路由器具有一个转发表（forwarding table），用于将目的地址（或目的地址的一部分）映射成为输出链路。当某分组到达一台路由器时，路由器检查该地址，并用这个目的地址搜索其转发表，以发现适当的出链路，路由器则将分组导向该出链路</p>
+</li>
+<li><p>路由选择协议（routing protocol），用于自动地设置这些转发表。一个路由选择协议可以决定从每台路由器到每个目的地址的最短路径，并使用这些最短路径来配置路由器中的转发表</p>
+</li>
+</ul>
+<h2 id="电路交换"><a href="#电路交换" class="headerlink" title="电路交换"></a>电路交换</h2><ul>
+<li>通过网络链路和交换机移动数据有两种基本方法：电路交换（circuit switching）和分组交换（packet switching）</li>
+<li>在电路交换网络中，在端系统间通信会话期间，预留了端系统沿路径通信所需要的资源（缓存，链路传输速率）。在分组交换中，这些资源则不是预留的，会话的报文按需使用这些资源，其后果可能是不得不等待（即排队）接入通信链路</li>
+<li>链路中的电路是通过频分复用或时分复用来实现</li>
+</ul>
+<h2 id="网络的网络"><a href="#网络的网络" class="headerlink" title="网络的网络"></a>网络的网络</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220712235442973.png"></p>
+<h1 id="分组交换网络中的时延、丢包和吞吐量"><a href="#分组交换网络中的时延、丢包和吞吐量" class="headerlink" title="分组交换网络中的时延、丢包和吞吐量"></a>分组交换网络中的时延、丢包和吞吐量</h1><h2 id="分组交换网中的时延概述"><a href="#分组交换网中的时延概述" class="headerlink" title="分组交换网中的时延概述"></a>分组交换网中的时延概述</h2><ul>
+<li>当一个分组从一个节点（主机或路由器）沿着这条路径到后继节点（主机或路由器），该分组在沿途的每个节点经受了几种不同的时延。这些时延最为重要的是节点处理时延、排队时延、传输时延和传播时延</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220723010027829.png"></p>
+<ul>
+<li>作为源和目的地之间的端到端路由的一部分，一个分组从上游节点通过路由器A向路由器B发送。我们的目标是在路由器A刻画出节点时延。值得注意的是，路由器A具有通往路由器B的出链路。该链路前面有一个队列（也称为缓存）。当分组从上游节点到达路由器A时，路由器A检查该分组的首部以决定它的适当出链路，并将该分组导向该链路。在这个例子传播中，对该分组的出链路是通向路由器B的那条链路。仅当在该链路没有其他分组正在传输并且没有其他分组排在该队列前面时，才能在这条链路上传输该分组；如果该链路当前正繁忙或有其他分组已经在该链路上排队，则新到达的分组将加入排队</li>
+<li>处理时延：检查分组首部和决定将该分组导向何处所需要的时间是处理时延的一部分。处理时延也能够包括其他因素，如检查比特级别的差错所需要的时间，该差错出现在从上游节点向路由器A传输这些分组比特的过程中。高速路由器的处理时延通常是微秒或更低的数量级。在这种节点处理之后，路由器将该分组引向通往路由器B链路之前的队列</li>
+<li>排队时延：在队列中，当分组在链路上等待传输时，它经受排队时延。一个特定分组的排队时延长度将取决于先期到达的正在排队等待向链路传输的分组数量。如果该队列是空的，并且当前没有其他分组正在传输，则该分组的排队时延为0。另一方面，如果流量很大，并且许多其他分组也在等待传输，该排队时延将很长。我们将很快看到，到达分组期待发现的分组数量是到达该队列的流量的强度和性质的函数。实际的排队时延可以是毫秒到微秒量级</li>
+<li>传输时延：假定分组以先到先服务方式传输，这在分组交换网中是常见的方式，仅当所有已经到达的分组被传输后，才能传输刚到达的分组。用L比特表示该分组的长度，用R bps（即b/s）表示从路由器A到路由器B的链路传输速率。例如，对于一条10Mbps的以太网链路，速率R=10Mbps；对于100Mbps的以太网链路，速率R=100Mbps。传输时延是L/R。这是将所有分组的比特推向链路（即传输，或者说发射）所需要的时间。实际的传输时延通常在毫秒到微秒量级</li>
+<li>传播时延：一且一个比特被推向链路，该比特需要向路由器B传播。从该链路的起点到路由器B传播所需要的时间是传播时延。该比特以该链路的传播速率传播。该传播速率取决于该链路的物理媒体（即光纤、双绞铜线等），其速率范围等于或略小于光速。该传播时延等于两台路由器之间的距离除以传播速率。即传播时延是d/s，其中d是路由器A和路由器B之间的距离，s是该链路的传播速率。一且该分组的最后一个比特传播到节点B，该比特及前面的所有比特被存储于路由器B。整个过程将随着路由器B执行转发而持续下去。在广域网中，传播时延为毫秒量级</li>
+<li>传输时延和传播时延的比较：传输时延是路由器推出分组所需要的时间，它是分组长度和链路传输速率的函数，而与两台路由器之间的距离无关。另一方面，传播时延是一个比特从一台路由器传播到另一台路由器所需要的时间，它是两台路由器之间距离的函数，而与分组长度或链路传输速率无关</li>
+</ul>
+<h2 id="排队时延和丢包"><a href="#排队时延和丢包" class="headerlink" title="排队时延和丢包"></a>排队时延和丢包</h2><ul>
+<li>排队时延很大程度取决于流量到达该队列的速率、链路的传输速率和到达流量的性质，即流量是周期性到达还是以突发性到达</li>
+<li>设计系统时流量强度不能大于1，随着流量强度接近1，平均排队时延迅速增加</li>
+<li>丢包：因为排队容量是有限的，随着流量强度接近1，排队时延并不真正趋于无穷大。相反，到达的分组将发现一个满的队列。由于没有地方存储这个分组，路由器将丢弃该分组</li>
+</ul>
+<h2 id="端到端时延"><a href="#端到端时延" class="headerlink" title="端到端时延"></a>端到端时延</h2><ul>
+<li>Traceroute：能够在因特网主机上运行。当用户指定一个目的主机名字时，源主机中的该程序朝着目的地发送多个特殊的分组。当这些分组向着目的地传送时，它们通过一系列路由器。当路由器接收到这些特殊分组之一时，它向源端回送一个短报文，该报文包括路由器的名字和地址</li>
+</ul>
+<h2 id="计算机网络中的吞吐量"><a href="#计算机网络中的吞吐量" class="headerlink" title="计算机网络中的吞吐量"></a>计算机网络中的吞吐量</h2><ul>
+<li>考虑从主机A到主机B跨越计算机网络传送一个大文件。在任何时间瞬间的瞬时吞吐量是主机B接收到该文件的速率（以bps计）</li>
+<li>如果该文件由F比特组成，主机B接收到所有F比特用去T秒，则文件传送的平均吞吐量是F/T bps</li>
+</ul>
+<h1 id="协议层次及其服务模型"><a href="#协议层次及其服务模型" class="headerlink" title="协议层次及其服务模型"></a>协议层次及其服务模型</h1><h2 id="分层的体系结构"><a href="#分层的体系结构" class="headerlink" title="分层的体系结构"></a>分层的体系结构</h2><ul>
+<li>网络设计者以分层（layer）的方式组织协议以及实现这些协议的网络硬件和软件，每层通过在该层执行某些动作或使用下层的服务来提供服务。例如，由第n层提供的服务可能包括报文从网络一边到另一边的可靠交付，这可能是通过使用第n-1层的边缘到边缘的不可靠报文传送服务，加上第n层的检测重传丢失报文的功能来实现的</li>
+<li>各层的所有协议被称为协议栈（protocol stack），因特网的协议栈由5个层次组成：物理层、链路层、网络层、传输层和应用层</li>
+<li>应用层：应用层是网络应用程序及它们的应用层协议存留的地方。应用层协议分布在多个端系统上，而一个端系统的应用程序使用协议与另一个端系统中的应用程序交换信息分组。我们把这种位于应用层信息分组称为报文（message）</li>
+<li>运输层：因特网的运输层在应用程序端点之间传送应用层报文。在因特网中，有两种运输协议，即TCP和UDP，利用其中的任一个都能运输应用层报文。TCP向它的应用程序提供了面向连接的服务。这种服务包括了应用层报文向目的地的确保传递和流量控制（即发送方/接收方速率匹配）。TCP也将长报文划分为短报文，并提供拥塞控制机制，因此当网络拥塞时，源抑制其传输速率。UDP协议向它的应用程序提供无连接服务。这是一种不提供不必要服务的服务，没有可靠性，没有流量控制，也没有拥塞控制。我们把运输层的分组称为报文段（segment）</li>
+<li>网络层：因特网的网络层负责将称为数据报（datagram）的网络层分组从一台主机移动到另一台主机。在一台源主机中的因特网运输层协议（TCP或UDP）向网络层递交运输层报文段和目的地址。因特网的网络层包括著名的网际协议IP，该协议定义了在数据报中的各个字段以及端系统和路由器如何作用于这些字段。IP仅有一个，所有具有网络层的因特网组件必须运行IP。因特网的网络层也包括决定路由的路由选择协议，它根据该路由将数据报从源传输到目的地</li>
+<li>链路层：因特网的网络层通过源和目的地之间的一系列路由器路由数据报。为了将分组从一个节点（主机或路由器）移动到路径上的下一个节点，网络层必须依靠该链路层的服务。特别是在每个节点，网络层将数据报下传给链路层，链路层沿着路径将数据报传递给下一个节点。在该下一个节点，链路层将数据报上传给网络层。由链路层提供的服务取决于应用于该链路的特定链路层协议。例如，某些协议基于链路提供可靠传递，从传输节点跨越一条链路到接收节点。值得注意的是，这种可靠的传递服务不同于TCP的可靠传递服务，TCP提供从一个端系统到另一个端系统的可靠交付。链路层的例子包括以太网、WiFi和电缆接入网的DOCSIS协议。因为数据报从源到目的地传送通常需要经过几条链路，一个数据报可能被沿途不同链路上的不同链路层协议处理。例如，一个数据报可能被一段链路上的以太网和下一段链路上的PPP所处理。网络层将受到来自每个不同的链路层协议的不同服务。我们把链路层分组称为顿（frame）</li>
+<li>物理层：虽然链路层的任务是将整个帧从一个网络元素移动到邻近的网络元素，而物理层的任务是将该帧中的一个个比特从一个节点移动到下一个节点</li>
+</ul>
+<h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220723232932840.png"></p>
+<ul>
+<li>在发送主机端，一个应用层报文（application-layer message）被传送给运输层。在最简单的情况下，运输层收取到报文并附上附加信息（所谓运输层首部信息），该首部将被接收端的运输层使用。应用层报文和运输层首部信息一道构成了运输层报文段（transport-layer segment）。运输层报文段因此封装了应用层报文。附加的信息也许包括了下列信息：允许接收端运输层向上向适当的应用程序交付报文的信息；差错检测位信息，该信息让接收方能够判断报文中的比特是否在途中已被改变。运输层则向网络层传递该报文段，网络层增加了如源和目的端系统地址等网络层首部信息，生成了网络层数据报（network-layer datagram）。该数据报接下来被传递给链路层，链路层（自然而然地）增加它自己的链路层首部信息并生成链路层顿（link-layer frame）。在每一层，一个分组具有两种类型的字段：首部字段和有效载荷字段（payload field）。有效载荷通常是来自上一层的分组</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>寒空
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hankong91.github.io/2022/04/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap01_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%92%8C%E5%9B%A0%E7%89%B9%E7%BD%91/" title="Chap01_计算机网络和因特网">https://hankong91.github.io/2022/04/05/计算机网络/Chap01_计算机网络和因特网/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/31/C++/C++%E4%B8%AD%E7%9A%84array/" rel="prev" title="C++中的array">
+                  <i class="fa fa-chevron-left"></i> C++中的array
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap02_%E5%BA%94%E7%94%A8%E5%B1%82/" rel="next" title="Chap02_应用层">
+                  Chap02_应用层 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寒空</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">54k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">49 分钟</span>
+  </span>
+</div>
+
+<!---->
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>
