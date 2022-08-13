@@ -483,31 +483,6 @@
       </categories>
   </entry>
   <entry>
-    <title>多态和虚函数</title>
-    <url>/2022/03/22/C++/%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><ul>
-<li>广义的多态：不同类型的实体/对象对同一消息有不同的响应</li>
-<li>多态有两种形式：重载多态和子类型多态</li>
-<li>子类型多态：通过虚函数实现</li>
-</ul>
-<h1 id="虚函数实现原理"><a href="#虚函数实现原理" class="headerlink" title="虚函数实现原理"></a>虚函数实现原理</h1><ul>
-<li>虚函数的实现原理是虚表，这个虚表里面存储着最终需要调用的虚函数的地址，这个虚表也叫虚函数表</li>
-<li>当类中包含虚函数时，类的大小增加一个指针的大小，用于保存虚表的地址，且该指针存在于最前面的地址，当调用虚函数时会通过该指针查找对应虚函数的地址，实现多态调用</li>
-<li>只要有虚函数，所有相同对象实例共享同一张虚表，即所有相同对象实例的虚表指针地址指向同一张虚表，注意，不同对象实例虚表指针不同，即使是基类和子类其虚表指针也是不同的</li>
-<li>若子类没有重写父类的虚函数，则虚函数表中该虚函数的地址为父类虚函数的地址</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    B* p = <span class="keyword">new</span> <span class="built_in">D</span>();</span><br><span class="line">    p-&gt;<span class="built_in">func</span>();</span><br><span class="line">    p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">26</span>:     p-&gt;<span class="built_in">func</span>();</span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// ebp-8是指针p的地址</span></span><br><span class="line"> call        <span class="number">00F</span>81109  	            <span class="comment">// 非虚函数直接调用B::func()</span></span><br><span class="line">    <span class="number">27</span>:     p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"> mov         eax,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// eax是对象D的地址</span></span><br><span class="line"> mov         edx,dword ptr [eax]    <span class="comment">// 取出对象D最前面的4个地址值给edx, 即取出虚函数表的地址</span></span><br><span class="line"> mov         esi,esp  </span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  </span><br><span class="line"> mov         eax,dword ptr [edx]    <span class="comment">// 取出虚函数表的最前面4个地址给eax, 即取出D::vfunc()函数地址</span></span><br><span class="line"> call        eax                    <span class="comment">// 间接调用D::vfunc()</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>多态</tag>
-        <tag>虚函数</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>左值和右值</title>
     <url>/2022/02/17/C++/%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/</url>
     <content><![CDATA[<h1 id="概念和语法"><a href="#概念和语法" class="headerlink" title="概念和语法"></a>概念和语法</h1><ul>
@@ -669,6 +644,31 @@
       <categories>
         <category>C++</category>
       </categories>
+  </entry>
+  <entry>
+    <title>多态和虚函数</title>
+    <url>/2022/03/22/C++/%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><ul>
+<li>广义的多态：不同类型的实体/对象对同一消息有不同的响应</li>
+<li>多态有两种形式：重载多态和子类型多态</li>
+<li>子类型多态：通过虚函数实现</li>
+</ul>
+<h1 id="虚函数实现原理"><a href="#虚函数实现原理" class="headerlink" title="虚函数实现原理"></a>虚函数实现原理</h1><ul>
+<li>虚函数的实现原理是虚表，这个虚表里面存储着最终需要调用的虚函数的地址，这个虚表也叫虚函数表</li>
+<li>当类中包含虚函数时，类的大小增加一个指针的大小，用于保存虚表的地址，且该指针存在于最前面的地址，当调用虚函数时会通过该指针查找对应虚函数的地址，实现多态调用</li>
+<li>只要有虚函数，所有相同对象实例共享同一张虚表，即所有相同对象实例的虚表指针地址指向同一张虚表，注意，不同对象实例虚表指针不同，即使是基类和子类其虚表指针也是不同的</li>
+<li>若子类没有重写父类的虚函数，则虚函数表中该虚函数的地址为父类虚函数的地址</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    B* p = <span class="keyword">new</span> <span class="built_in">D</span>();</span><br><span class="line">    p-&gt;<span class="built_in">func</span>();</span><br><span class="line">    p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">26</span>:     p-&gt;<span class="built_in">func</span>();</span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// ebp-8是指针p的地址</span></span><br><span class="line"> call        <span class="number">00F</span>81109  	            <span class="comment">// 非虚函数直接调用B::func()</span></span><br><span class="line">    <span class="number">27</span>:     p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"> mov         eax,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// eax是对象D的地址</span></span><br><span class="line"> mov         edx,dword ptr [eax]    <span class="comment">// 取出对象D最前面的4个地址值给edx, 即取出虚函数表的地址</span></span><br><span class="line"> mov         esi,esp  </span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  </span><br><span class="line"> mov         eax,dword ptr [edx]    <span class="comment">// 取出虚函数表的最前面4个地址给eax, 即取出D::vfunc()函数地址</span></span><br><span class="line"> call        eax                    <span class="comment">// 间接调用D::vfunc()</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>多态</tag>
+        <tag>虚函数</tag>
+      </tags>
   </entry>
   <entry>
     <title>异常</title>
@@ -1274,6 +1274,310 @@
 </ul>
 <p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805220403472.png"></p>
 <p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220805220509152.png"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Chap03_运输层</title>
+    <url>/2022/04/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap03_%E8%BF%90%E8%BE%93%E5%B1%82/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813221439355.png"></p>
+<h1 id="概述和运输层服务"><a href="#概述和运输层服务" class="headerlink" title="概述和运输层服务"></a>概述和运输层服务</h1><ul>
+<li>运输层协议是在端系统中而不是在路由器中实现的。在发送端，运输层将从发送应用程序进程接收到的报文转换成运输层分组，用因特网术语来讲该分组称为运输层报文段（segmemt）。实现的方法（可能）是将应用报文划分为较小的块，并为每块加上一个运输层首部以生成运输层报文段。然后，在发送端系统中，运输层将这些报文段传递给网络层，网路层将其封装成网络层分组（即数据报）并向目的地发送</li>
+<li>网络路由器仅作用于该数据报的网络层字段，即它们不检查封装在该数据报的运输层报文段的字段。在接收端，网络层从数据报中提取运输层报文段，并将该报文段向上交给运输层。运输层则处理接收到的报文段，使该报文段中的数据为接收应用进程使用</li>
+</ul>
+<h2 id="运输层和网络层关系"><a href="#运输层和网络层关系" class="headerlink" title="运输层和网络层关系"></a>运输层和网络层关系</h2><ul>
+<li>在协议栈中，运输层刚好位于网络层之上。网络层提供了主机之间的逻辑通信，而运输层为运行在不同主机上的进程之间提供了逻辑通信</li>
+<li>运输层协议只工作在端系统中。在端系统中，运输层协议将来自应用进程的报文移动到网络边缘（即网络层），反过来也是一样，但对有关这些报文在网络核心如何移动并不作任何规定，中间路由器既不处理也不识别运输层加在应用层报文的任何信息</li>
+<li>运输协议能够提供的服务常常受制于底层网络层协议的服务模型。如果网络层协议无法为主机之间发送的运输层报文段提供时延或带宽保证的话，运输层协议也就无法为进程之间发送的应用程序报文提供时延或带宽保证</li>
+</ul>
+<h2 id="因特网运输层概述"><a href="#因特网运输层概述" class="headerlink" title="因特网运输层概述"></a>因特网运输层概述</h2><ul>
+<li>UDP（用户数据报协议），为调用它的应用程序提供了一种不可靠、无连接的服务</li>
+<li>TCP（传输控制协议），为调用它的应用程序提供了一种可靠的、面向连接的服务</li>
+<li>术语：将运输层分组称为报文段（segment）。然而，因特网文献（如RFC文档）也将TCP的运输层分组称为报文段，而常将UDP的分组称为数据报（datagram）。而这类因特网文献也将网络层分组称为数据报。为不引起混淆，此文将TCP和UDP的分组统称为报文段，而将数据报名称保留给网络层分组</li>
+<li>因特网网络层协议有一个名字叫IP，即网际协议。IP为主机之间提供了逻辑通信。IP的服务模型是尽力而为交付服务（best-effort delivery service）。这意味着IP尽它“最大的努力”在通信的主机之间交付报文段，但它并不做任何确保。特别是，它不确保报文段的交付，不保证报文段的按序交付，不保证报文段中数据的完整性。由于这些原因，IP被称为不可靠服务（unreliable service）</li>
+<li>UDP和TCP最基本的责任是，将两个端系统间IP的交付服务扩展为运行在端系统上的两个进程之间的交付服务。将主机间交付扩展到进程间交付被称为运输层的多路复用（transport-layer multiplexing）与多路分解（demultiplexing）</li>
+<li>UDP和TCP还可以通过在其报文段首部中包括差错检查字段而提供完整性检查。进程到进程的数据交付和差错检查是两种最低限度的运输层服务，也是UDP所能提供的仅有的两种服务。特别是，与IP一样，UDP也是一种不可靠的服务，即不能保证一个进程所发送的数据能够完整无缺地（或全部）到达目的进程</li>
+<li>另一方面，TCP为应用程序提供了几种附加服务。首先，它提供可靠数据传输（reliable data transfer）。通过使用流量控制、序号、确认和定时器，TCP确保正确地、按序地将数据从发送进程交付给接收进程。这样，TCP就将两个端系统间的不可靠IP服务转换成了一种进程间的可靠数据传输服务</li>
+<li>TCP还提供拥塞控制（congestion contol）。拥塞控制与其说是一种提供给调用它的应用程序的服务，不如说是一种提供给整个因特网的服务，这是一种带来通用好处的服务。不太严格地说，TCP拥塞控制防止任何一条TCP连接用过多流量来淹没通信主机之间的链路和交换设备。TCP力求为每个通过一条拥塞网络链路的连接平等地共享网络链路带宽。这可以通过调节TCP连接的发送端发送进网络的流量速率来做到。在另一方面，UDP流量是不可调节的。使用UDP传输的应用程序可以根据其需要以其愿意的任何速率发送数据</li>
+</ul>
+<h1 id="多路复用和多路分解"><a href="#多路复用和多路分解" class="headerlink" title="多路复用和多路分解"></a>多路复用和多路分解</h1><ul>
+<li>一个进程（作为网络应用的一部分）有一个或多个套接字（socket），它相当于从网络向进程传递数据和从进程向网络传递数据的门户。因此，在接收主机中的运输层实际上并没有直接将数据交付给进程，而是将数据交给了一个中间的套接字。由于在任一时刻，在接收主机上可能有不止一个套接字，所以每个套接字都有唯一的标识符</li>
+<li>考虑接收主机怎样将一个到达的运输层报文段定向到适当的套接字。每个运输层报文段中具有几个字段，在接收端，运输层检查这些字段，标识出接收套接字，进而将报文段定向到该套接字。将运输层报文段中的数据交付到正确的套接字的工作称为多路分解（demultiplexing）。在源主机从不同套接字中收集数据块，并为每个数据块封装上首部信息（这将在以后用于分解）从而生成报文段，然后将报文段传递到网络层，所有这些工作称为多路复用（multiplexing）。图3-2中的中间那台主机的运输层必须将从其下的网络层收到的报文段分解后交给其上的P1或P2进程，这一过程是通过将到达的报文段数据定向到对应进程的套接字来完成的</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220810225838522.png"></p>
+<ul>
+<li>运输层多路复用要求：套接字有唯一标识符；每个报文段有特殊字段来指示该报文段所要交付到的套接字。这些特殊字段是源端口号字段（source port number field）和目的端口号字段（destination port number field）。端口号是一个16比特的数，其大小在0 ~ 65535之间。0~1023范围的端口号称为周知端口号（well-known port number），是受限制的，这是指它们保留给诸如HTTP（它使用端口号80）和FTP（它使用端口号21）之类的周知应用层协议来使用。当我们开发一个新的应用程序时必须为其分配一个端口号</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220810230829512.png"></p>
+<ul>
+<li>一个UDP套接字是由一个二元组全面标识的，该二元组包含一个目的IP地址和一个目的端口号</li>
+<li>TCP套接字和UDP套接字之间的一个细微差别是，TCP套接字是由一个四元组（源IP地址，源端口号，目的IP地址，目的端口号）来标识的。因此，当一个TCP报文段从网络到达一台主机时，该主机使用全部4个值来将报文段定向（分解）到相应的套接字。特别与UDP不同的是，两个具有不同源IP地址或源端口号的到达TCP报文段将被定向到两个不同的套接字</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220810231729335.png"></p>
+<h1 id="无连接运输：UDP"><a href="#无连接运输：UDP" class="headerlink" title="无连接运输：UDP"></a>无连接运输：UDP</h1><ul>
+<li>运输层最低限度必须提供一种复用/分解服务，以便在网络层与正确的应用级进程之间传递数据</li>
+<li>UDP只是做了运输协议能够做的最少工作。除了复用/分解功能及少量的差错检测外，它几乎没有对IP增加别的东西。实际上，如果应用程序开发人员选择UDP而不是TCP，则该应用程序差不多就是直接与IP打交道。UDP从应用进程得到数据，附加上用于多路复用/分解服务的源和目的端口号字段，以及两个其他的小字段，然后将形成的报文段交给网络层。网络层将该运输层报文段封装到一个IP数据报中，然后尽力而为地尝试将此报文段交付给接收主机。如果该报文段到达接收主机，UDP使用目的端口号将报文段中的数据交付给正确的应用进程</li>
+<li>使用UDP时，在发送报文段之前，发送方和接收方的运输层实体之间没有握手。正因为如此，UDP被称为是无连接的</li>
+<li>许多应用更适合UDP的原因</li>
+</ul>
+<blockquote>
+<p>关于发送什么数据以及何时发送的应用层控制更为精细。采用UDP时，只要应用进程将数据传递给UDP，UDP就会将此数据打包进UDP报文段并立即将其传递给网络层。在另一方面，TCP有一个拥塞控制机制，以便当源和目的主机间的一条或多条链路变得极度拥塞时来遏制运输层TCP发送方。TCP仍将继续重新发送数据报文段直到目的主机收到此报文并加以确认，而不管可靠交付需要用多长时间。因为实时应用通常要求最小的发送速率，不希望过分地延迟报文段的传送，且能容忍一些数据丢失，TCP服务模型并不是特别适合这些应用的需要。这些应用可以使用UDP，并作为应用的一部分来实现所需的、超出UDP的不提供不必要的报文段交付服务之外的额外功能</p>
+<p>无须连接建立。TCP在开始数据传输之前要经过三次握手。UDP却不需要任何准备即可进行数据传输。因此UDP不会引入建立连接的时延。这可能是DNS运行在UDP之上而不是运行在TCP之上的主要原因（如果运行在TCP上，则DNS会慢得多）。HTTP使用TCP而不是UDP，因为对于具有文本数据的Web网页来说，可靠性是至关重要的。但是，HTTP中的TCP连接建立时延对于与下载Web文档相关的时延来说是一个重要因素。用于谷歌的Chrome浏览器中的QUIC协议（快速UDP因特网连接将UDP作为其支撑运输协议并在UDP之上的应用层协议中实现可靠性</p>
+<p>无连接状态。TCP需要在端系统中维护连接状态。此连接状态包括接收和发送缓存、拥塞控制参数以及序号与确认号的参数。要实现TCP的可靠数据传输服务并提供拥塞控制，这些状态信息是必要的。另一方面，UDP不维护连接状态，也不跟踪这些参数。因此，某些专门用于某种特定应用的服务器当应用程序运行在UDP之上而不是运行在TCP上时，一般都能支持更多的活跃客户</p>
+<p>分组首部开销小。每个TCP报文段都有20字节的首部开销，而UDP仅有8字节的开销</p>
+</blockquote>
+<ul>
+<li>UDP没有拥塞控制。但是，需要拥塞控制来预防网络进人一种拥塞状态，在拥塞状态中可做的有用工作非常少。如果每个人都启动流式高比特率视频而不使用任何拥塞控制的话，就会使路由器中有大量的分组溢出，以至于非常少的UDP分组能成功地通过源到目的的路径传输。况且，由无控制的UDP发送方引入的高丢包率将引起TCP发送方（TCP遇到拥塞将减小它们的发送速率）大大地减小它们的速率。因此，UDP中缺乏拥塞控制能够导致UDP发送方和接收方之间的高丢包率，并挤跨了TCP会话，这是一个潜在的严重问题</li>
+</ul>
+<h2 id="UDP报文段结构"><a href="#UDP报文段结构" class="headerlink" title="UDP报文段结构"></a>UDP报文段结构</h2><ul>
+<li>UDP报文段结构，首部8字节</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220810234323338.png"></p>
+<ul>
+<li>UDP首部只有4个字段，每个字段由两个字节组成。通过端口号可以使目的主机将应用数据交给运行在目的端系统中的相应进程（即执行分解功能）。长度字段指示了在UDP报文段中的字节数（首部加数据）。因为数据字段的长度在一个UDP段中不同于在另一个段中，故需要一个明确的长度。接收方使用检验和来检查在该报文段中是否出现了差错</li>
+</ul>
+<h2 id="UDP校验和"><a href="#UDP校验和" class="headerlink" title="UDP校验和"></a>UDP校验和</h2><ul>
+<li>UDP检验和提供了差错检测功能。用于确定当UDP报文段从源到达目的地移动时，其中的比特是否发生了改变（例如，由于链路中的噪声干扰或者存储在路由器中时引人问题）</li>
+<li>为什么UDP首先提供了检验和，就像许多链路层协议（包括流行的以太网协议）也提供了差错检测那样。其原因是不能保证源和目的之间的所有链路都提供差错检测；这就是说，也许这些链路中的一条可能使用没有差错检测的协议。此外，即使报文段经链路正确地传输，当报文段存储在某台路由器的内存中时，也可能引入比特差错。在既无法确保逐链路的可靠性，又无法确保内存中的差错检测的情况下，如果端到端数据传输服务要提供差错检测，UDP就必须在端到端基础上在运输层提供差错检测</li>
+<li>虽然UDP提供差错检测，但它对差错恢复无能为力。UDP的某种实现只是丢弃受损的报文段；其他实现是将受损的报文段交给应用程序并给出警告</li>
+</ul>
+<h1 id="可靠数据传输原理"><a href="#可靠数据传输原理" class="headerlink" title="可靠数据传输原理"></a>可靠数据传输原理</h1><ul>
+<li>可靠数据传输框架，为上层实体提供的服务抽象是：数据可以通过一条可靠的信道进行传输。借助于可靠信道，传输数据比特就不会受到损坏（由0变为1，或者相反）或丢失，而且所有数据都是按照其发送顺序进行交付，这恰好就是TCP向调用它的因特网应用所提供的服务模型</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220812215048946.png"></p>
+<ul>
+<li>实现这种服务抽象是可靠数据传输协议（reliable data transfer protocol）的责任</li>
+</ul>
+<h2 id="构造可靠数据传输协议"><a href="#构造可靠数据传输协议" class="headerlink" title="构造可靠数据传输协议"></a>构造可靠数据传输协议</h2><h3 id="经完全可靠信道的可靠数据传输：rdt1-0"><a href="#经完全可靠信道的可靠数据传输：rdt1-0" class="headerlink" title="经完全可靠信道的可靠数据传输：rdt1.0"></a>经完全可靠信道的可靠数据传输：rdt1.0</h3><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220812215928866.png"></p>
+<ul>
+<li>rdt的发送端只通过rdt_send(data)事件接受来自较高层的数据，产生一个包含该数据的分组（经由make_pkt(data)动作），并将分组发送到信道中。实际上，rdt_send(data)事件是由较高层应用的过程调用产生的（例如，rdt_send()）</li>
+<li>在接收端，rdt通过rdt_rev(packet)事件从底层信道接收一个分组，从分组中取出数据（经由extract(packet, data)动作），并将数据上传给较高层（通过deliver_data(data)动作）。实际上，rdt_rcv(packet)事件是由较低层协议的过程调用产生的（例如，rdt_rcv()）</li>
+<li>在这个简单的协议中，一个单元数据与一个分组没差别。而且，所有分组是从发送方流向接收方；有了完全可靠的信道，接收端就不需要提供任何反馈信息给发送方，因为不必担心出现差错！注意到我们也已经假定了接收方接收数据的速率能够与发送方发送数据的速率一样快。因此，接收方没有必要请求发送方慢一点</li>
+</ul>
+<h3 id="经具有比特差错信道的可靠数据传输：rdt2-0"><a href="#经具有比特差错信道的可靠数据传输：rdt2-0" class="headerlink" title="经具有比特差错信道的可靠数据传输：rdt2.0"></a>经具有比特差错信道的可靠数据传输：rdt2.0</h3><ul>
+<li><p>底层信道更为实际的模型是分组中的比特可能受损的模型。在分组的传输、传播或缓存的过程中，这种比特差错通常会出现在网络的物理部件中。眼下还将继续假定所有发送的分组（虽然有些比特可能受损）将按其发送的顺序被接收</p>
+</li>
+<li><p>在通常情况下，报文接收者在听到、理解并记下每句话后可能会说“OK”。如果报文接收者听到一句含糊不清的话时，他可能要求你重复那句容易误解的话。这种口述报文协议使用了肯定确认（positive acknowledgment）（“OK”）与否定确认（negative acknowledgment）（“请重复一遍”）。这些控制报文使得接收方可以让发送方知道哪些内容被正确接收，哪些内容接收有误并因此需要重复。在计算机网络环境中，基于这样重传机制的可靠数据传输协议称为自动重传请求（Automatic Repeat reQuest，ARQ）协议</p>
+</li>
+<li><p>重要的是，ARQ协议中还需要另外三种协议功能来处理存在比特差错的情况</p>
+</li>
+</ul>
+<blockquote>
+<p>差错检测。首先，需要一种机制以使接收方检测到何时出现了比特差错。前一节讲到，UDP使用因特网检验和字段正是为了这个目的。差错检测和纠错技术使接收方可以检测并可能纠正分组中的比特差错。此刻，我们只需知道这些技术要求有额外的比特（除了待发送的初始数据比特之外的比特）从发送方发送到接收方；这些比特将被汇集在rd2.0数据分组的分组检验和字段中</p>
+<p>接收方反馈。因为发送方和接收方通常在不同端系统上执行，可能相隔数千英里，发送方要了解接收方情况（此时为分组是否被正确接收）的唯一途径就是让接收方提供明确的反馈信息给发送方。在口述报文情况下回答的“肯定确认”（ACK）和“否定确认”（NAK）就是这种反馈的例子。类似地，rdt2.0协议将从接收方向发送方回送ACK与NAK分组。理论上，这些分组只需要一个比特长；如用0表示NAK，用1表示ACK</p>
+<p>重传。接收方收到有差错的分组时，发送方将重传该分组</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220812223009864.png"></p>
+<ul>
+<li>rdt2.0的发送端有两个状态。在最左边的状态中，发送端协议正等待来自上层传下来的数据。当rdt_send(data)事件出现时，发送方将产生一个包含待发送数据的分组（sndpkt），带有检验和，然后经由udt_send(sndpkt)操作发送该分组。在最右边的状态中，发送方协议等待来自接收方的ACK或NAK分组。如果收到一个ACK分组（图3-10中符号rdt_rcv(rcvpkt) &amp;&amp; isACK(rcvpkt)对应该事件），则发送方知道最近发送的分组已被正确接收，因此协议返回到等待来自上层的数据的状态。如果收到一个NAK分组，该协议重传上一个分组并等待接收方为响应重传分组而回送的ACK和NAK。注意到下列事实很重要：当发送方处于等待ACK或NAK的状态时，它不能从上层获得更多的数据；这就是说，rdt_send()事件不可能出现；仅当接收到ACK并离开该状态时才能发生这样的事件。因此，发送方将不会发送一块新数据，除非发送方确信接收方已正确接收当前分组。由于这种行为，rdt2.0这样的协议被称为停等（stop-and-wait）协议</li>
+<li>rdt2.0接收方的FSM仍然只有单一状态。当分组到达时，接收方要么回答一个ACK，要么回答一个NAK，这取决于收到的分组是否受损。在图3-10中，符号rdt_rcv(rcvpkt) &amp;&amp; corrupt(rcvpkt)对应于收到一个分组并发现有错的事件</li>
+<li>rdt2.0协议看起来似乎可以运行了，但它存在一个致命的缺陷。尤其是我们没有考虑到ACK或NAK分组受损的可能性！遗撼的是，我们细小的疏忽并非像它看起来那么无关紧要。至少，我们需要在ACK/NAK分组中添加检验和比特以检测这样的差错。更难的问题是协议应该怎样纠正ACK或NAK分组中的差错。这里的难点在于，如果一个ACK或NAK分组受损，发送方无法知道接收方是否正确接收了上一块发送的数据</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220812224325441.png"></p>
+<ul>
+<li>解决这个新问题的一个简单方法（几乎所有现有的数据传输协议中，包括TCP，都采用了这种方法）是在数据分组中添加一新字段，让发送方对其数据分组编号，即将发送数据分组的序号（sequence number）放在该字段。于是，接收方只需要检查序号即可确定收到的分组是否一次重传。对于停等协议这种简单情况，1比特序号就足够了，因为它可让接收方知道发送方是否正在重传前一个发送分组（接收到的分组序号与最近收到的分组序号相同），或是一个新分组（序号变化了，用模2运算“前向”移动）。因为目前我们假定信道不丢分组，ACK和NAK分组本身不需要指明它们要确认的分组序号。发送方知道所接收到的ACK和NAK分组（无论是否是含糊不清的）是为响应其最近发送的数据分组而生成的</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220812225236778.png"></p>
+<ul>
+<li>协议rdt2.1使用了从接收方到发送方的肯定确认和否定确认。当接收到失序的分组时，接收方对所接收的分组发送一个肯定确认。如果收到受损的分组，则接收方将发送一个否定确认。如果不发送NAK，而是对上次正确接收的分组发送一个ACK，我们也能实现与NAK一样的效果。发送方接收到对同一个分组的两个ACK（即接收冗余ACK（duplicate ACK））后，就知道接收方没有正确接收到跟在被确认两次的分组后面的分组。rdt2.2是在有比特差错信道上实现的一个无NAK的可靠数据传输协议</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220812225955530.png"></p>
+<h3 id="经具有比特差错的丢包信道的可靠数据传输：rdt3-0"><a href="#经具有比特差错的丢包信道的可靠数据传输：rdt3-0" class="headerlink" title="经具有比特差错的丢包信道的可靠数据传输：rdt3.0"></a>经具有比特差错的丢包信道的可靠数据传输：rdt3.0</h3><ul>
+<li>现在假定除了比特受损外，底层信道还会丢包，协议现在必须处理另外两个关注的问题：怎样检测丢包以及发生丢包后该做些什么</li>
+<li>让发送方负责检测和恢复丢包工作。假定发送方传输一个数据分组，该分组或者接收方对该分组的ACK发生了丢失。在这两种情况下，发送方都收不到应当到来的接收方的响应。如果发送方愿意等待足够长的时间以便确定分组已丢失，则它只需重传该数据分组即可</li>
+<li>发送方至少需要等待这样长的时间：即发送方与接收方之间的一个往返时延（可能会包括在中间路由器的缓冲时延）加上接收方处理一个分组所需的时间。在很多网络中，最坏情况下的最大时延是很难估算的，确定的因素非常少。此外，理想的协议应尽可能快地从丢包中恢复出来；等待一个最坏情况的时延可能意味着要等待一段较长的时间，直到启动差错恢复为止。因此实践中采取的方法是发送方明智地选择一个时间值，以判定可能发生了丢包（尽管不能确保）。如果在这个时间内没有收到ACK，则重传该分组。注意到如果一个分组经历了一个特别大的时延，发送方可能会重传该分组，即使该数据分组及其ACK都没有丢失。这就在发送方到接收方的信道中引人了冗余数据分组（duplicate data packet）的可能性。rdt2.2协议已经有足够的功能（即序号）来处理冗余分组情况</li>
+<li>从发送方的观点来看，重传是一种万能灵药。发送方不知道是一个数据分组丢失，还是一个ACK丢失，或者只是该分组或ACK过度延时。在所有这些情况下，动作是同样的：重传。为了实现基于时间的重传机制，需要一个倒计数定时器（countdown timer），在一个给定的时间量过期后，可中断发送方。因此，发送方需要能做到：每次发送一个分组（包括第一次分组和重传分组）时，便启动一个定时器。响应定时器中断（采取适当的动作）。终止定时器</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220812230834878.png"></p>
+<ul>
+<li>因为分组序号在0和1之间交替，因此rdt3.0有时被称为比特交替协议（alternating-bit protocol）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220812231109177.png"></p>
+<ul>
+<li>在检验和、序号、定时器、肯定和否定确认分组这些技术中，每种机制都在协议的运行中起到了必不可少的作用。至此，我们得到了一个可靠数据传输协议</li>
+</ul>
+<h2 id="流水线可靠数据传输协议"><a href="#流水线可靠数据传输协议" class="headerlink" title="流水线可靠数据传输协议"></a>流水线可靠数据传输协议</h2><ul>
+<li>rdt3.0是一个功能正确的协议，但rdt3.0性能问题的核心在于它是一个停等协议</li>
+<li>这种特殊的性能问题的一个简单解决方法是：不以停等方式运行，允许发送方发送多个分组而无须等待确认，如果发送方可以在等诗确认之前发送3个报文，其利用率也基本上提高3倍。因为许多从发送方向接收方输送的分组可以被看成是填充到一条流水线中，故这种技术被称为流水线（pipelining）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220812231623110.png"></p>
+<ul>
+<li>必须增加序号范围，因为每个输送中的分组（不计算重传的）必须有一个唯一的序号，而且也许有多个在输送中的未确认报文</li>
+<li>协议的发送方和接收方两端也许不得不缓存多个分组。发送方最低限度应当能缓冲那些已发送但没有确认的分组。接收方或许也需要缓存那些已正确接收的分组。</li>
+<li>所需序号范围和对缓冲的要求取决于数据传输协议如何处理丢失、损坏及延时过大的分组。解决流水线的差错恢复有两种基本方法是：回退N步（Go-Back-N，GBN）和选择重传（Selective Repeat，SR）</li>
+</ul>
+<h2 id="回退N步"><a href="#回退N步" class="headerlink" title="回退N步"></a>回退N步</h2><ul>
+<li>在回退N步（GBN）协议中，允许发送方发送多个分组（当有多个分组可用时）而不需等待确认，但它也受限于在流水线中未确认的分组数不能超过某个最大允许数N</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220812232101476.png"></p>
+<ul>
+<li>如图3-19，那些已被发送但还未被确认的分组的许可序号范围可以被看成是一个在序号范围内长度为N的窗口。随着协议的运行，该窗口在序号空间向前滑动。因此，N常被称为窗口长度（window size），GBN协议也常被称为滑动窗口协议（sliding-window protocol）</li>
+<li>为什么先要限制这些被发送的、未被确认的分组的数目为N呢？为什么不允许这些分组为无限制的数目呢？将在3.5节看到，流量控制是对发送方施加限制的原因之一。将在3.7节学习TCP拥塞控制时分析另一个原因</li>
+<li>GBN发送方必须响应三种类型的事件</li>
+</ul>
+<blockquote>
+<p>上层的调用。当上层调用rdt_send()时，发送方首先检查发送窗口是否已满，即是否有N个已发送但未被确认的分组。如果窗口未满，则产生一个分组并将其发送，并相应地更新变量。如果窗口已满，发送方只需将数据返回给上层，隐式地指示上层该窗口已满。然后上层可能会过一会儿再试。在实际实现中，发送方更可能缓存（并不立刻发送）这些数据，或者使用同步机制（如一个信号量或标志）允许上层在仅当窗口不满时才调用rdt_send()</p>
+<p>收到一个ACK。在GBN协议中，对序号为n的分组的确认采取累积确认（cumulative acknowledgment）的方式，表明接收方已正确接收到序号为n的以前且包括n在内的所有分组</p>
+<p>超时事件。协议的名字“回退N步”来源于出现丢失和时延过长分组时发送方的行为。就像在停等协议中那样，定时器将再次用于恢复数据或确认分组的丢失。如果出现超时，发送方重传所有已发送但还未被确认过的分组。发送方仅使用一个定时器，它可被当作是最早的已发送但未被确认的分组所使用的定时器。如果收到一个ACK，但仍有已发送但未被确认的分组，则定时器被重新启动。如果没有已发送但未被确认的分组，停止该定时器</p>
+</blockquote>
+<ul>
+<li>在GBN中，接收方的动作也很简单。如果一个序号为n的分组被正确接收到，并且按序（即上次交付给上层的数据是序号为n-1的分组），则接收方为分组n发送一个ACK，并将该分组中的数据部分交付到上层。在所有其他情况下，接收方丢弃该分组，并为最近按序接收的分组重新发送ACK。注意到因为一次交付给上层一个分组，如果分组k已接收并交付，则所有序号比k小的分组也已经交付。因此，使用累积确认是CBN一个自然的选择</li>
+<li>在GBN协议中，接收方丢弃所有失序分组。尽管丢弃一个正确接收（但失序）的分组有点浪费，但这样做是有理由的。前面讲过，接收方必须按序将数据交付给上层。假定现在期望接收分组n，而分组n+1却到了。因为数据必须按序交付，接收方可能缓存（保存）分组n+1，然后，在它收到并交付分组n后，再将该分组交付到上层。然而，如果分组n丢失，则该分组及分组n+1最终将在发送方根据GBN重传规则而被重传。因此，接收方只需丢弃分组n+1即可。这种方法的优点是接收缓存简单，即接收方不需要缓存任何失序分组。因此，虽然发送方必须维护窗口的上下边界及nextseqnum在该窗口中的位置，但是接收方需要维护的唯一信息就是下一个按序接收的分组的序号。当然，丢弃一个正确接收的分组的缺点是随后对该分组的重传也许会丢失或出错，因此甚至需要更多的重传</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220812235849135.png"></p>
+<h2 id="选择重传"><a href="#选择重传" class="headerlink" title="选择重传"></a>选择重传</h2><ul>
+<li>GBN协议潜在地允许发送方用多个分组“填充流水线”，因此避免了停等协议中所提到的信道利用率问题。然而，GBN本身也有一些情况存在着性能问题。尤其是当窗口长度和带宽时延积都很大时，在流水线中会有很多分组更是如此。单个分组的差错就能够引起GBN重传大量分组，许多分组根本没有必要重传。随着信道差错率的增加，流水线可能会被这些不必要重传的分组所充斤</li>
+<li>选择重传（SR）协议通过让发送方仅重传那些它怀疑在接收方出错（即丢失或受损）的分组而避免了不必要的重传。这种个别的、按需的重传要求接收方逐个地确认正确接收的分组。再次用窗口长度N来限制流水线中未完成、未被确认的分组数。然而，与GBN不同的是，发送方已经收到了对窗口中某些分组的ACK</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813000333949.png"></p>
+<ul>
+<li>SR接收方将确认一个正确接收的分组而不管其是否按序。失序的分组将被缓存直到所有丢失分组（即序号更小的分组）皆被收到为止，这时才可以将一批分组按序交付给上层</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813000619889.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813000706947.png"></p>
+<ul>
+<li>图3-25中的第二步很重要，接收方重新确认（而不是忽略）已收到过的那些序号小于当前窗口基序号的分组。例如，给定在图3-23中所示的发送方和接收方的序号空间，如果分组send_base的ACK没有从接收方传播回发送方，则发送方最终将重传分组send_base，即使显然（对我们而不是对发送方来说！）接收方已经收到了该分组。如果接收方不确认该分组，则发送方窗口将永远不能向前滑动</li>
+<li>可靠数据传输机制及其用途总结</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813001100265.png"></p>
+<h1 id="面向连接的运输：TCP"><a href="#面向连接的运输：TCP" class="headerlink" title="面向连接的运输：TCP"></a>面向连接的运输：TCP</h1><ul>
+<li>TCP是因特网运输层的面向连接的可靠的运输协议。为了提供可靠数据传输，TCP依赖于许多基本原理，其中包括差错检测、重传、累积确认、定时器以及用于序号和确认号的首部字段</li>
+</ul>
+<h2 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h2><ul>
+<li>TCP被称为是面向连接的（connection-oriented），在一个应用进程可以开始向另一个应用进程发送数据之前，这两个进程必须先相互“握手”，即它们必须相互发送某些预备报文段，以建立确保数据传输的参数。作为TCP连接建立的一部分，连接的双方都将初始化与TCP连接相关的许多TCP状态变量</li>
+<li>TCP“连接”不是一条像在电路交换网络中的端到端TDM或FDM电路。相反该“连接”是一条逻辑连接，其共同状态仅保留在两个通信端系统的TCP程序中。由于TCP协议只在端系统中运行，而不在中间的网络元素（路由器和链路层交换机）中运行，所以中间的网络元素不会维持TCP连接状态。事实上，中间路由器对TCP连接完全视而不见，它们看到的是数据报，而不是连接</li>
+<li>TCP连接也总是点对点（point-to-point）的，即在单个发送方与单个接收方之间的连接。所谓“多播”，即在一次发送操作中，从一个发送方将数据传送给多个接收方，这种情况对TCP来说是不可能的</li>
+<li>三次握手：客户首先发送一个特殊的TCP报文段，服务器用另一个特殊的TCP报文段来响应，最后，客户再用第三个特殊报文段作为响应。前两个报文段不承载“有效载荷”，也就是不包含应用层数据；而第三个报文段可以承载有效载荷</li>
+<li>客户进程通过套接字（该进程之门）传递数据流。数据一旦通过该门，它就由客户中运行的TCP控制了。TCP将这些数据引导到该连接的发送缓存（send buffer）里，发送缓存是发起三次握手期间设置的缓存之一。接下来TCP就会不时从发送缓存里取出一块数据，并将数据传递到网络层。在TCP规范中却没提及TCP应何时实际发送缓存里的数据，只是描述为“TCP应该在它方便的时候以报文段的形式发送数据”</li>
+<li>TCP可从缓存中取出并放入报文段中的数据数量受限于最大报文段长度（Maximum Segment Size，MSS）。MSS通常根据最初确定的由本地发送主机发送的最大链路层帧长度（即所谓的最大传输单元（Maximum Transmission Unit，MTU））来设置。设置该MSS要保证一个TCP报文段（当封装在一个IP数据报中）加上TCP/IP首部长度（通常40字节）将适合单个链路层帧</li>
+<li>以太网和PPP链路层协议都具有1500字节的MTU，因此MSS的典型值为1460字节。注意到MSS是指在报文段里应用层数据的最大长度，而不是指包括首部的TCP报文段的最大长度</li>
+<li>TCP为每块客户数据配上一个TCP首部，从而形成多个TCP报文段（TCP segment）。这些报文段被下传给网络层，网络层将其分别封装在网络层IP数据报中。然后这些IP数据报被发送到网络中。当TCP在另一端接收到一个报文段后，该报文段的数据就被放人该TCP连接的接收缓存中，应用程序从此缓存中读取数据流</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813195037582.png"></p>
+<h2 id="TCP报文段结构"><a href="#TCP报文段结构" class="headerlink" title="TCP报文段结构"></a>TCP报文段结构</h2><ul>
+<li>TCP报文段由首部字段和一个数据字段组成。数据字段包含一块应用数据。MSS限制了报文段数据字段的最大长度。当TCP发送一个大文件，例如某Web页面上的一个图像时，TCP通常是将该文件划分成长度为MSS的若干块（最后一块除外，它通常小于MSS）</li>
+<li>TCP报文段结构，注意UDP报文段结构中包含UDP报文段长度，而TCP只有一个首部长度，并不包含数据长度，只有通过序号来表示数据在字节流中的位置，因此UDP接收的是一个完整的报文段，TCP接收的是字节流</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813195406226.png"></p>
+<ul>
+<li>首部包括源端口号和目的端口号，它被用于多路复用/分解来自或送到上层应用的数据。另外，同UDP一样，TCP首部也包括检验和字段（checksum field）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813195512991.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813195609742.png"></p>
+<ul>
+<li>序号和确认号：TCP把数据看成一个无结构的、有序的字节流。从TCP对序号的使用上可以看出这一点，因为序号是建立在传送的字节流之上，而不是建立在传送的报文段的序列之上。一个报文段的序号（sequence number for a segment）因此是该报文段首字节的字节流编号。举例来说，假设主机A上的一个进程想通过一条TCP连接向主机B上的一个进程发送一个数据流。主机A中的TCP将隐式地对数据流中的每一个字节编号。假定数据流由一个包含500000字节的文件组成，其MSS为1000字节，数据流的首字节编号是0。如图3-30所示，该TCP将为该数据流构建500个报文段。给第一个报文段分配序号0，第二个报文段分配序号1000，第三个报文段分配序号2000，以此类推。每一个序号被填人到相应TCP报文段首部的序号字段中</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813200008491.png"></p>
+<ul>
+<li>确认号，TCP是全双工的，因此主机A在向主机B发送数据的同时，也许也接收来自主机B的数据（都是同一条TCP连接的一部分）。从主机B到达的每个报文段中都有一个序号用于从B流向A的数据。主机A填充进报文段的确认号是主机A期望从主机B收到的下一字节的序号</li>
+<li>假设主机A已收到一个来自主机B的包含字节0<del>535的报文段，以及另一个包含字节900</del>1000的报文段。由于某种原因，主机A还没有收到字节536~899的报文段。主机A为了重新构建主机B的数据流，仍在等待字节536（和其后的字节）。因此，A到B的下一个报文段将在确认号字段中包含536。因为TCP只确认该流中至第一个丢失字节为止的字节，所以TCP被称为提供累积确认（cumulative acknowledgment）</li>
+<li>主机A在收到第二个报文段（字节536<del>899）之前收到第三个报文段（字节900</del>1000）。因此，第三个报文段失序到达。该微妙的问题是：当主机在一条TCP连接中收到失序报文段时该怎么办？TCP RFC并没有为此明确规定任何规则，而是把这一问题留给实现TCP的编程人员去处理。他们有两个基本的选择：1）接收方立即丢弃失序报文段（如前所述，这可以简化接收方的设计）；2）接收方保留失序的字节，并等待缺少的字节以填补该间隔。显然，后一种选择对网络带宽而言更为有效，是实践中采用的方法</li>
+<li>事实上，一条TCP连接的双方均可随机地选择初始序号。这样做可以减少将那些仍在网络中存在的来自两台主机之间先前已终止的连接的报文段，误认为是后来这两台主机之间新建连接所产生的有效报文段的可能性（它碰巧与旧连接使用了相同的端口号）</li>
+<li>Telnet：序号和确认号的一个学习案例</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813201402927.png"></p>
+<ul>
+<li>对客户到服务器的数据的确认被装载在一个承载服务器到客户的数据的报文段中，这种确认被称为是被捐带（piggybacked）在服务器到客户的数据报文段中</li>
+</ul>
+<h2 id="往返时间的估计与超时"><a href="#往返时间的估计与超时" class="headerlink" title="往返时间的估计与超时"></a>往返时间的估计与超时</h2><ul>
+<li>报文段的样本RTT（表示为SampleRTT）就是从某报文段被发出（即交给IP）到对该报文段的确认被收到之间的时间量。大多数TCP的实现仅在某个时刻做一次SampleRTT测量，而不是为每个发送的报文段测量一个SampleRTT</li>
+<li>超时间隔应该大于等于EstimatedRTT，否则，将造成不必要的重传。但是超时间隔也不应该比EstimatedRTT大太多，否则当报文段丢失时，TCP不能很快地重传该报文段，导致数据传输时延大</li>
+</ul>
+<h2 id="可靠教据传输"><a href="#可靠教据传输" class="headerlink" title="可靠教据传输"></a>可靠教据传输</h2><ul>
+<li>因特网的网络层服务（IP服务）是不可靠的。IP不保证数据报的交付，不保证数据报的按序交付，也不保证数据报中数据的完整性。对于IP服务，数据报能够溢出路由器缓存而永远不能到达目的地，数据报也可能是乱序到达，而且数据报中的比特可能损坏（由0变为1或者相反）。由于运输层报文段是被IP数据报携带着在网络中传输的，所以运输层的报文段也会遇到这些问题</li>
+<li>TCP在IP不可靠的尽力而为服务之上创建了一种可靠数据传输服务（reliable datatransfer service）。TCP的可靠数据传输服务确保一个进程从其接收缓存中读出的数据流是无损坏、无间隙、非冗余和按序的数据流；即该字节流与连接的另一方端系统发送出的字节流是完全相同</li>
+<li>超时触发重传存在的问题之一是超时周期可能相对较长。当一个报文段丢失时，这种长超时周期道使发送方延退重传丢失的分组，因而增加了端到端时延。幸运的是，发送方通常可在超时事件发生之前通过注意所谓冗余ACK来较好地检测到丢包情况。冗余ACK（duplicate ACK）就是再次确认某个报文段的ACK，而发送方先前已经收到对该报文段的确认</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813202847685.png"></p>
+<ul>
+<li>发送方经常一个接一个地发送大量的报文段，如果一个报文段丢失，就很可能引起许多一个接一个的冗余ACK。如果TCP发送方接收到对相同数据的3个冗余ACK，它把这当作一种指示，说明跟在这个已被确认过3次的报文段之后的报文段已经丢失。一且收到3个冗余ACK，TCP就执行快速重传（fast retransmit），即在该报文段的定时器过期之前重传丢失的报文段</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813203210184.png"></p>
+<ul>
+<li>选择确认（selective acknowledgment），允许TCP接收方有选择地确认失序报文段，而不是累积地确认最后一个正确接收的有序报文段。当将该机制与选择重传机制结合起来使用时（即跳过重传那些已被接收方选择性地确认过的报文段），TCP看起来就很像我们通常的SR协议。因此，TCP的差错恢复机制也许最好被分类为GBN协议与SR协议的混合体</li>
+</ul>
+<h2 id="流量控制"><a href="#流量控制" class="headerlink" title="流量控制"></a>流量控制</h2><ul>
+<li>一条TCP连接的每一侧主机都为该连接设置了接收缓存。当该TCP连接收到正确、按序的字节后，它就将数据放人接收缓存。相关联的应用进程会从该缓存中读取数据，但不必是数据刚一到达就立即读取。事实上，接收方应用也许正忙于其他任务，甚至要过很长时间后才去读取该数据。如果某应用程序读取数据时相对缓慢，而发送方发送得太多、太快，发送的数据就会很容易地使该连接的接收缓存溢出</li>
+<li>TCP为它的应用程序提供了流量控制服务（flow-control service）以消除发送方使接收方缓存溢出的可能性。流量控制因此是一个速度匹配服务，即发送方的发送速率与接收方应用程序的读取速率相匹配</li>
+<li>TCP发送方也可能因为IP网络的拥塞而被遇制，这种形式的发送方的控制被称为拥塞控制（congestion control），即使流量控制和拥塞控制采取的动作非常相似（对发送方的退制），但是它们显然是针对完全不同的原因而采取的措施</li>
+<li>TCP通过让发送方维护一个称为接收窗口（receive window）的变量来提供流量控制。通俗地说，接收窗口用于给发送方一个指示，该接收方还有多少可用的缓存空间。因为TCP是全双工通信，在连接两端的发送方都各自维护一个接收窗口</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813204011717.png"></p>
+<ul>
+<li>UDP并不提供流量控制，报文段由于缓存溢出可能在接收方丢失。例如，考虑一下从主机A上的一个进程向主机B上的一个进程发送一系列UDP报文段的情形。对于一个典型的UDP实现，UDP将在一个有限大小的缓存中加上报文段，该缓存在相应套接字（进程的门户）“之前”。进程每次从缓存中读取一个完整的报文段。如果进程从缓存中读取报文段的速度不够快，那么缓存将会溢出，并且将丢失报文段</li>
+</ul>
+<h2 id="TCP连接管理"><a href="#TCP连接管理" class="headerlink" title="TCP连接管理"></a>TCP连接管理</h2><ul>
+<li>三次握手步骤</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813211014328.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813211314904.png"></p>
+<ul>
+<li>参与一条TCP连接的两个进程中的任何一个都能终止该连接。当连接结束后，主机中的“资源”（即缓存和变量）将被释放。假设某客户打算关闭连接，如图3-40所示。客户应用进程发出一个关闭连接命令。这会引起客户TCP向服务器进程发送一个特殊的TCP报文段。这个特殊的报文段让其首部中的一个标志位即FIN比特被设置为1。当服务器接收到该报文段后，就向发送方回送一个确认报文段。然后，服务器发送它自己的终止报文段，其FIN比特被置为1。最后，该客户对这个服务器的终止报文段进行确认。此时，在两台主机上用于该连接的所有资源都被释放了</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813211728003.png"></p>
+<ul>
+<li>客户端经历的TCP状态序列</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813213120677.png"></p>
+<ul>
+<li>服务器经历的TCP状态序列</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813213212677.png"></p>
+<ul>
+<li>当一台主机接收到一个TCP报文段，其端口号或源IP地址与该主机上进行中的套接字都不匹配。例如，假如一台主机接收了具有目的端口80的一个TCP SYN分组，但该主机在端口80不接受连接（即它不在端口80上运行Web服务器）。则该主机将向源发送一个特殊重置报文段。该TCP报文段将RST标志位置为1。因此，当主机发送一个重置报文段时，它告诉该源“我没有那个报文段的套接字。请不要再发送该报文段了”。当一台主机接收一个UDP分组，它的目的端口与进行中的UDP套接字不匹配，该主机发送一个特殊的ICMP数据报</li>
+<li>nmap端口扫描工具工作原理，为了探索目标主机上的一个特定的TCP端口，如端口6789，nmap将对那台主机的目的端口6789发送一个特殊的TCP SYN报文段。有3种可能的输出：</li>
+</ul>
+<blockquote>
+<p>源主机从目标主机接收到一个TCP SYN ACK报文段。因为这意味着在目标主机上一个应用程序使用TCP端口6789运行，nmap返回“打开”</p>
+<p>源主机从目标主机接收到一个TCP RST报文段。这意味着该SYN报文段到达了目标主机，但目标主机没有运行一个使用TCP端口6789的应用程序。但攻击者至少知道发向该主机端口6789的报文段没有被源和目标主机之间的任何防火墙所阻挡</p>
+<p>源什么也没有收到。这很可能表明该SYN报文段被中间的防火墙所阻挡，无法到达目标主机</p>
+</blockquote>
+<h1 id="拥塞控制原理"><a href="#拥塞控制原理" class="headerlink" title="拥塞控制原理"></a>拥塞控制原理</h1><h2 id="拥塞原因与代价"><a href="#拥塞原因与代价" class="headerlink" title="拥塞原因与代价"></a>拥塞原因与代价</h2><ul>
+<li>情况1：两个发送方和一台具有无穷大缓存的路由器，在这种（极端）理想化的情况中，拥塞网络的一种代价，即当分组的到达速率接近链路容量时，分组经历巨大的排队时延</li>
+<li>情况2：两个发送方和一台具有有限缓存的路由器，另一种网络拥塞的代价，即发送方必须执行重传以补偿因为缓存溢出而丢弃（丢失）的分组。而且，发送方在遇到大时延时所进行的不必要重传会引起路由器利用其链路带宽来转发不必要的分组副本</li>
+<li>情况3：4个发送方和具有有限缓存的多台路由器及多跳路径，拥塞而丢弄分组的另一种代价，即当一个分组沿一条路径被丢弃时，每个上游路由器用于转发该分组到丢弃该分组而使用的传输容量最终被浪费掉了</li>
+</ul>
+<h2 id="拥塞控制方法"><a href="#拥塞控制方法" class="headerlink" title="拥塞控制方法"></a>拥塞控制方法</h2><ul>
+<li>可根据网络层是否为运输层拥塞控制提供了显式帮助，来区分拥塞控制方法</li>
+<li>端到端拥塞控制。在端到端拥塞控制方法中，网络层没有为运输层拥塞控制提供显式支持。即使网络中存在拥塞，端系统也必须通过对网络行为的观察（如分组丢失与时延）来推断之。TCP采用端到端的方法解决拥塞控制，因为IP层不会向端系统提供有关网络拥塞的反馈信息。TCP报文段的丢失（通过超时或3次冗余确认而得知）被认为是网络拥塞的一个迹象，TCP会相应地减小其窗口长度。关于TCP拥塞控制的一些最新建议，即使用增加的往返时延值作为网络拥塞程度增加的指示</li>
+<li>网络辅助的拥塞控制。在网络辅助的拥塞控制中，路由器向发送方提供关于网络中拥塞状态的显式反馈信息。这种反馈可以简单地用一个比特来指示链路中的拥塞情况。例如，在ATM可用比特率（Available BiteRate，ABR）拥塞控制中，路由器显式地通知发送方它（路由器）能在输出链路上支持的最大主机发送速率</li>
+</ul>
+<h1 id="TCP拥塞控制"><a href="#TCP拥塞控制" class="headerlink" title="TCP拥塞控制"></a>TCP拥塞控制</h1><ul>
+<li>TCP所采用的方法是让每一个发送方根据所感知到的网络拥塞程度来限制其能向连接发送流量的速率。如果一个TCP发送方感知从它到目的地之间的路径上没什么拥塞，则TCP发送方增加其发送速率；如果发送方感知沿着该路径有拥塞，则发送方就会降低其发送速率</li>
+<li>TCP发送方是如何限制向其连接发送流量的。TCP连接的每一端都是由一个接收缓存、一个发送缓存和几个变量（LastByteRead、rwnd等）组成。运行在发送方的TCP拥塞控制机制跟踪一个额外的变量，即拥赛窗口（congestion window）。拥塞窗口表示为cwnd，它对一个TCP发送方能向网络中发送流量的速率进行了限制。特别是，在一个发送方中未被确认的数据量不会超过cwnd与rwnd中的最小值</li>
+<li>TCP发送方是如何感知在它与日的地之间的路径上出现了拥塞的。将一个TCP发送方的“丢包事件”定义为：要么出现超时，要么收到来自接收方的3个冗余ACK。当出现过度的拥塞时，在沿着这条路径上的一台（或多台）路由器的缓存会溢出，引起一个数据报（包含一个TCP报文段）被丢弃。丢弃的数据报接着会引起发送方的丢包事件（要么超时或收到3个冗余ACK），发送方就认为在发送方到接收方的路径上出现了拥塞的指示</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813215808572.png"></p>
+<ul>
+<li>TCP拥塞控制算法：慢启动、拥塞避免、快速恢复</li>
+<li>慢启动</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813220017963.png"></p>
+<ul>
+<li>拥塞避免：一且进人拥塞避免状态，cwnd的值大约是上次遇到拥塞时的值的一半，即距离拥塞可能并不遥远！因此，TCP无法每过一个RTT再将cwnd的值翻番，而是采用了一种较为保守的方法，每个RTT只将cwnd的值增加一个MSS</li>
+<li>快速恢复：在快速恢复中，对于引起TCP进人快速恢复状态的缺失报文段，对收到的每个冗余的ACK，cwnd的值增加一个MSS。最终，当对丢失报文段的一个ACK到达时，TCP在降低cwnd后进人拥塞避免状态。如果出现超时事件，快速恢复在执行如同在慢启动和拥塞避免中相同的动作后，迁移到慢启动状态：当丢包事件出现时，cwnd的值被设置为1个MSS，并且ssthresh的值设置为cwnd值的一半</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813220322352.png"></p>
+<ul>
+<li>忽略一条连接开始时初始的慢启动阶段，假定丢包由3个冗余的ACK而不是超时指示，TCP的拥塞控制是：每个RTT内cwnd线性（加性）增加1MSS，然后出现3个冗余ACK事件时cwnd减半（乘性减）。因此，TCP拥塞控制常常被称为加性增、乘性减（Additive-Increase，Multiplicative-Decrease AIMD）拥塞控制方式</li>
+</ul>
+<h2 id="公平性"><a href="#公平性" class="headerlink" title="公平性"></a>公平性</h2><ul>
+<li>考虑K条TCP连接，每条都有不同的端到端路径，但是都经过一段传输速率为Rbps的瓶颈链路。（所谓瓶频链路，是指对于每条连接，沿着该连接路径上的所有其他段链路都不拥塞，而且与该瓶颈链路的传输容量相比，它们都有充足的传输容量。）假设每条连接都在传输一个大文件，而且无UDP流量通过该段瓶颈链路。如果每条连接的平均传输速率接近R/K，即每条连接都得到相同份额的链路带宽，则认为该拥塞控制机制是公平的</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813220833181.png"></p>
+<ul>
+<li>公平性和UDP：TCP拥塞控制是通过拥塞窗口机制来调节一个应用程序的传输速率的。许多多媒体应用如因特网电话和视频会议，经常就因为这种特定原因而不在TCP上运行，因为它们不想其传输速率被拒制，即使在网络非常拥塞的情况下。相反，这些应用宁可在UDP上运行，UDP是没有内置的拥塞控制的。当运行在UDP上时，这些应用能够以恒定的速率将其音频和视频数据注入网络之中并且偶尔会丢失分组，而不愿在拥塞时将其发送速率降至“公平”级别并且不丢失任何分组。从TCP的观点来看，运行在UDP上的多媒体应用是不公平的，因为它们不与其他连接合作，也不适时地调整其传输速率。因为TCP拥塞控制在面临拥塞增加（丢包）时，将降低其传输速率，而UDP源则不必这样做，UDP源有可能压制TCP流量</li>
+<li>公平性和并行TCP连接：即使能够追使UDP流量具有公平的行为，但公平性问题仍然没有完全解决。这是因为没有什么办法阻止基于TCP的应用使用多个并行连接。例如，Web浏览器通常使用多个并行TCP连接来传送一个Web页中的多个对象。（多条连接的确切数目可以在多数浏览器中进行配置。）当一个应用使用多条并行连接时，它占用了一条拥塞链路中较大比例的带宽。举例来说，考虑一段速率为R且支持9个在线客户－服务器应用的链路，每个应用使用一条TCP连接。如果一个新的应用加入进来，也使用一条TCP连接，则每个应用得到差不多相同的传输速率R/10。但是如果这个新的应用这次使用了11个并行TCP连接，则这个新应用就不公平地分到超过R/2的带宽</li>
+</ul>
+<h2 id="明确拥塞通告：网络辅助拥塞控制"><a href="#明确拥塞通告：网络辅助拥塞控制" class="headerlink" title="明确拥塞通告：网络辅助拥塞控制"></a>明确拥塞通告：网络辅助拥塞控制</h2><ul>
+<li>对于IP和TCP的扩展方案，该方案允许网络明确向TCP发送方和接收方发出拥塞信号。这种形式的网络辅助拥塞控制称为明确拥塞通告（Explicit Congestion Notification，ECN）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220813221439354.png"></p>
 ]]></content>
       <categories>
         <category>计算机网络</category>
