@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-z.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-z.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hankong91.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="计算机网络_自顶向下方法，Chap04_网络层_数据平面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chap04_网络层_数据平面">
+<meta property="og:url" content="https://hankong91.github.io/2022/04/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap04_%E7%BD%91%E7%BB%9C%E5%B1%82_%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/index.html">
+<meta property="og:site_name" content="寒空の博客">
+<meta property="og:description" content="计算机网络_自顶向下方法，Chap04_网络层_数据平面">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817233335268.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817214048823.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817214543891.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817215451148.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817215943732.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817220911395.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817221105954.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817221419817.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817221533352.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817221802656.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817222601972.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817222724112.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817222806433.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817223027242.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817223118882.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817224120029.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817225022177.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817225415572.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817230600047.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817230923497.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817231028010.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817231856490.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817232318037.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817233045709.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817233335267.png">
+<meta property="article:published_time" content="2022-04-09T11:21:30.000Z">
+<meta property="article:modified_time" content="2022-08-17T15:51:38.392Z">
+<meta property="article:author" content="寒空">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817233335268.png">
+
+
+<link rel="canonical" href="https://hankong91.github.io/2022/04/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap04_%E7%BD%91%E7%BB%9C%E5%B1%82_%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/04/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap04_%E7%BD%91%E7%BB%9C%E5%B1%82_%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/","path":"2022/04/09/计算机网络/Chap04_网络层_数据平面/","title":"Chap04_网络层_数据平面"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Chap04_网络层_数据平面 | 寒空の博客</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">寒空の博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">21</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">34</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">网络层概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E5%8F%91%E5%92%8C%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2%E5%92%8C%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="nav-number">1.1.</span> <span class="nav-text">转发和路由选择：数据平面和控制平面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%9C%8D%E5%8A%A1%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">网络服务模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">路由器工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E7%AB%AF%E5%8F%A3%E5%A4%84%E7%90%86%E5%92%8C%E5%9F%BA%E4%BA%8E%E7%9B%AE%E7%9A%84%E8%BD%AC%E5%8F%91"><span class="nav-number">2.1.</span> <span class="nav-text">输入端口处理和基于目的转发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2"><span class="nav-number">2.2.</span> <span class="nav-text">交换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E7%AB%AF%E5%8F%A3%E5%A4%84%E7%90%86"><span class="nav-number">2.3.</span> <span class="nav-text">输出端口处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%95%E5%A4%84%E5%87%BA%E7%8E%B0%E6%8E%92%E9%98%9F"><span class="nav-number">2.4.</span> <span class="nav-text">何处出现排队</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E8%B0%83%E5%BA%A6"><span class="nav-number">2.5.</span> <span class="nav-text">分组调度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE%EF%BC%9AIPv4%E3%80%81%E5%AF%BB%E5%9D%80%E3%80%81IPv6%E5%8F%8A%E5%85%B6%E4%BB%96"><span class="nav-number">3.</span> <span class="nav-text">网际协议：IPv4、寻址、IPv6及其他</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv4%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">IPv4数据报格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv4%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%88%86%E7%89%87"><span class="nav-number">3.2.</span> <span class="nav-text">IPv4数据报分片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv4%E7%BC%96%E5%9D%80"><span class="nav-number">3.3.</span> <span class="nav-text">IPv4编址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.4.</span> <span class="nav-text">网络地址转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6"><span class="nav-number">3.5.</span> <span class="nav-text">IPv6</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E8%BD%AC%E5%8F%91%E5%92%8CSDN"><span class="nav-number">4.</span> <span class="nav-text">通用转发和SDN</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="寒空"
+      src="/images/author.jpg">
+  <p class="site-author-name" itemprop="name">寒空</p>
+  <div class="site-description" itemprop="description">放弃不难，但坚持一定很酷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hankong91" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hankong91" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/NSRyan" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;NSRyan" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/04/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap04_%E7%BD%91%E7%BB%9C%E5%B1%82_%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="寒空">
+      <meta itemprop="description" content="放弃不难，但坚持一定很酷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒空の博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Chap04_网络层_数据平面
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-09 19:21:30" itemprop="dateCreated datePublished" datetime="2022-04-09T19:21:30+08:00">2022-04-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-17 23:51:38" itemprop="dateModified" datetime="2022-08-17T23:51:38+08:00">2022-08-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">计算机网络_自顶向下方法，Chap04_网络层_数据平面</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817233335268.png"></p>
+<h1 id="网络层概述"><a href="#网络层概述" class="headerlink" title="网络层概述"></a>网络层概述</h1><ul>
+<li>网络层能够被分解为两个相互作用的部分，即数据平面和控制平面</li>
+<li>网络层的数据平面功能，即网络层中每台路由器的功能，该数据平面功能决定到达路由器输人链路之一的数据报（即网络层的分组）如何转发到该路由器的输出链路之一。涉及传统的IP转发（其中转发基于数据报的目的地址）和通用的转发（其中可以使用数据报首部中的几个不同域的值执行转发和其他功能）</li>
+<li>网络层的控制平面功能，即网络范围的逻辑，该控制平面功能控制数据报沿着从源主机到目的主机的端到端路径中路由器之间的路由方式</li>
+</ul>
+<h2 id="转发和路由选择：数据平面和控制平面"><a href="#转发和路由选择：数据平面和控制平面" class="headerlink" title="转发和路由选择：数据平面和控制平面"></a>转发和路由选择：数据平面和控制平面</h2><ul>
+<li>网络层的作用从表面上看极为简单，即将分组从一台发送主机移动到一台接收主机。为此，需要使用两种重要的网络层功能：</li>
+</ul>
+<blockquote>
+<p>转发。当一个分组到达某路由器的一条输入链路时，该路由器必须将该分组移动到适当的输出链路</p>
+<p>路由选择。当分组从发送方流向接收方时，网络层必须决定这些分组所采用的路由或路径。计算这些路径的算法被称为路由选择算法（routing algorithm）。路由选择在网络层的控制平面中实现</p>
+</blockquote>
+<ul>
+<li>转发表：每台网络路由器中有一个关键元素是它的转发表（forwarding table）。路由器检查到达分组首部的一个或多个字段值，进而使用这些首部值在其转发表中索引，通过这种方法来转发分组。这些值对应存储在转发表项中的值，指出了该分组将被转发的路由器的输出链路接口。例如在图4-2中，一个首部字段值为0111的分组到达路由器。该路由器在它的转发表中索引，并确定该分组的输出链路接口是接口2。该路由器则在内部将该分组转发到接口2。转发是由网络层的数据平面执行的主要功能</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817214048823.png"></p>
+<ul>
+<li>控制平面，传统的方法：路由选择算法运行在每台路由器中，并且在每台路由器中都包含转发和路由选择两种功能</li>
+<li>控制平面，SDN方法：图4-3显示了从路由器物理上分离的另一种方法，远程控制器计算和分发转发表以供每台路由器所使用。注意到图4-2和图4-3的数据平面组件是相同的。而在图4-3中，控制平面路由选择功能与物理的路由器是分离的，即路由选择设备仅执行转发，而远程控制器计算并分发转发表。远程控制器可能实现在具有高可靠性和元余的远程数据中心中，并可能由ISP或某些第三方管理</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817214543891.png"></p>
+<h2 id="网络服务模型"><a href="#网络服务模型" class="headerlink" title="网络服务模型"></a>网络服务模型</h2><ul>
+<li>网络服务模型（network service model）定义了分组在发送与接收端系统之间的端到端运输特性。这些服务可能包括：</li>
+</ul>
+<blockquote>
+<p>确保交付。该服务确保分组将最终到达目的地</p>
+<p>具有时延上界的确保交付。该服务不仅确保分组的交付，而且在特定的主机到主机时延上界内（例如在100ms内）交付</p>
+<p>有序分组交付。该服务确保分组以它们发送的顺序到达目的地</p>
+<p>确保最小带宽。这种网络层服务模仿在发送和接收主机之间一条特定比特率（例如1Mbps）的传输链路的行为。只要发送主机以低于特定比特率的速率传输比特（作为分组的组成部分），则所有分组最终会交付到目的主机</p>
+<p>安全性。网络层能够在源加密所有数据报并在目的地解密这些分组，从而对所有运输层报文段提供机密性</p>
+</blockquote>
+<ul>
+<li>因特网的网络层提供了单一的服务，称为尽力而为服务（best-effort service）。使用尽力而为服务，传送的分组既不能保证以它们发送的顺序被接收，也不能保证它们最终交付；既不能保证端到端时延，也不能保证有最小的带宽。尽力而为服务看起来是根本无服务的一种委婉说法，即一个没有向目的地交付分组的网络也符合尽力而为交付服务的定义</li>
+<li>分组交换机：是指一台通用分组交换设备，它根据分组首部字段中的值，从输人链路接口到输出链路接口转移分组。某些分组交换机称为链路层交换机（link-layer switch），基于链路层帧中的字段值做出转发决定，这些交换机因此被称为链路层（第2层）设备。其他分组交换机称为路由器（router），基于网络层数据报中的首部字段值做出转发决定。路由器因此是网络层（第3层）设备</li>
+</ul>
+<h1 id="路由器工作原理"><a href="#路由器工作原理" class="headerlink" title="路由器工作原理"></a>路由器工作原理</h1><ul>
+<li>通用路由器体系结构</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817215451148.png"></p>
+<h2 id="输入端口处理和基于目的转发"><a href="#输入端口处理和基于目的转发" class="headerlink" title="输入端口处理和基于目的转发"></a>输入端口处理和基于目的转发</h2><ul>
+<li>输人端口的线路端接功能与链路层处理实现了用于各个输入链路的物理层和链路层。在输入端口中执行的查找对于路由器运行是至关重要的。正是在这个地方，路由器使用转发表来查找输出端口，使得到达的分组能经过交换结构转发到该输出端口。转发表是由路由选择处理器计算和更新的（使用路由选择协议与其他网络路由器中的路由选择处理器进行交互），或者转发表接收来自远程SDN控制器的内容。转发决策能在每个输入端口本地做出，无须基于每个分组调用集中式路由选择处理器，因此避免了集中式处理的瓶颈</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817215943732.png"></p>
+<ul>
+<li>路由器用分组目的地址的前缀（prefix）与该表中的表项进行匹配；如果存在一个匹配项，则路由器向与该匹配项相关联的链路转发分组</li>
+<li>当有多个匹配时，该路由器使用最长前缀匹配规则（longest prefx matchig rule）；即在该表中寻找最长的匹配项，并向与最长前级匹配相关联的链路接口转发分组</li>
+<li>一旦通过查找确定了某分组的输出端口，则该分组就能够发送进入交换结构。在某些设计中，如果来自其他输入端口的分组当前正在使用该交换结构，一个分组可能会在进入交换结构时被暂时阻塞。因此，一个被阻塞的分组必须要在输入端口处排队，并等待稍后被及时调度以通过交换结构</li>
+<li>分组（位于输入端口与输出端口中）的阻塞、排队与调度。尽管“查找”在输入端口处理中可认为是最为重要的动作，但必须采取许多其他动作：必须出现物理层和链路层处理；必须检查分组的版本号、检验和以及寿命字段，并且重写后两个字段；必须更新用于网络管理的计数器（如接收到的IP数据报的数目）</li>
+</ul>
+<h2 id="交换"><a href="#交换" class="headerlink" title="交换"></a>交换</h2><ul>
+<li>交换结构位于一台路由器的核心部位，因为正是通过这种交换结构，分组才能实际地从一个输入端口交换（即转发）到一个输出端口中。交换可以用许多方式完成</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817220911395.png"></p>
+<h2 id="输出端口处理"><a href="#输出端口处理" class="headerlink" title="输出端口处理"></a>输出端口处理</h2><ul>
+<li>输出端口处理取出已经存放在输出端口内存中的分组并将其发送到输出链路上。这包括选择和取出排队的分组进行传输，执行所需的链路层和物理层传输功能</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817221105954.png"></p>
+<h2 id="何处出现排队"><a href="#何处出现排队" class="headerlink" title="何处出现排队"></a>何处出现排队</h2><ul>
+<li>在输入端口和输出端口处都可以形成分组队列，排队的位置和程度（或者在输入端口排队，或者在输出端口排队）将取决于流量负载、交换结构的相对速率和线路速率。因为随着这些队列的增长，路由器的缓存空间最终将会耗尽，并且当无内存可用于存储到达的分组时将会出现丢包（packet loss）。分组“在网络中丢失”或“被路由器丢弃”。正是在一台路由器的这些队列中，这些分组被实际丢弃或丢失</li>
+</ul>
+<h2 id="分组调度"><a href="#分组调度" class="headerlink" title="分组调度"></a>分组调度</h2><ul>
+<li>先进先出</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817221419817.png"></p>
+<ul>
+<li>优先权排队</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817221533352.png"></p>
+<ul>
+<li>循环和加权公平排队</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817221802656.png"></p>
+<h1 id="网际协议：IPv4、寻址、IPv6及其他"><a href="#网际协议：IPv4、寻址、IPv6及其他" class="headerlink" title="网际协议：IPv4、寻址、IPv6及其他"></a>网际协议：IPv4、寻址、IPv6及其他</h1><h2 id="IPv4数据报格式"><a href="#IPv4数据报格式" class="headerlink" title="IPv4数据报格式"></a>IPv4数据报格式</h2><ul>
+<li>网络层分组被称为数据报</li>
+<li>IPv4数据报格式</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817222601972.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817222724112.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817222806433.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817223027242.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817223118882.png"></p>
+<ul>
+<li>IP数据报有总长为20字节的首部（假设无选项）。如果数据报承载一个TCP报文段，则每个（无分片的）数据报共承载了总长40字节的首部（20字节的IP首部加上20字节的TCP首部）以及应用层报文</li>
+</ul>
+<h2 id="IPv4数据报分片"><a href="#IPv4数据报分片" class="headerlink" title="IPv4数据报分片"></a>IPv4数据报分片</h2><ul>
+<li>并不是所有链路层协议都能承载相同长度的网络层分组。有的协议能承载大数据报，而有的协议只能承载小分组。例如，以太网帧能够承载不超过1500字节的数据，而某些广域网链路的帧可承载不超过576字节的数据。一个链路层帧能承载的最大数据量叫作最大传送单元（Maximum Transmission Unit，MTU）</li>
+<li>因为每个IP数据报封装在链路层帧中从一台路由器传输到下一台路由器，故链路层协议的MTU严格地限制着IP数据报的长度。对IP数据报长度具有严格限制并不是主要问题。问题在于在发送方与目的地路径上的每段链路可能使用不同的链路层协议，且每种协议可能具有不同的MTU</li>
+<li>想象一台互联几条链路的路由器，且每条链路运行具有不同MTU的链路层协议。假定从某条链路收到一个IP数据报，通过检查转发表确定出链路，并且该条出链路的MTU比该IP数据报的长度要小。如何将这个过大的IP分组挤进链路层帧的有效载荷字段呢？解决该问题的方法是将IP数据报中的数据分片成两个或更多个较小的IP数据报，用单独的链路层顿封装这些较小的IP数据报，然后通过输出链路发送这些帧。每个这些较小的数据报都称为片（fragment）</li>
+<li>片在其到达目的地运输层以前需要重新组装。TCP与UDP的确都希望从网络层收到完整的、未分片的报文。IPv4的设计者感到在路由器中重新组装数据报会给协议带来相当大的复杂性并且影响路由器的性能。为坚持网络内核保持简单的原则，IPv4的设计者决定将数据报的重新组装工作放到端系统中，而不是放到网络路由器中</li>
+<li>当一台目的主机从相同源收到一系列数据报时，它需要确定这些数据报中的某些是否是一些原来较大的数据报的片。如果某些数据报是这些片的话，则它必须进一步确定何时收到了最后一片，并且如何将这些接收到的片拼接到一起以形成初始的数据报。为了让目的主机执行这些重新组装任务，IPv4的设计者将标识、标志和片偏移字段放在IP数据报首部中。当生成一个数据报时，发送主机在为该数据报设置源和目的地址的同时贴上标识号。发送主机通常将它发送的每个数据报的标识号加1。当某路由器需要对一个数据报分片时，形成的每个数据报（即片）具有初始数据报的源地址、目的地址与标识号。当目的地从同一发送主机收到一系列数据报时，它能够检查数据报的标识号以确定哪些数据报实际上是同一较大数据报的片。由于IP是一种不可靠的服务，一个或多个片可能永远到达不了自的地。因为这种原因，为了让目的主机绝对地相信它已收到了初始数据报的最后一个片，最后一个片的标志比特被设为0，而所有其他片的标志比特被设为1。另外，为了让目的主机确定是否丢失了一个片（且能按正确的顺序重新组装片），使用偏移字段指定该片应放在初始IP数据报的哪个位置</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817224120029.png"></p>
+<h2 id="IPv4编址"><a href="#IPv4编址" class="headerlink" title="IPv4编址"></a>IPv4编址</h2><ul>
+<li>主机与物理链路之间的边界叫作接口（interface）。考虑一台路由器及其接口。因为路由器的任务是从链路上接收数据报并从某些其他链路转发出去，路由器必须拥有两条或更多条链路与它连接。路由器与它的任意一条链路之间的边界也叫作接口</li>
+<li>一台路由器因此有多个接口，每个接口有其链路。因为每台主机与路由器都能发送和接收IP数据报，IP要求每台主机和路由器接口拥有自己的IP地址。因此，从技术上讲，一个IP地址与一个接口相关联，而不是与包括该接口的主机或路由器相关联</li>
+<li>每个IP地址长度为32比特（等价为4字节），因此总共有2^32个（或大约40亿个）可能的IP地址</li>
+<li>在全球因特网中的每台主机和路由器上的每个接口，都必须有一个全球唯一的IP地址（在NAT后面的接口除外）。然而，这些地址不能随意地自由选择。一个接口的IP地址的一部分需要由其连接的子网来决定</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817225022177.png"></p>
+<ul>
+<li>用IP的术语来说，互联这3个主机接口与1个路由器接口的网络形成一个子网</li>
+<li>一个子网的IP定义并不局限于连接多台主机到一个路由器接口的以太网段</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817225415572.png"></p>
+<ul>
+<li>因特网的地址分配策略被称为无类别域间路由选择（Classless Interdomain Routing，CIDR）。CIDR将子网寻址的概念一般化了。当使用子网寻址时，32比特的IP地址被划分为两部分，并且也具有点分十进制数形式a.b.c.d/x，其中x指示了地址的第一部分中的比特数</li>
+<li>形式为a.b.c.d/x的地址的x最高比特构成了IP地址的网络部分，并且经常被称为该地址的前缀（prefix）（或网络前缀）。一个组织通常被分配一块连续的地址，即具有相同前级的一段地址。在这种情况下，该组织内部的设备的IP地址将共享共同的前缀</li>
+<li>在CIDR被采用之前，IP地址的网络部分被限制为长度为8、16或24比特，这是一种称为分类编址（classful addressing）的编址方案，这是因为具有8、16和24比特子网地址的子网分别被称为A、B和C类网络</li>
+<li>IP广播地址255.255.255.255，当一台主机发出一个目的地址为255.255.255.255的数据报时，该报文会交付给同一个网络中的所有主机。路由器也会有选择地向邻近的子网转发该报文（虽然它们通常不这样做）</li>
+<li>获取一块子网地址</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817230600047.png"></p>
+<ul>
+<li>获取主机地址：动态主机配置协议，DHCP允许主机自动获取（被分配）一个IP地址。网络管理员能够配置DHCP，以使某给定主机每次与网络连接时能得到一个相同的IP地址，或者某主机将被分配一个临时的IP地址（temporary IP address），每次与网络连接时该地址也许是不同的。除了主机IP地址分配外，DHCP还允许一台主机得知其他信息，例如它的子网掩码、它的第一跳路由器地址（常称为默认网关）与它的本地DNS服务器的地址</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817230923497.png"></p>
+<ul>
+<li>DHCP协议4个步骤</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817231028010.png"></p>
+<h2 id="网络地址转换"><a href="#网络地址转换" class="headerlink" title="网络地址转换"></a>网络地址转换</h2><ul>
+<li>具有专用地址的地域是指其地址仅对该网络中的设备有意义的网络。考虑有数十万家庭网络这样的事实，许多使用了相同的地址空间10.0.0.0/24。在一个给定家庭网络中的设备能够使用10.0.0.0/24编址彼此发送分组。然而，转发到家庭网络之外进入更大的全球因特网的分组显然不能使用这些地址（或作为源地址，或作为目的地址），因为有数十万的网络使用着这块地址。这就是说，10.0.0.0/24地址仅在给定的网络中才有意义</li>
+<li>NAT使能路由器对于外部世界来说甚至不像一台路由器。相反NAT路由器对外界的行为就如同一个具有单一IP地址的单一设备。图4-25中，所有离开家庭路由器流向更大因特网的报文都拥有一个源IP地址138.76.29.7，且所有进入家庭的报文都拥有同一个目的IP地址138.76.29.7。从本质上讲，NAT使能路由器对外界隐藏了家庭网络的细节。（家庭网络计算机是从哪儿得到其地址，路由器又是从哪儿得到它的单一IP地址的。在通常的情况下，答案是相同的，即DHCP！路由器从ISP的DHCP服务器得到它的地址，并且路由器运行一个DHCP服务器，为位于NAT-DHCP路由器控制的家庭网络地址空间中的计算机提供地址。）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817231856490.png"></p>
+<h2 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h2><ul>
+<li>IPv6数据报格式</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817232318037.png"></p>
+<ul>
+<li>扩大的地址容量。IPv6将IP地址长度从32比特增加到128比特，16字节</li>
+<li>分片/重新组装。IPv6不允许在中间路由器上进行分片与重新组装。这种操作只能在源与目的地执行。如果路由器收到的IP6数据报因太大而不能转发到出链路上的话，则路由器只需丢掉该数据报，并向发送方发回一个“分组太大”的ICMP差错报文即可。于是发送方能够使用较小长度的IP数据报重发数据。分片与重新组装是一个耗时的操作，将该功能从路由器中删除并放到端系统中，大大加快了网络中的IP转发速度</li>
+<li>首部检验和。因为因特网层中的运输层（如TCP与UDP）和数据链路层（如以太网）协议执行了检验操作，IP设计者大概觉得在网络层中具有该项功能实属多余，所以将其去除。再次强调的是，快速处理IP分组是关注的重点</li>
+<li>广泛采用的IPV4到IPV6迁移的方法包括建隧道（tunneling）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817233045709.png"></p>
+<h1 id="通用转发和SDN"><a href="#通用转发和SDN" class="headerlink" title="通用转发和SDN"></a>通用转发和SDN</h1><ul>
+<li>第二层交换机和第三层路由器等中间盒的剧增，而且每种都有自己特殊的硬件、软件和管理界面，无疑给许多网络操作员带来了十分头疼的大麻烦</li>
+<li>基于目的地转发的特征总结为两个步骤：查找目的IP地址（“匹配”），然后将分组发送到有特定输出端口的交换结构（“动作”）。考虑一种更有意义的通用“匹配加动作”范式，其中能够对协议栈的多个首部字段进行“匹配”，这些首部字段是与不同层次的不同协议相关联的。“动作”能够包括：将分组转发到一个或多个输出端口（就像在基于目的地转发中一样），跨越多个通向服务的离开接口进行负载均衡分组（就像在负载均衡中一样），重写首部值（就像在NAT中一样），有意识地阻挡/丢弃某个分组（就像在防火墙中一样），为进一步处理和动作而向某个特定的服务器发送一个分组（就像在DPI一样），等等</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817233335267.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>寒空
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hankong91.github.io/2022/04/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap04_%E7%BD%91%E7%BB%9C%E5%B1%82_%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/" title="Chap04_网络层_数据平面">https://hankong91.github.io/2022/04/09/计算机网络/Chap04_网络层_数据平面/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap03_%E8%BF%90%E8%BE%93%E5%B1%82/" rel="prev" title="Chap03_运输层">
+                  <i class="fa fa-chevron-left"></i> Chap03_运输层
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寒空</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">79k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:12</span>
+  </span>
+</div>
+
+<!---->
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>
