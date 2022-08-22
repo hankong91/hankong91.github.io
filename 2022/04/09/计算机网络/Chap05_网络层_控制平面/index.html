@@ -20,28 +20,32 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hankong91.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="lambda表达式">
+<meta name="description" content="计算机网络_自顶向下方法，Chap05_网络层_控制平面">
 <meta property="og:type" content="article">
-<meta property="og:title" content="lambda表达式">
-<meta property="og:url" content="https://hankong91.github.io/2022/03/31/C++/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
+<meta property="og:title" content="Chap05_网络层_控制平面">
+<meta property="og:url" content="https://hankong91.github.io/2022/04/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap05_%E7%BD%91%E7%BB%9C%E5%B1%82_%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/index.html">
 <meta property="og:site_name" content="寒空の博客">
-<meta property="og:description" content="lambda表达式">
+<meta property="og:description" content="计算机网络_自顶向下方法，Chap05_网络层_控制平面">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-03-31T15:11:40.000Z">
-<meta property="article:modified_time" content="2022-03-31T15:13:09.639Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220822230335210.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220822230316731.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220822230335209.png">
+<meta property="article:published_time" content="2022-04-09T13:12:30.000Z">
+<meta property="article:modified_time" content="2022-08-22T15:59:30.539Z">
 <meta property="article:author" content="寒空">
-<meta property="article:tag" content="lambda">
+<meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220822230335210.png">
 
 
-<link rel="canonical" href="https://hankong91.github.io/2022/03/31/C++/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+<link rel="canonical" href="https://hankong91.github.io/2022/04/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap05_%E7%BD%91%E7%BB%9C%E5%B1%82_%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/03/31/C++/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/","path":"2022/03/31/C++/lambda表达式/","title":"lambda表达式"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/04/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap05_%E7%BD%91%E7%BB%9C%E5%B1%82_%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/","path":"2022/04/09/计算机网络/Chap05_网络层_控制平面/","title":"Chap05_网络层_控制平面"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>lambda表达式 | 寒空の博客</title>
+<title>Chap05_网络层_控制平面 | 寒空の博客</title>
   
 
 
@@ -148,7 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">lambda表达式</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">路由选择算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%A0%E7%89%B9%E7%BD%91%E4%B8%AD%E8%87%AA%E6%B4%BD%E7%B3%BB%E7%BB%9F%E5%86%85%E9%83%A8%E7%9A%84%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%EF%BC%9AOSPF"><span class="nav-number">3.</span> <span class="nav-text">因特网中自洽系统内部的路由选择：OSPF</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ISP%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%EF%BC%9ABGP"><span class="nav-number">4.</span> <span class="nav-text">ISP之间的路由选择：BGP</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -224,7 +228,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/03/31/C++/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/04/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap05_%E7%BD%91%E7%BB%9C%E5%B1%82_%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/author.jpg">
@@ -237,7 +241,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          lambda表达式
+          Chap05_网络层_控制平面
         </h1>
 
         <div class="post-meta-container">
@@ -247,9 +251,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-03-31 23:11:40 / 修改时间：23:13:09" itemprop="dateCreated datePublished" datetime="2022-03-31T23:11:40+08:00">2022-03-31</time>
+      <time title="创建时间：2022-04-09 21:12:30" itemprop="dateCreated datePublished" datetime="2022-04-09T21:12:30+08:00">2022-04-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-22 23:59:30" itemprop="dateModified" datetime="2022-08-22T23:59:30+08:00">2022-08-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -257,7 +267,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
         </span>
     </span>
 
@@ -267,18 +277,18 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
+      <span>2.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
-            <div class="post-description">lambda表达式</div>
+            <div class="post-description">计算机网络_自顶向下方法，Chap05_网络层_控制平面</div>
         </div>
       </header>
 
@@ -286,20 +296,33 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h1><ul>
-<li>C++11：一个lambda表达式表示一个可调用的代码单元，可理解为一个未命名的内联函数。但与函数不同，lambda可能定义在函数内部</li>
+        <p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220822230335210.png"></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><ul>
+<li>控制平面作为一种网络范围的逻辑，不仅控制沿着从源主机到目的主机的端到端路径间的路由器如何转发数据报，而且控制网络层组件和服务如何配置和管理</li>
+<li>转发表（在基于目的地转发的场景中）和流表（在通用转发的场景中）是链接网络层的数据平面和控制平面的首要元素。在通用转发的场景下，所采取的动作不仅包括转发一个分组到达路由器的每个输出端口，而且能够丢弃一个分组、复制一个分组和/或重写第2、3或4层分组首部字段</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// [capture list](parameter list) -&gt; return type &#123; function body &#125;</span></span><br><span class="line"><span class="keyword">auto</span> f = [] &#123; <span class="keyword">return</span> <span class="number">42</span>; &#125;;</span><br><span class="line"><span class="comment">// 等价于auto f = []() -&gt; int &#123; return 42; &#125;;</span></span><br><span class="line">cout &lt;&lt; <span class="built_in">f</span>() &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>可以忽略参数列表和返回类型，但必须永远包含捕获列表和函数体</li>
-<li>向lambda传递参数，通常实参和形参的类型必须匹配，而且lambda不能有默认参数</li>
-<li>当定义一个lambda时，编译器生成一个与lambda对应的新的（未命名）类类型。当向一个函数传递一个lambda时，同时定义了一个新类型和该类型的一个对象</li>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220822230316731.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220822230335209.png"></p>
+<h1 id="路由选择算法"><a href="#路由选择算法" class="headerlink" title="路由选择算法"></a>路由选择算法</h1><ul>
+<li>一般而言，路由选择算法的一种分类方式是根据该算法是集中式还是分散式来划分</li>
+<li>集中式路由选择算法（centralized routing algorithm）用完整的、全局性的网络知识计算出从源到目的地之间的最低开销路径。也就是说，该算法以所有节点之间的连通性及所有链路的开销为输入。这就要求该算法在真正开始计算以前，要以某种方式获得这些信息。计算本身可在某个场点进行，或在每台路由器的路由选择组件中重复进行。然而，这里的主要区别在于，集中式算法具有关于连通性和链路开销方面的完整信息。具有全局状态信息的算法常被称作链路状态（Link State，LS）算法，因为该算法必须知道网络中每条链路的开销</li>
+<li>分散式路由选择算法（decentralized routing algorithm）中，路由器以送代、分布式的方式计算出最低开销路径。没有节点拥有关于所有网络链路开销的完整信息。相反，每个节点仅有与其直接相连链路的开销知识即可开始工作。然后，通过迭代计算过程以及与相邻节点的信息交换，一个节点逐渐计算出到达某目的节点或一组目的节点的最低开销路径。比如距离向量（Distance-Vector，DV）算法的分散式路由选择算法。之所以叫作DV算法，是因为每个节点维护到网络中所有其他节点的开销（距离）估计的向量。这种分散式算法，通过相邻路由器之间的交互式报文交换，也许更为天然地适合那些路由器直接交互的控制平面</li>
+<li>路由选择算法的第二种广义分类方式是根据算法是静态的还是动态的进行分类。在静态路由选择算法（static routing algorithm）中，路由随时间的变化非常缓慢，通常是人工进行调整（如人为手工编辑一条链路开销）。动态路由选择算法（dynamic routing algorithm）随着网络流量负载或拓扑发生变化而改变路由选择路径。一个动态算法可周期性地运行或直接响应拓扑或链路开销的变化而运行。虽然动态算法易于对网络的变化做出反应，但也更容易受诸如路由选择循环、路由振荡之类问题的影响</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in"><span class="keyword">void</span></span>(*p)() = [] &#123;</span><br><span class="line">    &#125;;</span><br><span class="line">    cout &lt;&lt; <span class="built_in"><span class="keyword">typeid</span></span>(p).<span class="built_in">name</span>() &lt;&lt; endl;  <span class="comment">// void (__cdecl*)(void)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> f = [] &#123;</span><br><span class="line">    &#125;;</span><br><span class="line">    cout &lt;&lt; <span class="built_in"><span class="keyword">typeid</span></span>(f).<span class="built_in">name</span>() &lt;&lt; endl;  <span class="comment">// class &lt;lambda_682ee71b6214d955ff79d311d300cf75&gt;</span></span><br><span class="line"></span><br><span class="line">    function&lt;<span class="built_in"><span class="keyword">void</span></span>()&gt; func = [] &#123;</span><br><span class="line">    &#125;;</span><br><span class="line">    cout &lt;&lt; <span class="built_in"><span class="keyword">typeid</span></span>(func).<span class="built_in">name</span>() &lt;&lt; endl;    <span class="comment">// class std::function&lt;void __cdecl(void)&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">p</span>();</span><br><span class="line">    <span class="built_in">f</span>();</span><br><span class="line">    <span class="built_in">func</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">31</span>:     <span class="built_in">p</span>();</span><br><span class="line"> call        dword ptr [p]  </span><br><span class="line"> cmp         esi,esp  </span><br><span class="line"> call        __RTC_CheckEsp (<span class="number">0</span>C81217h)  </span><br><span class="line">    <span class="number">32</span>:     <span class="built_in">f</span>();</span><br><span class="line"> lea         ecx,[f]  </span><br><span class="line"> call        &lt;lambda_fcb7316eaff70820ffe7d710fae3140e&gt;::<span class="built_in"><span class="keyword">operator</span></span>() (<span class="number">0</span>C83E30h)  </span><br><span class="line">    <span class="number">33</span>:     <span class="built_in">func</span>();</span><br><span class="line"> lea         ecx,[func]  </span><br><span class="line"> call        std::_Func_class&lt;<span class="keyword">void</span>&gt;::<span class="built_in"><span class="keyword">operator</span></span>() (<span class="number">0</span>C8169Ah)  </span><br></pre></td></tr></table></figure>
-
+<h1 id="因特网中自洽系统内部的路由选择：OSPF"><a href="#因特网中自洽系统内部的路由选择：OSPF" class="headerlink" title="因特网中自洽系统内部的路由选择：OSPF"></a>因特网中自洽系统内部的路由选择：OSPF</h1><ul>
+<li>我们将网络只看作一个互联路由器的集合。从所有路由器执行相同的路由选择算法以计算穿越整个网络的路由选择路径的意义上来说，一台路由器很难同另一台路由器区别开来。在实践中，该模型和这种一组执行同样路由选择算法的同质路由器集合的观点有一点简单化，有以下两个重要原因：</li>
+</ul>
+<blockquote>
+<p>规模。随着路由器数目变得很大，涉及路由选择信息的通信、计算和存储的开销将高得不可实现。当今的因特网由数亿台主机组成。在这些主机中存储的路由选择信息显然需要巨大容量的内存。在所有路由器之间广播连通性和链路开销更新所要求的负担将是巨大的！在如此大量的路由器中选代的距离向量算法将肯定永远无法收敛！显然，必须采取一些措施以减少像因特网这种大型网络中的路由计算的复杂性</p>
+<p>管理自治。因特网是ISP的网络，其中每个ISP都有它自已的路由器网络。ISP通常希望按自己的意愿运行路由器（如在自己的网络中运行它所选择的某种路由选择算法），或对外部隐藏其网络的内部组织面貌。在理想情况下，一个组织应当能够按自己的愿望运行和管理其网络，还要能将其网络与其他外部网络连接起来</p>
+</blockquote>
 <ul>
-<li>对于全局变量，存在于全局区，变量不需要捕获，并且可以直接修改</li>
+<li>这两个问题都可以通过将路由器组织进自治系统（Autonomous System，AS）来解决，其中每个AS由一组通常处在相同管理控制下的路由器组成。通常在一个ISP中的路由器以及互联它们的链路构成一个AS。然而，某些ISP将它们的网络划分为多个AS。特别是，某些一级ISP在其整个网络中使用一个庞大的AS，而其他ISP则将它们的ISP拆分为数十个互联的AS。一个自治系统由其全局唯一的AS号（ASN）所标识。就像IP地址那样，AS号由ICANN区域注册机构所分配</li>
+<li>开放最短路优先（OSPF）：OSPF是一种链路状态协议，它使用洪泛链路状态信息和Dijkstra最低开销路径算法。使用OSPF，一台路由器构建了一幅关于整个自治系统的完整拓扑图（即一幅图）。于是，每台路由器在本地运行Dijkstra的最短路径算法，以确定一个以自身为根节点到所有子网的最短路径树</li>
+</ul>
+<h1 id="ISP之间的路由选择：BGP"><a href="#ISP之间的路由选择：BGP" class="headerlink" title="ISP之间的路由选择：BGP"></a>ISP之间的路由选择：BGP</h1><ul>
+<li>OSPF是一个AS内部路由选择协议。当在相同AS内的源和目的地之间进行分组选路时，分组遵循的路径完全由AS内路由选择协议所决定。然而，当分组跨越多个AS进行路由时，需要一个自治系统间路由选择协议（inter-autonomous system routing protocol）。因为AS间路由选择协议涉及多个AS之间的协调，所以AS通信必须运行相同的AS间路由选择协议。在因特网中，所有的AS运行相同的AS间路由选择协议，称为边界网关协议（BroderGatewayProtocol，BGP）</li>
+<li>BGP协议将因特网中数以千计的ISP黏合起来</li>
 </ul>
 
     </div>
@@ -318,7 +341,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://hankong91.github.io/2022/03/31/C++/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" title="lambda表达式">https://hankong91.github.io/2022/03/31/C++/lambda表达式/</a>
+      <a href="https://hankong91.github.io/2022/04/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap05_%E7%BD%91%E7%BB%9C%E5%B1%82_%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/" title="Chap05_网络层_控制平面">https://hankong91.github.io/2022/04/09/计算机网络/Chap05_网络层_控制平面/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -327,21 +350,18 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/lambda/" rel="tag"># lambda</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/03/31/C++/%E7%94%A8%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A%E5%A3%B0%E6%98%8E/" rel="prev" title="用于数组的结构化绑定声明">
-                  <i class="fa fa-chevron-left"></i> 用于数组的结构化绑定声明
+                <a href="/2022/04/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap04_%E7%BD%91%E7%BB%9C%E5%B1%82_%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/" rel="prev" title="Chap04_网络层_数据平面">
+                  <i class="fa fa-chevron-left"></i> Chap04_网络层_数据平面
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/03/31/C++/C++%E4%B8%AD%E7%9A%84array/" rel="next" title="C++中的array">
-                  C++中的array <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

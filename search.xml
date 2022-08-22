@@ -70,37 +70,6 @@
       </tags>
   </entry>
   <entry>
-    <title>C++中的array</title>
-    <url>/2022/03/31/C++/C++%E4%B8%AD%E7%9A%84array/</url>
-    <content><![CDATA[<h1 id="C-中的array"><a href="#C-中的array" class="headerlink" title="C++中的array"></a>C++中的array</h1><ul>
-<li>C Style Array（C++ raw array, 也叫做C++原生数组）</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="keyword">int</span> arr[] = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;;</span><br><span class="line"><span class="number">2.</span> arr可能会退化为指针: <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> a[])</span> </span>&#123; cout &lt;&lt; <span class="built_in"><span class="keyword">sizeof</span></span>(a) / <span class="built_in"><span class="keyword">sizeof</span></span>(a[<span class="number">0</span>]); &#125;</span><br><span class="line"><span class="number">3.</span> arr不知道自己的大小: <span class="built_in"><span class="keyword">sizeof</span></span>(arr) / <span class="built_in"><span class="keyword">sizeof</span></span>(arr[<span class="number">0</span>])</span><br><span class="line"><span class="number">4.</span> 两个数组之间无法直接赋值: arr1 = arr2</span><br><span class="line"><span class="number">5.</span> 不能自动推导类型: <span class="keyword">auto</span> a[] = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>C++ style Array</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> 是一个容器类, 所以有迭代器</span><br><span class="line"><span class="number">2.</span> 可直接赋值</span><br><span class="line"><span class="number">3.</span> 知道自己的大小: <span class="built_in">sie</span>()</span><br><span class="line"><span class="number">4.</span> 能和另一个数组交换内容: <span class="built_in">swap</span>()</span><br><span class="line"><span class="number">5.</span> 能以指定值填充自己: <span class="built_in">fill</span>()</span><br><span class="line"><span class="number">6.</span> 取某个位置的元素(做越界检查): <span class="built_in">at</span>()</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>C++17：引入了一种新特性，对类模板的参数进行推导</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">std::array a1&#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> &#125;;         <span class="comment">// 推导出 std::array&lt;int, 3&gt;</span></span><br><span class="line">std::array a2&#123; <span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span> &#125;;   <span class="comment">// 推导出 std::array&lt;char, 3&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>C++11：标准库函数begin和end，数组不是类类型，这两个函数不是成员函数，只是将数组作为它们的参数，与vec.begin()区别</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用C++原生数组初始化vector对象</span></span><br><span class="line"><span class="keyword">int</span> int_arr[] = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> &#125;;</span><br><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">ivec</span><span class="params">(begin(int_arr), end(int_arr))</span></span>;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>array</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>C++中的变量初始化</title>
     <url>/2022/02/05/C++/C++%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
     <content><![CDATA[<h1 id="默认初始化"><a href="#默认初始化" class="headerlink" title="默认初始化"></a>默认初始化</h1><ul>
@@ -181,6 +150,37 @@
       </categories>
       <tags>
         <tag>初始化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++中的array</title>
+    <url>/2022/03/31/C++/C++%E4%B8%AD%E7%9A%84array/</url>
+    <content><![CDATA[<h1 id="C-中的array"><a href="#C-中的array" class="headerlink" title="C++中的array"></a>C++中的array</h1><ul>
+<li>C Style Array（C++ raw array, 也叫做C++原生数组）</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="keyword">int</span> arr[] = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;;</span><br><span class="line"><span class="number">2.</span> arr可能会退化为指针: <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> a[])</span> </span>&#123; cout &lt;&lt; <span class="built_in"><span class="keyword">sizeof</span></span>(a) / <span class="built_in"><span class="keyword">sizeof</span></span>(a[<span class="number">0</span>]); &#125;</span><br><span class="line"><span class="number">3.</span> arr不知道自己的大小: <span class="built_in"><span class="keyword">sizeof</span></span>(arr) / <span class="built_in"><span class="keyword">sizeof</span></span>(arr[<span class="number">0</span>])</span><br><span class="line"><span class="number">4.</span> 两个数组之间无法直接赋值: arr1 = arr2</span><br><span class="line"><span class="number">5.</span> 不能自动推导类型: <span class="keyword">auto</span> a[] = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>C++ style Array</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> 是一个容器类, 所以有迭代器</span><br><span class="line"><span class="number">2.</span> 可直接赋值</span><br><span class="line"><span class="number">3.</span> 知道自己的大小: <span class="built_in">sie</span>()</span><br><span class="line"><span class="number">4.</span> 能和另一个数组交换内容: <span class="built_in">swap</span>()</span><br><span class="line"><span class="number">5.</span> 能以指定值填充自己: <span class="built_in">fill</span>()</span><br><span class="line"><span class="number">6.</span> 取某个位置的元素(做越界检查): <span class="built_in">at</span>()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>C++17：引入了一种新特性，对类模板的参数进行推导</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">std::array a1&#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> &#125;;         <span class="comment">// 推导出 std::array&lt;int, 3&gt;</span></span><br><span class="line">std::array a2&#123; <span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span> &#125;;   <span class="comment">// 推导出 std::array&lt;char, 3&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>C++11：标准库函数begin和end，数组不是类类型，这两个函数不是成员函数，只是将数组作为它们的参数，与vec.begin()区别</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用C++原生数组初始化vector对象</span></span><br><span class="line"><span class="keyword">int</span> int_arr[] = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> &#125;;</span><br><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">ivec</span><span class="params">(begin(int_arr), end(int_arr))</span></span>;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>array</tag>
       </tags>
   </entry>
   <entry>
@@ -483,6 +483,31 @@
       </categories>
   </entry>
   <entry>
+    <title>多态和虚函数</title>
+    <url>/2022/03/22/C++/%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><ul>
+<li>广义的多态：不同类型的实体/对象对同一消息有不同的响应</li>
+<li>多态有两种形式：重载多态和子类型多态</li>
+<li>子类型多态：通过虚函数实现</li>
+</ul>
+<h1 id="虚函数实现原理"><a href="#虚函数实现原理" class="headerlink" title="虚函数实现原理"></a>虚函数实现原理</h1><ul>
+<li>虚函数的实现原理是虚表，这个虚表里面存储着最终需要调用的虚函数的地址，这个虚表也叫虚函数表</li>
+<li>当类中包含虚函数时，类的大小增加一个指针的大小，用于保存虚表的地址，且该指针存在于最前面的地址，当调用虚函数时会通过该指针查找对应虚函数的地址，实现多态调用</li>
+<li>只要有虚函数，所有相同对象实例共享同一张虚表，即所有相同对象实例的虚表指针地址指向同一张虚表，注意，不同对象实例虚表指针不同，即使是基类和子类其虚表指针也是不同的</li>
+<li>若子类没有重写父类的虚函数，则虚函数表中该虚函数的地址为父类虚函数的地址</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    B* p = <span class="keyword">new</span> <span class="built_in">D</span>();</span><br><span class="line">    p-&gt;<span class="built_in">func</span>();</span><br><span class="line">    p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">26</span>:     p-&gt;<span class="built_in">func</span>();</span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// ebp-8是指针p的地址</span></span><br><span class="line"> call        <span class="number">00F</span>81109  	            <span class="comment">// 非虚函数直接调用B::func()</span></span><br><span class="line">    <span class="number">27</span>:     p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"> mov         eax,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// eax是对象D的地址</span></span><br><span class="line"> mov         edx,dword ptr [eax]    <span class="comment">// 取出对象D最前面的4个地址值给edx, 即取出虚函数表的地址</span></span><br><span class="line"> mov         esi,esp  </span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  </span><br><span class="line"> mov         eax,dword ptr [edx]    <span class="comment">// 取出虚函数表的最前面4个地址给eax, 即取出D::vfunc()函数地址</span></span><br><span class="line"> call        eax                    <span class="comment">// 间接调用D::vfunc()</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>多态</tag>
+        <tag>虚函数</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>左值和右值</title>
     <url>/2022/02/17/C++/%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/</url>
     <content><![CDATA[<h1 id="概念和语法"><a href="#概念和语法" class="headerlink" title="概念和语法"></a>概念和语法</h1><ul>
@@ -646,31 +671,6 @@
       </categories>
   </entry>
   <entry>
-    <title>多态和虚函数</title>
-    <url>/2022/03/22/C++/%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><ul>
-<li>广义的多态：不同类型的实体/对象对同一消息有不同的响应</li>
-<li>多态有两种形式：重载多态和子类型多态</li>
-<li>子类型多态：通过虚函数实现</li>
-</ul>
-<h1 id="虚函数实现原理"><a href="#虚函数实现原理" class="headerlink" title="虚函数实现原理"></a>虚函数实现原理</h1><ul>
-<li>虚函数的实现原理是虚表，这个虚表里面存储着最终需要调用的虚函数的地址，这个虚表也叫虚函数表</li>
-<li>当类中包含虚函数时，类的大小增加一个指针的大小，用于保存虚表的地址，且该指针存在于最前面的地址，当调用虚函数时会通过该指针查找对应虚函数的地址，实现多态调用</li>
-<li>只要有虚函数，所有相同对象实例共享同一张虚表，即所有相同对象实例的虚表指针地址指向同一张虚表，注意，不同对象实例虚表指针不同，即使是基类和子类其虚表指针也是不同的</li>
-<li>若子类没有重写父类的虚函数，则虚函数表中该虚函数的地址为父类虚函数的地址</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;B::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::func()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">vfunc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;D::vfunc()&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    B* p = <span class="keyword">new</span> <span class="built_in">D</span>();</span><br><span class="line">    p-&gt;<span class="built_in">func</span>();</span><br><span class="line">    p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="number">26</span>:     p-&gt;<span class="built_in">func</span>();</span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// ebp-8是指针p的地址</span></span><br><span class="line"> call        <span class="number">00F</span>81109  	            <span class="comment">// 非虚函数直接调用B::func()</span></span><br><span class="line">    <span class="number">27</span>:     p-&gt;<span class="built_in">vfunc</span>();</span><br><span class="line"> mov         eax,dword ptr [ebp<span class="number">-8</span>]  <span class="comment">// eax是对象D的地址</span></span><br><span class="line"> mov         edx,dword ptr [eax]    <span class="comment">// 取出对象D最前面的4个地址值给edx, 即取出虚函数表的地址</span></span><br><span class="line"> mov         esi,esp  </span><br><span class="line"> mov         ecx,dword ptr [ebp<span class="number">-8</span>]  </span><br><span class="line"> mov         eax,dword ptr [edx]    <span class="comment">// 取出虚函数表的最前面4个地址给eax, 即取出D::vfunc()函数地址</span></span><br><span class="line"> call        eax                    <span class="comment">// 间接调用D::vfunc()</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>多态</tag>
-        <tag>虚函数</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>异常</title>
     <url>/2022/03/01/C++/%E5%BC%82%E5%B8%B8/</url>
     <content><![CDATA[<h1 id="异常机制"><a href="#异常机制" class="headerlink" title="异常机制"></a>异常机制</h1><ul>
@@ -824,6 +824,23 @@
       </tags>
   </entry>
   <entry>
+    <title>菱形继承</title>
+    <url>/2022/03/25/C++/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF/</url>
+    <content><![CDATA[<h1 id="菱形继承"><a href="#菱形继承" class="headerlink" title="菱形继承"></a>菱形继承</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> a_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> :</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">C</span> :</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> c_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B, C &#123;</span><br><span class="line">    <span class="keyword">int</span> d_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时 sizeof(D) = 20</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>带来的问题：最底下子类从基类继承的成员变量冗余、重复；最底下子类无法直接访问基类的成员，有二义性，除非加上其中一个父类的访问作用域</li>
+<li>解决办法：使用虚继承，让B、C两个类共用A中的成员，且B、C都必须虚继承A</li>
+<li>注意：使用虚继承，也会引入虚表，在B、C类的对象中，会首先存放一个虚表指针，接下来存放B、C类的对应成员变量，最后存放A类的成员变量，且虚表指针指向的虚表，第一个值存放虚表指针与本类起始的偏移量（一般为0），第二个值存放虚基类第一个成员变量与本类起始的偏移量，以此类推</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> a_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> :</span> <span class="keyword">virtual</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">C</span> :</span> <span class="keyword">virtual</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> c_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B, C &#123;</span><br><span class="line">    <span class="keyword">int</span> d_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时 sizeof(D) = 24</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>继承基类的构造函数</title>
     <url>/2022/03/09/C++/%E7%BB%A7%E6%89%BF%E5%9F%BA%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h1 id="继承基类的构造函数"><a href="#继承基类的构造函数" class="headerlink" title="继承基类的构造函数"></a>继承基类的构造函数</h1><ul>
@@ -842,23 +859,6 @@
       <tags>
         <tag>构造函数</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>菱形继承</title>
-    <url>/2022/03/25/C++/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF/</url>
-    <content><![CDATA[<h1 id="菱形继承"><a href="#菱形继承" class="headerlink" title="菱形继承"></a>菱形继承</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> a_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> :</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">C</span> :</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> c_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B, C &#123;</span><br><span class="line">    <span class="keyword">int</span> d_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时 sizeof(D) = 20</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>带来的问题：最底下子类从基类继承的成员变量冗余、重复；最底下子类无法直接访问基类的成员，有二义性，除非加上其中一个父类的访问作用域</li>
-<li>解决办法：使用虚继承，让B、C两个类共用A中的成员，且B、C都必须虚继承A</li>
-<li>注意：使用虚继承，也会引入虚表，在B、C类的对象中，会首先存放一个虚表指针，接下来存放B、C类的对应成员变量，最后存放A类的成员变量，且虚表指针指向的虚表，第一个值存放虚表指针与本类起始的偏移量（一般为0），第二个值存放虚基类第一个成员变量与本类起始的偏移量，以此类推</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> a_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> :</span> <span class="keyword">virtual</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">C</span> :</span> <span class="keyword">virtual</span> A &#123;</span><br><span class="line">    <span class="keyword">int</span> c_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B, C &#123;</span><br><span class="line">    <span class="keyword">int</span> d_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时 sizeof(D) = 24</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
   </entry>
   <entry>
     <title>运算符重载</title>
@@ -1731,6 +1731,45 @@
 <li>基于目的地转发的特征总结为两个步骤：查找目的IP地址（“匹配”），然后将分组发送到有特定输出端口的交换结构（“动作”）。考虑一种更有意义的通用“匹配加动作”范式，其中能够对协议栈的多个首部字段进行“匹配”，这些首部字段是与不同层次的不同协议相关联的。“动作”能够包括：将分组转发到一个或多个输出端口（就像在基于目的地转发中一样），跨越多个通向服务的离开接口进行负载均衡分组（就像在负载均衡中一样），重写首部值（就像在NAT中一样），有意识地阻挡/丢弃某个分组（就像在防火墙中一样），为进一步处理和动作而向某个特定的服务器发送一个分组（就像在DPI一样），等等</li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220817233335267.png"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Chap05_网络层_控制平面</title>
+    <url>/2022/04/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Chap05_%E7%BD%91%E7%BB%9C%E5%B1%82_%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220822230335210.png"></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><ul>
+<li>控制平面作为一种网络范围的逻辑，不仅控制沿着从源主机到目的主机的端到端路径间的路由器如何转发数据报，而且控制网络层组件和服务如何配置和管理</li>
+<li>转发表（在基于目的地转发的场景中）和流表（在通用转发的场景中）是链接网络层的数据平面和控制平面的首要元素。在通用转发的场景下，所采取的动作不仅包括转发一个分组到达路由器的每个输出端口，而且能够丢弃一个分组、复制一个分组和/或重写第2、3或4层分组首部字段</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220822230316731.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/computer_networking/image-20220822230335209.png"></p>
+<h1 id="路由选择算法"><a href="#路由选择算法" class="headerlink" title="路由选择算法"></a>路由选择算法</h1><ul>
+<li>一般而言，路由选择算法的一种分类方式是根据该算法是集中式还是分散式来划分</li>
+<li>集中式路由选择算法（centralized routing algorithm）用完整的、全局性的网络知识计算出从源到目的地之间的最低开销路径。也就是说，该算法以所有节点之间的连通性及所有链路的开销为输入。这就要求该算法在真正开始计算以前，要以某种方式获得这些信息。计算本身可在某个场点进行，或在每台路由器的路由选择组件中重复进行。然而，这里的主要区别在于，集中式算法具有关于连通性和链路开销方面的完整信息。具有全局状态信息的算法常被称作链路状态（Link State，LS）算法，因为该算法必须知道网络中每条链路的开销</li>
+<li>分散式路由选择算法（decentralized routing algorithm）中，路由器以送代、分布式的方式计算出最低开销路径。没有节点拥有关于所有网络链路开销的完整信息。相反，每个节点仅有与其直接相连链路的开销知识即可开始工作。然后，通过迭代计算过程以及与相邻节点的信息交换，一个节点逐渐计算出到达某目的节点或一组目的节点的最低开销路径。比如距离向量（Distance-Vector，DV）算法的分散式路由选择算法。之所以叫作DV算法，是因为每个节点维护到网络中所有其他节点的开销（距离）估计的向量。这种分散式算法，通过相邻路由器之间的交互式报文交换，也许更为天然地适合那些路由器直接交互的控制平面</li>
+<li>路由选择算法的第二种广义分类方式是根据算法是静态的还是动态的进行分类。在静态路由选择算法（static routing algorithm）中，路由随时间的变化非常缓慢，通常是人工进行调整（如人为手工编辑一条链路开销）。动态路由选择算法（dynamic routing algorithm）随着网络流量负载或拓扑发生变化而改变路由选择路径。一个动态算法可周期性地运行或直接响应拓扑或链路开销的变化而运行。虽然动态算法易于对网络的变化做出反应，但也更容易受诸如路由选择循环、路由振荡之类问题的影响</li>
+</ul>
+<h1 id="因特网中自洽系统内部的路由选择：OSPF"><a href="#因特网中自洽系统内部的路由选择：OSPF" class="headerlink" title="因特网中自洽系统内部的路由选择：OSPF"></a>因特网中自洽系统内部的路由选择：OSPF</h1><ul>
+<li>我们将网络只看作一个互联路由器的集合。从所有路由器执行相同的路由选择算法以计算穿越整个网络的路由选择路径的意义上来说，一台路由器很难同另一台路由器区别开来。在实践中，该模型和这种一组执行同样路由选择算法的同质路由器集合的观点有一点简单化，有以下两个重要原因：</li>
+</ul>
+<blockquote>
+<p>规模。随着路由器数目变得很大，涉及路由选择信息的通信、计算和存储的开销将高得不可实现。当今的因特网由数亿台主机组成。在这些主机中存储的路由选择信息显然需要巨大容量的内存。在所有路由器之间广播连通性和链路开销更新所要求的负担将是巨大的！在如此大量的路由器中选代的距离向量算法将肯定永远无法收敛！显然，必须采取一些措施以减少像因特网这种大型网络中的路由计算的复杂性</p>
+<p>管理自治。因特网是ISP的网络，其中每个ISP都有它自已的路由器网络。ISP通常希望按自己的意愿运行路由器（如在自己的网络中运行它所选择的某种路由选择算法），或对外部隐藏其网络的内部组织面貌。在理想情况下，一个组织应当能够按自己的愿望运行和管理其网络，还要能将其网络与其他外部网络连接起来</p>
+</blockquote>
+<ul>
+<li>这两个问题都可以通过将路由器组织进自治系统（Autonomous System，AS）来解决，其中每个AS由一组通常处在相同管理控制下的路由器组成。通常在一个ISP中的路由器以及互联它们的链路构成一个AS。然而，某些ISP将它们的网络划分为多个AS。特别是，某些一级ISP在其整个网络中使用一个庞大的AS，而其他ISP则将它们的ISP拆分为数十个互联的AS。一个自治系统由其全局唯一的AS号（ASN）所标识。就像IP地址那样，AS号由ICANN区域注册机构所分配</li>
+<li>开放最短路优先（OSPF）：OSPF是一种链路状态协议，它使用洪泛链路状态信息和Dijkstra最低开销路径算法。使用OSPF，一台路由器构建了一幅关于整个自治系统的完整拓扑图（即一幅图）。于是，每台路由器在本地运行Dijkstra的最短路径算法，以确定一个以自身为根节点到所有子网的最短路径树</li>
+</ul>
+<h1 id="ISP之间的路由选择：BGP"><a href="#ISP之间的路由选择：BGP" class="headerlink" title="ISP之间的路由选择：BGP"></a>ISP之间的路由选择：BGP</h1><ul>
+<li>OSPF是一个AS内部路由选择协议。当在相同AS内的源和目的地之间进行分组选路时，分组遵循的路径完全由AS内路由选择协议所决定。然而，当分组跨越多个AS进行路由时，需要一个自治系统间路由选择协议（inter-autonomous system routing protocol）。因为AS间路由选择协议涉及多个AS之间的协调，所以AS通信必须运行相同的AS间路由选择协议。在因特网中，所有的AS运行相同的AS间路由选择协议，称为边界网关协议（BroderGatewayProtocol，BGP）</li>
+<li>BGP协议将因特网中数以千计的ISP黏合起来</li>
+</ul>
 ]]></content>
       <categories>
         <category>计算机网络</category>
