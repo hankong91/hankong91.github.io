@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-z.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-z.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hankong91.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="UNIX网络编程_卷1，Chap04_基本TCP套接字编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chap04_基本TCP套接字编程">
+<meta property="og:url" content="https://hankong91.github.io/2022/05/11/UNP/Chap04_%E5%9F%BA%E6%9C%ACTCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:site_name" content="寒空の博客">
+<meta property="og:description" content="UNIX网络编程_卷1，Chap04_基本TCP套接字编程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/unp/image-20221022200015547.png">
+<meta property="article:published_time" content="2022-05-11T12:33:45.000Z">
+<meta property="article:modified_time" content="2022-10-22T12:54:53.930Z">
+<meta property="article:author" content="寒空">
+<meta property="article:tag" content="UNIX网络编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/unp/image-20221022200015547.png">
+
+
+<link rel="canonical" href="https://hankong91.github.io/2022/05/11/UNP/Chap04_%E5%9F%BA%E6%9C%ACTCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/05/11/UNP/Chap04_%E5%9F%BA%E6%9C%ACTCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/","path":"2022/05/11/UNP/Chap04_基本TCP套接字编程/","title":"Chap04_基本TCP套接字编程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Chap04_基本TCP套接字编程 | 寒空の博客</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">寒空の博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">22</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">40</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#connect%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">connect函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#listen%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">listen函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#accept%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">accept函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">并发服务器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#getsockname%E5%92%8Cgetpeername%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">getsockname和getpeername函数</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="寒空"
+      src="/images/author.jpg">
+  <p class="site-author-name" itemprop="name">寒空</p>
+  <div class="site-description" itemprop="description">放弃不难，但坚持一定很酷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hankong91" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hankong91" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/NSRyan" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;NSRyan" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/05/11/UNP/Chap04_%E5%9F%BA%E6%9C%ACTCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="寒空">
+      <meta itemprop="description" content="放弃不难，但坚持一定很酷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒空の博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Chap04_基本TCP套接字编程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-11 20:33:45" itemprop="dateCreated datePublished" datetime="2022-05-11T20:33:45+08:00">2022-05-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-22 20:54:53" itemprop="dateModified" datetime="2022-10-22T20:54:53+08:00">2022-10-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">UNIX网络编程</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">UNIX网络编程_卷1，Chap04_基本TCP套接字编程</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="connect函数"><a href="#connect函数" class="headerlink" title="connect函数"></a>connect函数</h1><ul>
+<li>客户在调用函数connect前不必非得调用bind函数，因为如果需要的话，内核会确定源IP地址，并选择一个临时端口作为源端口</li>
+<li>如果是TCP套接字，调用connect函数将激发TCP的三路握手过程，而且仅在连接建立成功或出错时才返回，其中出错返回可能有以下几种情况：</li>
+</ul>
+<blockquote>
+<p>（1）若TCP客户没有收到SYN分节的响应，则返回ETIMEDOUT错误。举例来说，调用connect函数时，4.4BSD内核发送一个SYN，若无响应则等待6s后再发送一个，若仍无响应则等待24s后再发送一个。若总共等了75s后仍未收到响应则返回本错误</p>
+<p>（2）若对客户的SYN的响应是RST（表示复位），则表明该服务器主机在我们指定的端口上没有进程在等待与之连接（例如服务器进程也许没在运行）。这是一种硬错误，客户一接收到RST就马上返间ECONNREFUSED错误。RST是TCP在发生错误时发送的一种TCP分节。产生RST的三个条件是：目的地为某端口的SYN到达，然而该端口上没有正在监听的服务器；TCP想取消一个已有连接；TCP接收到一个根本不存在的连接上的分节</p>
+<p>（3）若客户发出的SYN在中间的某个路由器上引发了一个“destination unreachable”（目的地不可达）ICMP错误，则认为是一种软错误。客户主机内核保存该消息，并按第一种情况中所述的时间间隔继续发送SYN。若在某个规定的时间（4.4BSD规定75s）后仍未收到响应，则把保存的消息（即ICMP错误）作为EHOSTUNREACH或ENETONREACH错误返回给进程。以下两种情形也是有可能的：一是按照本地系统的转发表，根本没有到达远程系统的路径；二是connect调用根本不等待就返回</p>
+</blockquote>
+<ul>
+<li>按照TCP状态转换图，connect函数导致当前套接字从CLOSED状态（该套接字自从由socket函数创建以来一直所处的状态）转移到SYN_SENT状态，若成功则再转移到ESTABLISHED状态。若connect失败则该套接字不再可用，必须关闭，不能对这样的套接字再次调用connect函数。当循环调用函数connect为给定主机尝试各个IP地址直到有一个成功时，在每次connect失败后，都必须close当前的套接字描述符并重新调用socket</li>
+</ul>
+<h1 id="listen函数"><a href="#listen函数" class="headerlink" title="listen函数"></a>listen函数</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">listen</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">int</span> backlog)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>backlog参数，内核为任何一个给定的监听套接字维护两个队列：（1）未完成连接队列（incomplete connection queue），每个这样的SYN分节对应其中一项：已由某个客户发出并到达服务器，而服务器正在等待完成相应的TCP三路握手过程。这些套接字处于SYN_RCVD状态。（2）已完成连接队列（completed connection queue），每个已完成TCP三路握手过程的客户对应其中一项。这些套接字处于ESTABLISHED状态</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/unp/image-20221022200015547.png"></p>
+<h1 id="accept函数"><a href="#accept函数" class="headerlink" title="accept函数"></a>accept函数</h1><ul>
+<li>接受连接并显示客户地址</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">socklen_t</span> len;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">servaddr</span>, <span class="title">cliaddr</span>;</span></span><br><span class="line"><span class="keyword">char</span> buff[MAXLINE];</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (;;) &#123;</span><br><span class="line">    len = <span class="keyword">sizeof</span>(cliaddr);</span><br><span class="line">    connfd = Accept(listenfd, (SA *)&amp;cliaddr, &amp;len);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;connection from %s, port: %d\n&quot;</span>,</span><br><span class="line">           Inet_ntop(AF_INET, &amp;cliaddr.sin_addr, buff, <span class="keyword">sizeof</span>(buff)),</span><br><span class="line">           ntohs(cliaddr.sin_port));</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="并发服务器"><a href="#并发服务器" class="headerlink" title="并发服务器"></a>并发服务器</h1><ul>
+<li>典型的并发服务器轮廓</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pid_t</span> pid;</span><br><span class="line"><span class="keyword">int</span> listenfd, connfd;</span><br><span class="line"></span><br><span class="line">listenfd = Socket(...);</span><br><span class="line">Bind(listenfd, ...)</span><br><span class="line">Listen(listenfd, LISTENQ);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (;;) &#123;</span><br><span class="line">    connfd = Accept(listenfd, ...);</span><br><span class="line">    <span class="keyword">if</span> ((pid = Fork()) == <span class="number">0</span>) &#123;</span><br><span class="line">        Close(listenfd);</span><br><span class="line">        doit(connfd);</span><br><span class="line">        Close(connfd);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    Close(connfd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>对一个TCP套接字调用close会导致发送一个FIN，随后是正常的TCP连接终止序列。为什么上述父进程对connfd调用close没有终止它与客户的连接，为了便于理解，每个文件或套接字都有一个引用计数。引用计数在文件表项中维护，它是当前打开着的引用该文件或套接字的描述符的个数。上述代码socket返回后与listenfd关联的文件表项的引用计数值为1。accept返回后与connfd关联的文件表项的引用计数值也为1。然而fork返回后，这两个描述符就在父进程与子进程间共享（也就是被复制），因此与这两个套接字相关联的文件表项各自的访问计数值均为2。这么一来，当父进程关闭connfd时，它只是把相应的引用计数值从2减为1。该套接字真正的清理和资源释放要等到其引用计数值到达0时才发生。这会在稍后子进程也关闭connfd时发生</li>
+</ul>
+<h1 id="getsockname和getpeername函数"><a href="#getsockname和getpeername函数" class="headerlink" title="getsockname和getpeername函数"></a>getsockname和getpeername函数</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getsockname</span><span class="params">(<span class="keyword">int</span> sockfd, struct sockaddr *addr, <span class="keyword">socklen_t</span> *addrlen)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getpeername</span><span class="params">(<span class="keyword">int</span> sockfd, struct sockaddr *addr, <span class="keyword">socklen_t</span> *addrlen)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这两个函数返回与某个套接字关联的本地协议地址（getsockname），或者返回与某个套接字关联的外地协议地址（getpeername）</li>
+<li>当一个服务器是由调用过accept的某个进程通过调用exec执行程序时，它能够获取客户身份的唯一途径便是调用getpeername</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>寒空
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hankong91.github.io/2022/05/11/UNP/Chap04_%E5%9F%BA%E6%9C%ACTCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/" title="Chap04_基本TCP套接字编程">https://hankong91.github.io/2022/05/11/UNP/Chap04_基本TCP套接字编程/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="tag"># UNIX网络编程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/11/UNP/Chap03_%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B%E7%AE%80%E4%BB%8B/" rel="prev" title="Chap03_套接字编程简介">
+                  <i class="fa fa-chevron-left"></i> Chap03_套接字编程简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寒空</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">99k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:30</span>
+  </span>
+</div>
+
+<!---->
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>
