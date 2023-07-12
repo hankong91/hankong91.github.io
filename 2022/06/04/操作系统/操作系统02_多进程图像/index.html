@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-z.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-z.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hankong91.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="操作系统02_多进程图像">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统02_多进程图像">
+<meta property="og:url" content="https://hankong91.github.io/2022/06/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F02_%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%9B%BE%E5%83%8F/index.html">
+<meta property="og:site_name" content="寒空の博客">
+<meta property="og:description" content="操作系统02_多进程图像">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191222205957697.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191222212531293.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191223003044943.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191223004128380.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191223235848030.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191224000703895.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191224001922160.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202204825332.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202212852972.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202213447510.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202214539715.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202214803138.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202215103802.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202220113351.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202220241075.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202220546883.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203142843635.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203210625167.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203210747514.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203210951220.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203212226106.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203213100089.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203215801933.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203215824205.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203215843618.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203215904234.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209203222623.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209203822188.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209214743780.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209215804397.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209220552156.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209221437964.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209225158964.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209225255251.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209231703191.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209232013663.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209232505103.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209232909692.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209234140137.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209234243811.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200214195744955.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215132631435.png">
+<meta property="article:published_time" content="2022-06-04T12:11:34.000Z">
+<meta property="article:modified_time" content="2023-07-12T15:50:19.134Z">
+<meta property="article:author" content="寒空">
+<meta property="article:tag" content="线程">
+<meta property="article:tag" content="调度">
+<meta property="article:tag" content="进程同步">
+<meta property="article:tag" content="信号量">
+<meta property="article:tag" content="临界区">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191222205957697.png">
+
+
+<link rel="canonical" href="https://hankong91.github.io/2022/06/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F02_%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%9B%BE%E5%83%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/06/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F02_%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%9B%BE%E5%83%8F/","path":"2022/06/04/操作系统/操作系统02_多进程图像/","title":"操作系统02_多进程图像"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>操作系统02_多进程图像 | 寒空の博客</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">寒空の博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">31</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">52</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%BA%A7%E7%BA%BF%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">用户级线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%BA%A7%E7%BA%BF%E7%A8%8B%E5%88%87%E6%8D%A2"><span class="nav-number">2.1.</span> <span class="nav-text">用户级线程切换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%BA%A7%E7%BA%BF%E7%A8%8B%E5%88%9B%E5%BB%BA"><span class="nav-number">2.2.</span> <span class="nav-text">用户级线程创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%BA%A7%E7%BA%BF%E7%A8%8B%E5%BC%8A%E7%AB%AF"><span class="nav-number">2.3.</span> <span class="nav-text">用户级线程弊端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">2.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E7%BA%A7%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">内核级线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%A4%84%E7%90%86%E5%99%A8%E5%92%8C%E5%A4%9A%E6%A0%B8"><span class="nav-number">3.1.</span> <span class="nav-text">多处理器和多核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E7%BA%A7%E7%BA%BF%E7%A8%8B%E5%88%87%E6%8D%A2"><span class="nav-number">3.2.</span> <span class="nav-text">内核级线程切换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%87%E6%8D%A2%E4%BE%8B%E5%AD%90"><span class="nav-number">3.3.</span> <span class="nav-text">切换例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E7%BA%A7%E7%BA%BF%E7%A8%8B%E5%88%9B%E5%BB%BA"><span class="nav-number">3.4.</span> <span class="nav-text">内核级线程创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%BA%A7%E7%BA%BF%E7%A8%8B%E5%92%8C%E6%A0%B8%E5%BF%83%E7%BA%A7%E7%BA%BF%E7%A8%8B%E5%AF%B9%E6%AF%94"><span class="nav-number">3.5.</span> <span class="nav-text">用户级线程和核心级线程对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93-1"><span class="nav-number">3.6.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU%E8%B0%83%E5%BA%A6%E7%AD%96%E7%95%A5"><span class="nav-number">4.</span> <span class="nav-text">CPU调度策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FCFS-%E5%85%88%E5%88%B0%E5%85%88%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.1.</span> <span class="nav-text">FCFS - 先到先服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SJF-%E7%9F%AD%E4%BD%9C%E4%B8%9A%E4%BC%98%E5%85%88"><span class="nav-number">4.2.</span> <span class="nav-text">SJF - 短作业优先</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RR-%E6%97%B6%E9%97%B4%E7%89%87%E8%BD%AE%E8%BD%AC"><span class="nav-number">4.3.</span> <span class="nav-text">RR - 时间片轮转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">4.4.</span> <span class="nav-text">优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%AE%9E%E9%99%85%E7%9A%84schedule%E5%87%BD%E6%95%B0"><span class="nav-number">4.5.</span> <span class="nav-text">一个实际的schedule函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="nav-number">5.</span> <span class="nav-text">进程同步与信号量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="nav-number">5.1.</span> <span class="nav-text">进程同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="nav-number">5.2.</span> <span class="nav-text">信号量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E7%94%9F%E4%BA%A7%E8%80%85-%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98"><span class="nav-number">5.3.</span> <span class="nav-text">解决生产者-消费者问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F%E4%B8%B4%E7%95%8C%E5%8C%BA%E4%BF%9D%E6%8A%A4"><span class="nav-number">6.</span> <span class="nav-text">信号量临界区保护</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%9E%E4%BA%89%E9%97%AE%E9%A2%98"><span class="nav-number">6.1.</span> <span class="nav-text">竞争问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B4%E7%95%8C%E5%8C%BA"><span class="nav-number">6.2.</span> <span class="nav-text">临界区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E4%BF%9D%E6%8A%A4"><span class="nav-number">6.3.</span> <span class="nav-text">软件保护</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E4%BF%9D%E6%8A%A4-%E5%BC%80%E5%85%B3%E4%B8%AD%E6%96%AD"><span class="nav-number">6.4.</span> <span class="nav-text">硬件保护 - 开关中断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E4%BF%9D%E6%8A%A4-%E5%8E%9F%E5%AD%90%E6%8C%87%E4%BB%A4"><span class="nav-number">6.5.</span> <span class="nav-text">硬件保护 - 原子指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93-2"><span class="nav-number">6.6.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">7.</span> <span class="nav-text">信号量代码实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E5%A4%84%E7%90%86"><span class="nav-number">8.</span> <span class="nav-text">死锁处理</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="寒空"
+      src="/images/author.jpg">
+  <p class="site-author-name" itemprop="name">寒空</p>
+  <div class="site-description" itemprop="description">放弃不难，但坚持一定很酷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hankong91" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hankong91" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/NSRyan" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;NSRyan" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/06/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F02_%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%9B%BE%E5%83%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="寒空">
+      <meta itemprop="description" content="放弃不难，但坚持一定很酷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒空の博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统02_多进程图像
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-04 20:11:34" itemprop="dateCreated datePublished" datetime="2022-06-04T20:11:34+08:00">2022-06-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-12 23:50:19" itemprop="dateModified" datetime="2023-07-12T23:50:19+08:00">2023-07-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">操作系统02_多进程图像</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>OS管理CPU核心思想：将PC置成一段程序的开始地址，CPU不断取址执行，CPU就可以开始工作，但是由于有IO的存在，IO的执行速度比CPU执行速度慢很多，这就导致CPU的利用率很低，而如果能让多个程序都放在内存里，当一个程序执行IO时，CPU切换到另一个程序执行，这样一个CPU上并发交替的执行多个程序，就可以让CPU忙碌起来，提高CPU利用率</p>
+<p>为了完成切换，就需要记录执行起来的程序的信息，来保证切回来时能恢复到切换前的状态，这些信息保存在PCB中，多进程切换是多进程图像的核心</p>
+<p>多进程组织：OS感知进程全靠PCB，OS组织进程也靠PCB，用PCB来形成一些队列结构来组织多进程，用进程状态来推进多进程</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191222205957697.png"></p>
+<p>进程切换：队列操作+调度+切换，将CPU中的信息保存到当前进程的PCB，然后调度选择下一个进程，得到下一个进程的PCB，然后将下一个进程的PCB的信息赋值到CPU中的寄存器，完成进程的切换</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191222212531293.png"></p>
+<h1 id="用户级线程"><a href="#用户级线程" class="headerlink" title="用户级线程"></a>用户级线程</h1><p>进程 = 资源 + 指令执行序列，将资源和指令执行序列分开，一个资源 + 多个执行执行序列（线程）</p>
+<p>线程保留了并发的优点，避免进程切换的代价，实质就是映射表不变而PC指针变；线程切换，只是切换执行指令序列（PC指针以及一些CPU寄存器），不用切换进程数据资源，如映射表等，代价小，切换快</p>
+<p>用户级线程完全在用户态执行，不会进入内核态，要完成用户级线程的切换，需要主动调用yield函数</p>
+<h2 id="用户级线程切换"><a href="#用户级线程切换" class="headerlink" title="用户级线程切换"></a>用户级线程切换</h2><ul>
+<li>两个执行序列与一个栈</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191223003044943.png"></p>
+<blockquote>
+<ol>
+<li>A函数执行到B函数时，先把104地址压栈，然后执行B函数</li>
+<li>B函数执行到yield，让步线程，将204地址压栈，然后CPU执行C函数</li>
+<li>C函数执行到D函数时，先把304地址压栈，然后执行D函数</li>
+<li>D函数执行到yield时，让步线程，将404地址压栈，然后CPU执行204地址</li>
+<li>CPU执行完204地址，即B函数后，需要弹栈，按理来说应该执行104地址，但由于弹出的第一个栈是404，因此又回到404执行</li>
+<li>因此若只有一个栈，则会造成上述问题</li>
+</ol>
+</blockquote>
+<ul>
+<li>从一个栈到两个栈，每个执行序列有各自自己的栈</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191223004128380.png"></p>
+<blockquote>
+<p>esp：CPU中的寄存器，用于存放线程的栈指针</p>
+<ol>
+<li>A函数执行到B函数时，先把104地址压栈，然后执行B函数</li>
+<li>B函数执行到yield，让步线程，将204地址压栈，然后CPU执行C函数。注意：此时的栈都是自己线程的栈。切换时，需要先切换到另一个线程的栈，然后在执行另一个线程</li>
+<li>C函数执行到D函数时，先把304地址压栈，然后执行D函数</li>
+<li>D函数执行到yield时，让步线程，将404地址压栈，然后CPU执行204地址。注意：此时也需要先切换栈</li>
+<li>CPU执行完204地址，即B函数后，需要弹栈，此时又会执行到204！！！</li>
+<li>由于yield函数中最后的大括号之前是jmp，直接跳走，因此最后的大括号永远执行不到，因此可以把jmp 204直接去掉，这样也是同样切换到线程1的204执行，然后执行完弹栈，执行104</li>
+</ol>
+</blockquote>
+<h2 id="用户级线程创建"><a href="#用户级线程创建" class="headerlink" title="用户级线程创建"></a>用户级线程创建</h2><p>两个线程的样子：两个TCB、两个栈、切换的PC在栈中</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191223235848030.png"></p>
+<h2 id="用户级线程弊端"><a href="#用户级线程弊端" class="headerlink" title="用户级线程弊端"></a>用户级线程弊端</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191224000703895.png"></p>
+<p>线程yield是用户态程序</p>
+<p>一旦进行网卡IO，对网卡读写，而网卡是计算机硬件，要访问硬件必须要通过操作系统，也就必须要进内核，所以一访问网卡，就可能会在网卡IO阻塞，此时操作系统内核就会切换到其他进程。对于内核来说看不到进程1中还包含其他线程，也就不会切到进程1中的其他线程执行，造成进程1整体阻塞</p>
+<p>通过用户级线程执行多个任务序列，一旦在内核中阻塞，这多个序列启动的并发性就没有任何效果。假使系统中没有别的进程，此时CPU只能进行空转</p>
+<p>从而引出核心级线程，TCB在内核中，线程的并发性要更好一些，对于用户级线程，线程切换中的栈完全是用户栈，根本没有进入到内核</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191224001922160.png"></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>用户级线程切换的核心：从一个栈变到两个栈，每个线程有自己的栈，有自己的TCB（存放栈地址），在切换的时候首先切换TCB，再切换栈</p>
+<p>创建线程：将要切换的PC指针放到自己的栈中，然后创建好TCB，将来在切换的过程中，首先通过TCB切换，切换到相应的栈，然后从栈中弹出PC指针去执行</p>
+<p>将进程的切换分成两个部分来阐述，切换指令流和切换资源（内存管理），切换指令流就是切换线程</p>
+<p>进程必须在内核中，因为进程要分配资源，要访问内存和文件等，这些硬件资源必须要到内核态才能访问，没有用户级进程的概念，切换进程实际上是切换内核级线程</p>
+<h1 id="内核级线程"><a href="#内核级线程" class="headerlink" title="内核级线程"></a>内核级线程</h1><h2 id="多处理器和多核"><a href="#多处理器和多核" class="headerlink" title="多处理器和多核"></a>多处理器和多核</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202204825332.png"></p>
+<p>多核要充分发挥它的作用，必须要支持核心级线程</p>
+<p>多处理：每个CPU有自己的一套缓存和MMU（内存映射）；多核：每个CPU用的是同一套缓存和MMU，多个执行序列用一套映射就是线程，而只有到内核以后才能将线程分配到一个核上，即实现了多个线程执行在多个核上，达到并行的效果</p>
+<p>对于多核来说，即使是多进程也发挥不了它的作用，因为虽然只有一套MMU，但是进程的切换涉及到内存映射的切换，同一套MMU也会需要一次切换，所以对于多核来说必须要支持核心级线程</p>
+<p>对于用户级线程，操作系统看不到，无法发挥多核效果，无法有效使用计算机硬件</p>
+<h2 id="内核级线程切换"><a href="#内核级线程切换" class="headerlink" title="内核级线程切换"></a>内核级线程切换</h2><p>要有内核级线程，就必须既要在用户态跑（用户栈），又要在内核态跑（内核栈）</p>
+<p>用户级线程实现两个栈，而内核级线程实现两套栈</p>
+<p>用户级线程切换：TCB切换，根据TCB切换用户栈；内核级线程切换：TCB切换（处于内核中），根据TCB切换一套栈，内核栈要切换，用户栈也要切换</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202212852972.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202213447510.png"></p>
+<h2 id="切换例子"><a href="#切换例子" class="headerlink" title="切换例子"></a>切换例子</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202214539715.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202214803138.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202215103802.png"></p>
+<p>内核级线程切换思路：</p>
+<ul>
+<li>内核级线程S正常执行，有自己的用户栈，一旦中断后进入内核态，就会有内核栈，此时就用到了内核态的TCB</li>
+<li>一旦需要切换，则会找到下一个内核态的TCB，并切换到下一个内核级线程T的TCB</li>
+<li>线程T的TCB有线程T的内核栈，而线程T的内核栈又关联着线程T的用户栈，通过iret指令切换到用户栈</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202220113351.png"></p>
+<h2 id="内核级线程创建"><a href="#内核级线程创建" class="headerlink" title="内核级线程创建"></a>内核级线程创建</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202220241075.png"></p>
+<h2 id="用户级线程和核心级线程对比"><a href="#用户级线程和核心级线程对比" class="headerlink" title="用户级线程和核心级线程对比"></a>用户级线程和核心级线程对比</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202220546883.png"></p>
+<h2 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h2><p>内核级线程切换核心，由TCB引发的两套栈之间的切换</p>
+<p>对于用户来说，看不到内核栈之间的切换</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203142843635.png"></p>
+<h1 id="CPU调度策略"><a href="#CPU调度策略" class="headerlink" title="CPU调度策略"></a>CPU调度策略</h1><p> CPU调度（进程调度）的直观想法：</p>
+<ul>
+<li>FIFO：先进先出</li>
+<li>Priority：优先级，任务短的可以适当优先</li>
+</ul>
+<p>如何设计调度算法</p>
+<ul>
+<li>尽快结束任务：周转时间（从任务进入到任务结束）短</li>
+<li>用户操作尽快响应：响应时间（从操作发生到响应）短</li>
+<li>系统内耗时间少：吞吐量（完成的任务量）</li>
+</ul>
+<p>总原则：系统专注于任务执行，又能合理调配任务</p>
+<p>如何做到合理：</p>
+<ul>
+<li>吞吐量和响应时间之间有矛盾：响应时间小，则切换次数多，则系统内耗大，则吞吐量小</li>
+<li>前台任务关注响应时间，后台任务关注周转时间</li>
+</ul>
+<h2 id="FCFS-先到先服务"><a href="#FCFS-先到先服务" class="headerlink" title="FCFS - 先到先服务"></a>FCFS - 先到先服务</h2><p>FCFS：First Come, First Served</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203210625167.png"></p>
+<h2 id="SJF-短作业优先"><a href="#SJF-短作业优先" class="headerlink" title="SJF - 短作业优先"></a>SJF - 短作业优先</h2><p>在FCFS中，若将P2和P3互调，则平均周转时间变少</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203210747514.png"></p>
+<h2 id="RR-时间片轮转"><a href="#RR-时间片轮转" class="headerlink" title="RR - 时间片轮转"></a>RR - 时间片轮转</h2><p>在SJF基础上，不能让长作业的任务一直排在最后，需要保证响应时间，因此引入时间片轮转</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203210951220.png"></p>
+<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203212226106.png"></p>
+<p>前台任务采用轮转调度，响应时间小，后台任务采用短作业优先调度，周转时间小</p>
+<p>若是简单的把前台任务优先级高，后台任务优先级低，则会有以下问题，若前台一直有任务，则会导致后台任务无法执行，一直处于饥饿状态</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203213100089.png"></p>
+<p>后台任务往往是CPU时间比较长的任务，比方说gcc编译一个很大c文件，会导致很长一段时间不释放CPU，则响应时间又无法保证</p>
+<p>所以既要以轮转调度为核心，保证用户的响应时间，又要在轮转调度的基础上增加一些优先级，而这些优先级要考虑到短作业和前台任务优先</p>
+<h2 id="一个实际的schedule函数"><a href="#一个实际的schedule函数" class="headerlink" title="一个实际的schedule函数"></a>一个实际的schedule函数</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203215801933.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203215824205.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203215843618.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203215904234.png"></p>
+<h1 id="进程同步与信号量"><a href="#进程同步与信号量" class="headerlink" title="进程同步与信号量"></a>进程同步与信号量</h1><h2 id="进程同步"><a href="#进程同步" class="headerlink" title="进程同步"></a>进程同步</h2><p>每个进程有自己的一套执行序列，但并不是每个进程都可以随便执行，有时候需要停下来等待，而另外的一些进程在执行过程中会给该进程发一些信号，根据这些信号来决定是否可以往下继续执行</p>
+<p>生产者消费者案例</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209203222623.png"></p>
+<h2 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209203822188.png"></p>
+<p>注意：这里有个前置条件，对于生产者来说，只有当counter等于1的时候才会唤醒消费者，对于消费者来说，只有当counter等于BUFFER_SIZE - 1的时候才会唤醒生产者。如果生产者采用counter大于0就唤醒消费者，消费者采用counter小于BUFFER_SIZE就唤醒生产者，会造成信号特别多</p>
+<p>对于上述问题，仅仅通过信号还不能完全解决进程间同步，counter只是反映缓冲区中空闲的个数，不能反映有多少个进程在睡眠等待，因此，仅仅通过counter和信号不能完全解决进程间同步，需要更多的信息，从而引出信号量</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209214743780.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209215804397.png"></p>
+<p>sem表示资源的个数，比如一个队列有10个资源，则sem初始化为10，生产者使用一个资源时，sem减1，消费者释放一个资源，sem加1</p>
+<p>当sem为0时表示资源用尽，缓冲区满，此时生产者还需使用资源时，需要等待，sem = -1，表示缺少1个资源，即有1个生产者在等待，同理，sem = -2，表示有两个生产者在等待</p>
+<p>当消费者释放资源时，sem等于-1，由于原先sem = -2，可以先唤醒1个生产者，同时继续释放资源，sem等于0，但是由于上一步sem等于-1，表明还有一个生产者在等待，因此还需要唤醒另一个生产者，从而解决上述问题</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209220552156.png"></p>
+<p>P：生产者调用，需要占用资源，即消费资源</p>
+<p>V：消费者调用，需要释放资源，及产生资源</p>
+<p>注意：这里所说的资源是共享队列的空闲资源个数，生产者使用一个资源，即消费了一个资源，消费者释放了一个资源，即产生了一个资源</p>
+<p>信号量的核心：对0的处理</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">V(semaphore s)</span><br><span class="line">&#123;</span><br><span class="line">    s.value++;</span><br><span class="line">    <span class="keyword">if</span> (s.value &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// s.value &lt;=0，说明原先的信号量是负值，表明有进程在等待，需要唤醒</span></span><br><span class="line">        wakeup(s.<span class="built_in">queue</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="解决生产者-消费者问题"><a href="#解决生产者-消费者问题" class="headerlink" title="解决生产者-消费者问题"></a>解决生产者-消费者问题</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209221437964.png"></p>
+<p>核心：进程什么时候会停。对于生产者来说当缓冲区满的时候，即空闲缓冲区个数为0；对于消费来说，当生产出来的缓冲区个数为0</p>
+<p>信号量的操作都是原子操作，由于生产者在一定条件下需要通知消费者，消费者在一定条件下也需要通知生产者，并且需要对共享资源进行保护，因此可以将最开始的counter用以下三个信号量来表示：</p>
+<ul>
+<li>semaphore full：表示生产出来需要使用共享资源的个数，初值为0，P(full)：判断已占用的资源个数是不是为0，若为0则消费者需要等待</li>
+<li>semaphore empty：表示空闲共享资源的个数，初值为BUFFER_SIZE，P(empty)：判断空闲资源个数是不是为0，若为0则生产者需要等待</li>
+<li>semaphore mutex：互斥锁信号量，防止多进程修改文件，初值为1，谁先进行P操作，相当于谁先加锁，其余进程执行P操作的时候，由于小于0，会进行等待，从而进行互斥保护</li>
+</ul>
+<p>通过对信号量的访问和修改，让多进程图像有序推进</p>
+<h1 id="信号量临界区保护"><a href="#信号量临界区保护" class="headerlink" title="信号量临界区保护"></a>信号量临界区保护</h1><h2 id="竞争问题"><a href="#竞争问题" class="headerlink" title="竞争问题"></a>竞争问题</h2><p>多进程共同修改信号量的问题，造成信号量的值不对，解决竞争条件的直观想法，加锁</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209225158964.png"></p>
+<h2 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209225255251.png"></p>
+<p>临界区代码保护原则：</p>
+<ul>
+<li>基本原则：互斥进入，如果一个进程在临界区中执行，则其他进程不允许进入</li>
+<li>有空让进：若干进程要求进入空闲临界区时，应尽快使一进程进入临界区</li>
+<li>有限等待：从进程发出进入请求到允许进入，不能无限等待</li>
+</ul>
+<h2 id="软件保护"><a href="#软件保护" class="headerlink" title="软件保护"></a>软件保护</h2><p>尝试1 - 轮换法</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209231703191.png"></p>
+<p>问题：P0执行完后，turn=1，若P1执行由于某种原因卡住，则turn永远是1，P0永远进不去临界区，一直在空转</p>
+<p>尝试2 - 标记法</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209232013663.png"></p>
+<p>问题：由于多进程切换，有可能falg[0]和flag[1]都为true，造成P0和P1都无法进入临界区</p>
+<p>尝试3 - 非对称标记（Peterson算法）</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209232505103.png"></p>
+<p>互斥进入：当P0进入时，turn肯定等于0，此时P1肯定无法进入临界区</p>
+<p>有空让进：当P0尝试进入时，若要使P0处于自旋，则必须保证flag[1]等于true且turn等于1，但这种情况只存在于P1处于临界区的情况，一旦P1不处于临界区，则无法使得P0处于自旋状态，即保证了P0有空让进</p>
+<p>尝试4 - 多进程临界区保护（面包店算法）</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209232909692.png"></p>
+<h2 id="硬件保护-开关中断"><a href="#硬件保护-开关中断" class="headerlink" title="硬件保护 - 开关中断"></a>硬件保护 - 开关中断</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209234140137.png"></p>
+<blockquote>
+<p>中断的工作原理：在CPU上有一个寄存器INTR，当有中断触发时，则在INTR中对应的位置1，CPU每执行一条指令，都会检查INTR，若有中断发生则进入中断处理程序，比如有时钟中断，就要进入时钟中断处理程序，就要修改时间片，就有可能引起调度</p>
+</blockquote>
+<p>当执行cli指令时，CPU就不会检查INTR，就不会触发调度。而当多CPU时，虽然保证了其中一个CPU不会触发中断调度，但无法保证另一个CPU触发调度，因此有可能另一个进程在另一个CPU上执行，进入临界区，因此，通过硬件开关中断的方法仅适用于单CPU的情况</p>
+<h2 id="硬件保护-原子指令"><a href="#硬件保护-原子指令" class="headerlink" title="硬件保护 - 原子指令"></a>硬件保护 - 原子指令</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209234243811.png"></p>
+<h2 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h2><p>需要用临界区来保护信号量，临界区算法可以用面包店算法、开关中断、硬件原子指令</p>
+<p>一旦用临界区保护住了信号量，信号量在执行过程中的语义就正确，一旦信号量语义正确，就可以确定多进程图像中，哪些进程什么时候该阻塞、什么时候该被唤醒，实现多进程合理推进</p>
+<p>一句话：用临界区保护信号量，用信号量实现进程同步</p>
+<h1 id="信号量代码实现"><a href="#信号量代码实现" class="headerlink" title="信号量代码实现"></a>信号量代码实现</h1><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200214195744955.png"></p>
+<h1 id="死锁处理"><a href="#死锁处理" class="headerlink" title="死锁处理"></a>死锁处理</h1><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215132631435.png"></p>
+<p>改为mutex在empty前面，就会造成死锁：</p>
+<ul>
+<li>mutex信号量初始值为1，假设此时empty为空，即无空闲队列</li>
+<li>生产者：P(mutex)，mutex - 1 = 0，P(empty)，0 - 1 = -1，等待</li>
+<li>消费者：P(mutex)，0 - 1 = -1，等待</li>
+<li>生产者和消费者均无法被唤醒</li>
+</ul>
+<p>死锁的4个必要条件：</p>
+<ul>
+<li>互斥使用</li>
+<li>不可抢占</li>
+<li>请求和保持</li>
+<li>循环等待</li>
+</ul>
+<p>死锁处理的方法：</p>
+<ul>
+<li>死锁预防：破坏死锁出现的条件</li>
+<li>死锁避免：检测每个资源请求，如果造成死锁就拒绝</li>
+<li>死锁检测+恢复：检测到死锁出现时，让一些进程回滚，让出资源</li>
+<li>死锁忽略：就好像没有出现死锁一样</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>寒空
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hankong91.github.io/2022/06/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F02_%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%9B%BE%E5%83%8F/" title="操作系统02_多进程图像">https://hankong91.github.io/2022/06/04/操作系统/操作系统02_多进程图像/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag"># 线程</a>
+              <a href="/tags/%E8%B0%83%E5%BA%A6/" rel="tag"># 调度</a>
+              <a href="/tags/%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/" rel="tag"># 进程同步</a>
+              <a href="/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F/" rel="tag"># 信号量</a>
+              <a href="/tags/%E4%B8%B4%E7%95%8C%E5%8C%BA/" rel="tag"># 临界区</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/06/03/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F01_%E5%90%AF%E5%8A%A8%20&%20%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/" rel="prev" title="操作系统01_启动 & 系统调用">
+                  <i class="fa fa-chevron-left"></i> 操作系统01_启动 & 系统调用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/06/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F03_%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="next" title="操作系统03_内存管理">
+                  操作系统03_内存管理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寒空</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">167k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:32</span>
+  </span>
+</div>
+
+<!---->
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

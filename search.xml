@@ -2766,4 +2766,452 @@
         <category>Python</category>
       </categories>
   </entry>
+  <entry>
+    <title>操作系统01_启动 &amp; 系统调用</title>
+    <url>/2022/06/03/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F01_%E5%90%AF%E5%8A%A8%20&amp;%20%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
+    <content><![CDATA[<h1 id="操作系统启动"><a href="#操作系统启动" class="headerlink" title="操作系统启动"></a>操作系统启动</h1><h2 id="上电启动"><a href="#上电启动" class="headerlink" title="上电启动"></a>上电启动</h2><p>PC（x86 ）上电后启动过程</p>
+<ul>
+<li>刚开机时CPU处于实模式（和保护模式对应，实模式的寻址CS:IP，CS左移4位+IP）</li>
+<li>开机时，硬件设置CS=0xFFFF，IP=0x0000，CS:IP=0xFFFF0</li>
+<li>CPU寻址0xFFFF0（ROM BIOS映射区）</li>
+<li>检查RAM、键盘、显示器、软硬磁盘</li>
+<li>将磁盘0磁道0扇区（一个扇区512B）读取0x7C00处，其中磁盘0磁道0是OS的引导扇区（OS的第一段代码）</li>
+<li>设置CS=0x07C0，IP=0x0000</li>
+</ul>
+<h2 id="引导模块"><a href="#引导模块" class="headerlink" title="引导模块"></a>引导模块</h2><p>引导扇区代码：bootsect.s，载入setup模块，显示logo（Loading system…），载入system模块，此时OS已经在内存中，最后转入setup执行</p>
+<h2 id="setup模块"><a href="#setup模块" class="headerlink" title="setup模块"></a>setup模块</h2><p>setup模块（完成OS启动前的设置）：setup.s，通过BIOS中断获取扩展内存大小（计算机刚出来的时候只有1M内存，将1M以后的内存称为扩展内存），用于后期OS管理内存，同时获取光标位置、显卡参数、根设备号等信息，即OS要开始逐步接管硬件，同时将system模块移动到0地址，最后进入保护模式</p>
+<p>进入保护模式后，寻址方式发生了改变，在实模式下（16位机），CS和IP都是16位寄存器，最多只能进行20位寻址，即1M空间，接下来需要切换到32位机，也就是保护模式，启动32位寻址方式</p>
+<p>16位模式和32位模式的本质区别：寻址不一样，CPU里面的解释程序不一样，16位方式下采用CS左移4位+IP进行寻址，切换到32位模式后，需要切换到另一套电路实现</p>
+<p>setup.s通过设置cr0寄存器来进行切换，cr0寄存器最后一位若是0，则是实模式，若是1，则是保护模式</p>
+<p>保护模式下的地址翻译和中断处理：</p>
+<ul>
+<li>地址翻译，通过GDT（Global Descriptor Table）来实现，GDT表翻译由计算机硬件实现，方便快速查表，此时CS被称为选择子，存放GDT表项索引，真正的段基址地址放在表项中，再和IP偏移加在一起后产生32位地址。其中GDT表的初始化也在setup.s中进行，基址和IP均是32位，可以访问4G空间，每个表项占用64位（8个字节）</li>
+<li>中断处理，通过IDT（Interrupt Descriptor Table）来实现，每个表项是中断函数处理入口</li>
+</ul>
+<h2 id="system模块"><a href="#system模块" class="headerlink" title="system模块"></a>system模块</h2><p>system模块的第一部分代码是head.s</p>
+<p>head.s重新初始化IDT表和GDT表，之前的setup.s仅是进入保护模式，通过临时的GDT表跳转到system模块，head.s之后设置页表，最后进入main函数，main是一个永远不应该返回的函数</p>
+<p>main的工作是xxx_init：内存、中断、设备、时钟、CPU等内容</p>
+<h1 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h1><p>问题1：操作系统在内存中，应用程序也在内存中，应用程序想要访问操作系统提供的功能，为什么不直接跳进去访问，比如直接访问操作系统中的内存地址</p>
+<p>不安全，比如可以直接读到root用户的密码，也可以看到其他应用程序的内容，因此不可以随意访问操作系统中的内存区域</p>
+<p>问题2：操作系统如何保证用户态不能直接访问内核态</p>
+<ul>
+<li>操作系统通过硬件设计，将内存分割成了不同区域，使得内核程序和用户程序隔离，其对应的内存区域分别为内核段和用户段，计算机对内存的使用都是一段一段来使用的</li>
+<li>所有的段内存访问都需要通过段寄存器CS，段寄存器中包含重要的信息（使用CS的最低两位来表示，0是内核态，3是用户态）</li>
+<li>DPL表示目标内存段的特权级，CPL表示当前内存段的特权级，只有当当前内存段的特权级大于等于目标内存段的特权级才能进行访问</li>
+<li>对于内核段区域，无论是数据段还是代码段，OS在初始化时就将DPL设置为0，DPL存放在GDT表中（1个GDT表项就用来表述一段内存）；而用户段区域，其代码在执行时PC指针（由CS:IP组成，CS寄存器表明了这段代码的权限）处于用户态，因此CPL为3</li>
+<li>每次访问内存时，都需要比较CPL和DPL，只有当CPL&lt;=DPL（PL值越小，权限越高）时才能进行访问</li>
+<li>通过硬件保证的特权级检查保证了用户态内存段不能直接访问内核态内存段</li>
+</ul>
+<p>问题3：如何进入内核态</p>
+<ul>
+<li>OS提供了主动进入内核的方法，通过中断（对于x86，就是int指令）</li>
+<li>int指令将使CS中的CPL改为0，进入内核，这是用户程序发起调用内核代码的唯一方式</li>
+</ul>
+<p>系统调用的核心：</p>
+<ul>
+<li>用户程序中包含一段int指令的代码（通过库函数实现）</li>
+<li>OS写中断处理函数，获取想要调用程序的编号</li>
+<li>OS根据编号执行相应代码</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200201211914471.png"></p>
+]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>操作系统02_多进程图像</title>
+    <url>/2022/06/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F02_%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%9B%BE%E5%83%8F/</url>
+    <content><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>OS管理CPU核心思想：将PC置成一段程序的开始地址，CPU不断取址执行，CPU就可以开始工作，但是由于有IO的存在，IO的执行速度比CPU执行速度慢很多，这就导致CPU的利用率很低，而如果能让多个程序都放在内存里，当一个程序执行IO时，CPU切换到另一个程序执行，这样一个CPU上并发交替的执行多个程序，就可以让CPU忙碌起来，提高CPU利用率</p>
+<p>为了完成切换，就需要记录执行起来的程序的信息，来保证切回来时能恢复到切换前的状态，这些信息保存在PCB中，多进程切换是多进程图像的核心</p>
+<p>多进程组织：OS感知进程全靠PCB，OS组织进程也靠PCB，用PCB来形成一些队列结构来组织多进程，用进程状态来推进多进程</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191222205957697.png"></p>
+<p>进程切换：队列操作+调度+切换，将CPU中的信息保存到当前进程的PCB，然后调度选择下一个进程，得到下一个进程的PCB，然后将下一个进程的PCB的信息赋值到CPU中的寄存器，完成进程的切换</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191222212531293.png"></p>
+<h1 id="用户级线程"><a href="#用户级线程" class="headerlink" title="用户级线程"></a>用户级线程</h1><p>进程 = 资源 + 指令执行序列，将资源和指令执行序列分开，一个资源 + 多个执行执行序列（线程）</p>
+<p>线程保留了并发的优点，避免进程切换的代价，实质就是映射表不变而PC指针变；线程切换，只是切换执行指令序列（PC指针以及一些CPU寄存器），不用切换进程数据资源，如映射表等，代价小，切换快</p>
+<p>用户级线程完全在用户态执行，不会进入内核态，要完成用户级线程的切换，需要主动调用yield函数</p>
+<h2 id="用户级线程切换"><a href="#用户级线程切换" class="headerlink" title="用户级线程切换"></a>用户级线程切换</h2><ul>
+<li>两个执行序列与一个栈</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191223003044943.png"></p>
+<blockquote>
+<ol>
+<li>A函数执行到B函数时，先把104地址压栈，然后执行B函数</li>
+<li>B函数执行到yield，让步线程，将204地址压栈，然后CPU执行C函数</li>
+<li>C函数执行到D函数时，先把304地址压栈，然后执行D函数</li>
+<li>D函数执行到yield时，让步线程，将404地址压栈，然后CPU执行204地址</li>
+<li>CPU执行完204地址，即B函数后，需要弹栈，按理来说应该执行104地址，但由于弹出的第一个栈是404，因此又回到404执行</li>
+<li>因此若只有一个栈，则会造成上述问题</li>
+</ol>
+</blockquote>
+<ul>
+<li>从一个栈到两个栈，每个执行序列有各自自己的栈</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191223004128380.png"></p>
+<blockquote>
+<p>esp：CPU中的寄存器，用于存放线程的栈指针</p>
+<ol>
+<li>A函数执行到B函数时，先把104地址压栈，然后执行B函数</li>
+<li>B函数执行到yield，让步线程，将204地址压栈，然后CPU执行C函数。注意：此时的栈都是自己线程的栈。切换时，需要先切换到另一个线程的栈，然后在执行另一个线程</li>
+<li>C函数执行到D函数时，先把304地址压栈，然后执行D函数</li>
+<li>D函数执行到yield时，让步线程，将404地址压栈，然后CPU执行204地址。注意：此时也需要先切换栈</li>
+<li>CPU执行完204地址，即B函数后，需要弹栈，此时又会执行到204！！！</li>
+<li>由于yield函数中最后的大括号之前是jmp，直接跳走，因此最后的大括号永远执行不到，因此可以把jmp 204直接去掉，这样也是同样切换到线程1的204执行，然后执行完弹栈，执行104</li>
+</ol>
+</blockquote>
+<h2 id="用户级线程创建"><a href="#用户级线程创建" class="headerlink" title="用户级线程创建"></a>用户级线程创建</h2><p>两个线程的样子：两个TCB、两个栈、切换的PC在栈中</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191223235848030.png"></p>
+<h2 id="用户级线程弊端"><a href="#用户级线程弊端" class="headerlink" title="用户级线程弊端"></a>用户级线程弊端</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191224000703895.png"></p>
+<p>线程yield是用户态程序</p>
+<p>一旦进行网卡IO，对网卡读写，而网卡是计算机硬件，要访问硬件必须要通过操作系统，也就必须要进内核，所以一访问网卡，就可能会在网卡IO阻塞，此时操作系统内核就会切换到其他进程。对于内核来说看不到进程1中还包含其他线程，也就不会切到进程1中的其他线程执行，造成进程1整体阻塞</p>
+<p>通过用户级线程执行多个任务序列，一旦在内核中阻塞，这多个序列启动的并发性就没有任何效果。假使系统中没有别的进程，此时CPU只能进行空转</p>
+<p>从而引出核心级线程，TCB在内核中，线程的并发性要更好一些，对于用户级线程，线程切换中的栈完全是用户栈，根本没有进入到内核</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20191224001922160.png"></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>用户级线程切换的核心：从一个栈变到两个栈，每个线程有自己的栈，有自己的TCB（存放栈地址），在切换的时候首先切换TCB，再切换栈</p>
+<p>创建线程：将要切换的PC指针放到自己的栈中，然后创建好TCB，将来在切换的过程中，首先通过TCB切换，切换到相应的栈，然后从栈中弹出PC指针去执行</p>
+<p>将进程的切换分成两个部分来阐述，切换指令流和切换资源（内存管理），切换指令流就是切换线程</p>
+<p>进程必须在内核中，因为进程要分配资源，要访问内存和文件等，这些硬件资源必须要到内核态才能访问，没有用户级进程的概念，切换进程实际上是切换内核级线程</p>
+<h1 id="内核级线程"><a href="#内核级线程" class="headerlink" title="内核级线程"></a>内核级线程</h1><h2 id="多处理器和多核"><a href="#多处理器和多核" class="headerlink" title="多处理器和多核"></a>多处理器和多核</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202204825332.png"></p>
+<p>多核要充分发挥它的作用，必须要支持核心级线程</p>
+<p>多处理：每个CPU有自己的一套缓存和MMU（内存映射）；多核：每个CPU用的是同一套缓存和MMU，多个执行序列用一套映射就是线程，而只有到内核以后才能将线程分配到一个核上，即实现了多个线程执行在多个核上，达到并行的效果</p>
+<p>对于多核来说，即使是多进程也发挥不了它的作用，因为虽然只有一套MMU，但是进程的切换涉及到内存映射的切换，同一套MMU也会需要一次切换，所以对于多核来说必须要支持核心级线程</p>
+<p>对于用户级线程，操作系统看不到，无法发挥多核效果，无法有效使用计算机硬件</p>
+<h2 id="内核级线程切换"><a href="#内核级线程切换" class="headerlink" title="内核级线程切换"></a>内核级线程切换</h2><p>要有内核级线程，就必须既要在用户态跑（用户栈），又要在内核态跑（内核栈）</p>
+<p>用户级线程实现两个栈，而内核级线程实现两套栈</p>
+<p>用户级线程切换：TCB切换，根据TCB切换用户栈；内核级线程切换：TCB切换（处于内核中），根据TCB切换一套栈，内核栈要切换，用户栈也要切换</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202212852972.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202213447510.png"></p>
+<h2 id="切换例子"><a href="#切换例子" class="headerlink" title="切换例子"></a>切换例子</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202214539715.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202214803138.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202215103802.png"></p>
+<p>内核级线程切换思路：</p>
+<ul>
+<li>内核级线程S正常执行，有自己的用户栈，一旦中断后进入内核态，就会有内核栈，此时就用到了内核态的TCB</li>
+<li>一旦需要切换，则会找到下一个内核态的TCB，并切换到下一个内核级线程T的TCB</li>
+<li>线程T的TCB有线程T的内核栈，而线程T的内核栈又关联着线程T的用户栈，通过iret指令切换到用户栈</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202220113351.png"></p>
+<h2 id="内核级线程创建"><a href="#内核级线程创建" class="headerlink" title="内核级线程创建"></a>内核级线程创建</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202220241075.png"></p>
+<h2 id="用户级线程和核心级线程对比"><a href="#用户级线程和核心级线程对比" class="headerlink" title="用户级线程和核心级线程对比"></a>用户级线程和核心级线程对比</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200202220546883.png"></p>
+<h2 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h2><p>内核级线程切换核心，由TCB引发的两套栈之间的切换</p>
+<p>对于用户来说，看不到内核栈之间的切换</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203142843635.png"></p>
+<h1 id="CPU调度策略"><a href="#CPU调度策略" class="headerlink" title="CPU调度策略"></a>CPU调度策略</h1><p> CPU调度（进程调度）的直观想法：</p>
+<ul>
+<li>FIFO：先进先出</li>
+<li>Priority：优先级，任务短的可以适当优先</li>
+</ul>
+<p>如何设计调度算法</p>
+<ul>
+<li>尽快结束任务：周转时间（从任务进入到任务结束）短</li>
+<li>用户操作尽快响应：响应时间（从操作发生到响应）短</li>
+<li>系统内耗时间少：吞吐量（完成的任务量）</li>
+</ul>
+<p>总原则：系统专注于任务执行，又能合理调配任务</p>
+<p>如何做到合理：</p>
+<ul>
+<li>吞吐量和响应时间之间有矛盾：响应时间小，则切换次数多，则系统内耗大，则吞吐量小</li>
+<li>前台任务关注响应时间，后台任务关注周转时间</li>
+</ul>
+<h2 id="FCFS-先到先服务"><a href="#FCFS-先到先服务" class="headerlink" title="FCFS - 先到先服务"></a>FCFS - 先到先服务</h2><p>FCFS：First Come, First Served</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203210625167.png"></p>
+<h2 id="SJF-短作业优先"><a href="#SJF-短作业优先" class="headerlink" title="SJF - 短作业优先"></a>SJF - 短作业优先</h2><p>在FCFS中，若将P2和P3互调，则平均周转时间变少</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203210747514.png"></p>
+<h2 id="RR-时间片轮转"><a href="#RR-时间片轮转" class="headerlink" title="RR - 时间片轮转"></a>RR - 时间片轮转</h2><p>在SJF基础上，不能让长作业的任务一直排在最后，需要保证响应时间，因此引入时间片轮转</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203210951220.png"></p>
+<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203212226106.png"></p>
+<p>前台任务采用轮转调度，响应时间小，后台任务采用短作业优先调度，周转时间小</p>
+<p>若是简单的把前台任务优先级高，后台任务优先级低，则会有以下问题，若前台一直有任务，则会导致后台任务无法执行，一直处于饥饿状态</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203213100089.png"></p>
+<p>后台任务往往是CPU时间比较长的任务，比方说gcc编译一个很大c文件，会导致很长一段时间不释放CPU，则响应时间又无法保证</p>
+<p>所以既要以轮转调度为核心，保证用户的响应时间，又要在轮转调度的基础上增加一些优先级，而这些优先级要考虑到短作业和前台任务优先</p>
+<h2 id="一个实际的schedule函数"><a href="#一个实际的schedule函数" class="headerlink" title="一个实际的schedule函数"></a>一个实际的schedule函数</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203215801933.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203215824205.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203215843618.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200203215904234.png"></p>
+<h1 id="进程同步与信号量"><a href="#进程同步与信号量" class="headerlink" title="进程同步与信号量"></a>进程同步与信号量</h1><h2 id="进程同步"><a href="#进程同步" class="headerlink" title="进程同步"></a>进程同步</h2><p>每个进程有自己的一套执行序列，但并不是每个进程都可以随便执行，有时候需要停下来等待，而另外的一些进程在执行过程中会给该进程发一些信号，根据这些信号来决定是否可以往下继续执行</p>
+<p>生产者消费者案例</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209203222623.png"></p>
+<h2 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209203822188.png"></p>
+<p>注意：这里有个前置条件，对于生产者来说，只有当counter等于1的时候才会唤醒消费者，对于消费者来说，只有当counter等于BUFFER_SIZE - 1的时候才会唤醒生产者。如果生产者采用counter大于0就唤醒消费者，消费者采用counter小于BUFFER_SIZE就唤醒生产者，会造成信号特别多</p>
+<p>对于上述问题，仅仅通过信号还不能完全解决进程间同步，counter只是反映缓冲区中空闲的个数，不能反映有多少个进程在睡眠等待，因此，仅仅通过counter和信号不能完全解决进程间同步，需要更多的信息，从而引出信号量</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209214743780.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209215804397.png"></p>
+<p>sem表示资源的个数，比如一个队列有10个资源，则sem初始化为10，生产者使用一个资源时，sem减1，消费者释放一个资源，sem加1</p>
+<p>当sem为0时表示资源用尽，缓冲区满，此时生产者还需使用资源时，需要等待，sem = -1，表示缺少1个资源，即有1个生产者在等待，同理，sem = -2，表示有两个生产者在等待</p>
+<p>当消费者释放资源时，sem等于-1，由于原先sem = -2，可以先唤醒1个生产者，同时继续释放资源，sem等于0，但是由于上一步sem等于-1，表明还有一个生产者在等待，因此还需要唤醒另一个生产者，从而解决上述问题</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209220552156.png"></p>
+<p>P：生产者调用，需要占用资源，即消费资源</p>
+<p>V：消费者调用，需要释放资源，及产生资源</p>
+<p>注意：这里所说的资源是共享队列的空闲资源个数，生产者使用一个资源，即消费了一个资源，消费者释放了一个资源，即产生了一个资源</p>
+<p>信号量的核心：对0的处理</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">V(semaphore s)</span><br><span class="line">&#123;</span><br><span class="line">    s.value++;</span><br><span class="line">    <span class="keyword">if</span> (s.value &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// s.value &lt;=0，说明原先的信号量是负值，表明有进程在等待，需要唤醒</span></span><br><span class="line">        wakeup(s.<span class="built_in">queue</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="解决生产者-消费者问题"><a href="#解决生产者-消费者问题" class="headerlink" title="解决生产者-消费者问题"></a>解决生产者-消费者问题</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209221437964.png"></p>
+<p>核心：进程什么时候会停。对于生产者来说当缓冲区满的时候，即空闲缓冲区个数为0；对于消费来说，当生产出来的缓冲区个数为0</p>
+<p>信号量的操作都是原子操作，由于生产者在一定条件下需要通知消费者，消费者在一定条件下也需要通知生产者，并且需要对共享资源进行保护，因此可以将最开始的counter用以下三个信号量来表示：</p>
+<ul>
+<li>semaphore full：表示生产出来需要使用共享资源的个数，初值为0，P(full)：判断已占用的资源个数是不是为0，若为0则消费者需要等待</li>
+<li>semaphore empty：表示空闲共享资源的个数，初值为BUFFER_SIZE，P(empty)：判断空闲资源个数是不是为0，若为0则生产者需要等待</li>
+<li>semaphore mutex：互斥锁信号量，防止多进程修改文件，初值为1，谁先进行P操作，相当于谁先加锁，其余进程执行P操作的时候，由于小于0，会进行等待，从而进行互斥保护</li>
+</ul>
+<p>通过对信号量的访问和修改，让多进程图像有序推进</p>
+<h1 id="信号量临界区保护"><a href="#信号量临界区保护" class="headerlink" title="信号量临界区保护"></a>信号量临界区保护</h1><h2 id="竞争问题"><a href="#竞争问题" class="headerlink" title="竞争问题"></a>竞争问题</h2><p>多进程共同修改信号量的问题，造成信号量的值不对，解决竞争条件的直观想法，加锁</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209225158964.png"></p>
+<h2 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209225255251.png"></p>
+<p>临界区代码保护原则：</p>
+<ul>
+<li>基本原则：互斥进入，如果一个进程在临界区中执行，则其他进程不允许进入</li>
+<li>有空让进：若干进程要求进入空闲临界区时，应尽快使一进程进入临界区</li>
+<li>有限等待：从进程发出进入请求到允许进入，不能无限等待</li>
+</ul>
+<h2 id="软件保护"><a href="#软件保护" class="headerlink" title="软件保护"></a>软件保护</h2><p>尝试1 - 轮换法</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209231703191.png"></p>
+<p>问题：P0执行完后，turn=1，若P1执行由于某种原因卡住，则turn永远是1，P0永远进不去临界区，一直在空转</p>
+<p>尝试2 - 标记法</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209232013663.png"></p>
+<p>问题：由于多进程切换，有可能falg[0]和flag[1]都为true，造成P0和P1都无法进入临界区</p>
+<p>尝试3 - 非对称标记（Peterson算法）</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209232505103.png"></p>
+<p>互斥进入：当P0进入时，turn肯定等于0，此时P1肯定无法进入临界区</p>
+<p>有空让进：当P0尝试进入时，若要使P0处于自旋，则必须保证flag[1]等于true且turn等于1，但这种情况只存在于P1处于临界区的情况，一旦P1不处于临界区，则无法使得P0处于自旋状态，即保证了P0有空让进</p>
+<p>尝试4 - 多进程临界区保护（面包店算法）</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209232909692.png"></p>
+<h2 id="硬件保护-开关中断"><a href="#硬件保护-开关中断" class="headerlink" title="硬件保护 - 开关中断"></a>硬件保护 - 开关中断</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209234140137.png"></p>
+<blockquote>
+<p>中断的工作原理：在CPU上有一个寄存器INTR，当有中断触发时，则在INTR中对应的位置1，CPU每执行一条指令，都会检查INTR，若有中断发生则进入中断处理程序，比如有时钟中断，就要进入时钟中断处理程序，就要修改时间片，就有可能引起调度</p>
+</blockquote>
+<p>当执行cli指令时，CPU就不会检查INTR，就不会触发调度。而当多CPU时，虽然保证了其中一个CPU不会触发中断调度，但无法保证另一个CPU触发调度，因此有可能另一个进程在另一个CPU上执行，进入临界区，因此，通过硬件开关中断的方法仅适用于单CPU的情况</p>
+<h2 id="硬件保护-原子指令"><a href="#硬件保护-原子指令" class="headerlink" title="硬件保护 - 原子指令"></a>硬件保护 - 原子指令</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200209234243811.png"></p>
+<h2 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h2><p>需要用临界区来保护信号量，临界区算法可以用面包店算法、开关中断、硬件原子指令</p>
+<p>一旦用临界区保护住了信号量，信号量在执行过程中的语义就正确，一旦信号量语义正确，就可以确定多进程图像中，哪些进程什么时候该阻塞、什么时候该被唤醒，实现多进程合理推进</p>
+<p>一句话：用临界区保护信号量，用信号量实现进程同步</p>
+<h1 id="信号量代码实现"><a href="#信号量代码实现" class="headerlink" title="信号量代码实现"></a>信号量代码实现</h1><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200214195744955.png"></p>
+<h1 id="死锁处理"><a href="#死锁处理" class="headerlink" title="死锁处理"></a>死锁处理</h1><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215132631435.png"></p>
+<p>改为mutex在empty前面，就会造成死锁：</p>
+<ul>
+<li>mutex信号量初始值为1，假设此时empty为空，即无空闲队列</li>
+<li>生产者：P(mutex)，mutex - 1 = 0，P(empty)，0 - 1 = -1，等待</li>
+<li>消费者：P(mutex)，0 - 1 = -1，等待</li>
+<li>生产者和消费者均无法被唤醒</li>
+</ul>
+<p>死锁的4个必要条件：</p>
+<ul>
+<li>互斥使用</li>
+<li>不可抢占</li>
+<li>请求和保持</li>
+<li>循环等待</li>
+</ul>
+<p>死锁处理的方法：</p>
+<ul>
+<li>死锁预防：破坏死锁出现的条件</li>
+<li>死锁避免：检测每个资源请求，如果造成死锁就拒绝</li>
+<li>死锁检测+恢复：检测到死锁出现时，让一些进程回滚，让出资源</li>
+<li>死锁忽略：就好像没有出现死锁一样</li>
+</ul>
+]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
+      <tags>
+        <tag>线程</tag>
+        <tag>调度</tag>
+        <tag>进程同步</tag>
+        <tag>信号量</tag>
+        <tag>临界区</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>操作系统03_内存管理</title>
+    <url>/2022/06/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F03_%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h1 id="内存使用与分段"><a href="#内存使用与分段" class="headerlink" title="内存使用与分段"></a>内存使用与分段</h1><h2 id="内存使用"><a href="#内存使用" class="headerlink" title="内存使用"></a>内存使用</h2><p>将程序放到内存中，CPU不断取址执行，内存也就使用起来了</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20230706223526206.png"></p>
+<p>假设main函数的地址是40，那么为了让CPU使用内存，需要将程序读入内存后取址执行，但是关键是要读到内存中的哪个地方。比如main函数在40的位置，那么call 40就要跳转到40的地址去执行，就要往物理内存中40的地址上去找，也就是main函数的第一条指令需要放到物理内存中40的地址中存放，同理entry需要存放在0地址处，最后将PC置成0，CPU取址执行后就会进入main函数，也就是内存可以使用了</p>
+<p>因此如果按上述做法，这个程序的main函数必须存放到物理地址40处，入口地址必须存放到0地址处，否则这个程序无法执行，但是0地址处不可能随便存放程序（放的是OS），即使可以，万一其他程序也需要放到0地址处，那就会导致冲突</p>
+<p>实际情况应该是将在内存中找一段空闲的内存，然后将这段程序放到这段内存，同时需要将call 40中的40进行修改，因为编译时每个程序的地址都是与入口地址的一个相对地址（逻辑地址），放到物理内存中需要变成一个物理地址</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215211324604.png"></p>
+<p>采用载入时重定位的方法更加灵活，但是很多时候，程序载入后还需要移动，比如交换的场景，一个进程长时间进入睡眠，操作系统为了更充分地利用内存，会将该段内存换出到磁盘中，待需要唤醒的时候重新换入内存</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215212327234.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215212516841.png"></p>
+<p>过程小结：</p>
+<ul>
+<li>程序加载进内存，首先在内存中找到的一段空闲内存，把这段空闲内存的基地址（初始地址）拿出来，设置这个进程的PCB，然后把程序放到这段空闲内存</li>
+<li>上下文切换到该进程的时候，基址寄存器的值就变成了PCB中的初始地址</li>
+<li>每取址执行的时候，都要进行地址翻译，就找到了这条指令实际使用的物理内存地址</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215220134561.png"></p>
+<h2 id="分段"><a href="#分段" class="headerlink" title="分段"></a>分段</h2><p>实际的程序结构</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215222356671.png"></p>
+<p>es：数据段号，bx：偏移</p>
+<p>如果把所有段都放在一起，有可能在写数据段的时候把程序段也写了，因此需要将程序分段存放内存</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215222903538.png"></p>
+<p>可以让内存更加高效的使用，比如说第3个段是堆栈段，堆栈段可以增长，假如不分段而采用集中处理，当堆栈段新申请内存超过预留内存时，要让程序执行，必须在另外空闲内存的地方新申请一段内存，再将所有这些内容拷贝到该空闲内存，形成一个新的样子，把堆栈段拉长，才能继续执行，此时这两块内存在移植过程中都不可以使用，而且移动的数据会比较大，造成内存使用浪费；而如果采用分段处理，当第3段堆栈段不够时，只需要移动第3段，其他几个段可以照常使用，也减少移动内存段空间，内存效率提升</p>
+<p>按照上述情况，再去寻址的话就是段号和段内偏移（DS:offset），注意这里DS和CS不是一回事（DS表示段号，CS表示对应段的段基址），因此此时PCB里面需要存放每一个段的基址，也就是段表</p>
+<h2 id="GDT表和LDT表"><a href="#GDT表和LDT表" class="headerlink" title="GDT表和LDT表"></a>GDT表和LDT表</h2><p>操作系统（看成一个进程），对应的段表就是GDT表；用户的每个进程对应的段表就是LDT表</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215224354688.png"></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>把程序分成多个段，每个段在内存中找到一块空闲的地方，将初始地址放到该进程的LDT表里面</li>
+<li>LDT表赋给PCB，OS根据PC指针不断取址执行，在每执行一条指令的时候都查这个表，根据表中的基址和程序中的地址进行运行时重定向，就能找到对应的物理地址</li>
+<li>LDT表就是内存映射，进程切换的时候，PCB切换，对应的LDT表也切换，保证每个进程有自己的内存空间</li>
+</ul>
+<h1 id="内存分区与分页"><a href="#内存分区与分页" class="headerlink" title="内存分区与分页"></a>内存分区与分页</h1><h2 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h2><p>内存如何分割，就可以将程序的各个段载入到相应的内存分区</p>
+<ul>
+<li>固定分区：OS初始化时将内存等分成N个分区，但是段有大有小，不合适</li>
+<li>可变分区：需要对每个分区进行动态管理</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216095326213.png"></p>
+<h2 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h2><p>可变分区造成的问题</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216100136795.png"></p>
+<p>为解决这个问题，引入分页的机制，将内存分配成页，针对每个段的内存请求，系统一页一页的分配给这个段</p>
+<ul>
+<li>通过分页的机制，将程序段和物理内存分别进行分页，再将对应的页放到空闲内存页上，这样保证了物理内存中尽量没有内存碎片，即使有也是一个分页中不满整个页导致的少量碎片，一个段最多浪费了4K的大小</li>
+<li>不用进行内存紧缩，并且内存的浪费也很少</li>
+<li>物理内存最关心的是空间没有浪费，采用分页机制可以满足，因此从物理内存角度来看希望采用分页，而从用户角度，用户希望分段的特点，可以对每段进行处理，因此需要即支持分段又支持分页</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216101308933.png"></p>
+<p>段表有相应的寄存器LDTR，页表也有相应的寄存器CR3，进程切换的时候，LDTR和CR3分别跟着切换</p>
+<p>MMU：CPU中的硬件模块，根据页表指针，当需要访问内存的时候，根据硬件电路自动算出需要找到的页号，然后根据页表找到页框号，算出实际物理地址，实现内存地址重定向</p>
+<blockquote>
+<p>以0x2240地址为列，首先除以4K（右移12位），得到页号2，根据页表找到页框号为3，每页4K，再左移12位，得到物理地址0x3240</p>
+</blockquote>
+<p>小结：一个程序分成多个段，每个段再打散成多个页，建立页表，页表再和PCB关联</p>
+<h1 id="多级页表与快表"><a href="#多级页表与快表" class="headerlink" title="多级页表与快表"></a>多级页表与快表</h1><p>上述分页机制，为了提高内存空间利用率，页应该小，但是页小了，页表项就会增加，页表就大了，比如4G内存，4G / 4K = 1M，需要存放1M个页表项</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216110654297.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216124103790.png"></p>
+<p>例如只存放用到的页，比如申请4M内存空间，则需要的单级页表项个数为4M / 4K = 1K，即1024个页表项，由于也表项目不连续，则每次查找都需要遍历（或者采用二分查找），为了查找一个页表项，平均需要进行log2^10，即10次查找操作，平均效率变成1/10，这个不允许的，同时本身这个页表也是在内存中的，也需要进行内存访问，速度更慢</p>
+<p>因此需要连续进行存储所有页表项，查找可以通过偏移，快速查找，由此引入多级页表，页目录表（章）+ 页表（节）</p>
+<h2 id="多级页表"><a href="#多级页表" class="headerlink" title="多级页表"></a>多级页表</h2><p>采用章节的思想，记录每个章的页目录，再根据页目录项找到对应的页表，而对于不需要关心的页表项也就不需要放进内存中，即保证了连续，也使得页表占用内存少</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216185551610.png"></p>
+<ul>
+<li>32位机，12bits - 4K地址偏移；10bits - 1K个页目录号（章）；10bits - 1K个页号（节）</li>
+<li>先找到章，再找到节，再计算物理地址</li>
+<li>每个页目录指向2^10个页表，每个页表项指向4K空间，即一个页目录项指向4M空间</li>
+<li>中间很多多余的目录不需要映射，也就不需要相应的节，即页表不需要放到内存中，节省内存</li>
+<li>例如要申请12M内存，则需要三个目录，每个目录所存放页表项对应内存为2^10 x 4Byte = 4K，再加上页目录本身驻留4K，则共需要16K内存空间，远小于单级页表4M内存空间</li>
+<li>注意，未用到页目录仍然占用，保证连续，快速查找</li>
+</ul>
+<p>多节页表，即保证了表项的连续性，可以进行快查找，又保证了在内存中存放的页表项尽可能少。多级页表提高了空间利用率，但是由于多级结构，导致访问内存的次数增加，造成时间相对增加</p>
+<h2 id="快表"><a href="#快表" class="headerlink" title="快表"></a>快表</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216202236743.png"></p>
+<p>多级页表在时间上造成的增加，利用快表来弥补，快表TLB是一组快速存储寄存器，可以通过硬件电路快速找到最近使用内存的逻辑页对应的物理页号</p>
+<p>利用多级页表保证了页表项在内存中连续，可以快速查找，而且提高了空间利用率；利用快表将最近频繁使用的页表项放在快表中，首先去快表中查，查不到再去多级页表中查，也保证了时间上的高效</p>
+<h1 id="段页结合的实际内存管理"><a href="#段页结合的实际内存管理" class="headerlink" title="段页结合的实际内存管理"></a>段页结合的实际内存管理</h1><h2 id="段页结合轮廓"><a href="#段页结合轮廓" class="headerlink" title="段页结合轮廓"></a>段页结合轮廓</h2><p>段、页结合：用户希望用段，物理内存希望用页</p>
+<p>思路：对于用户来说，希望把程序和内存地址空间分成多段，每一段映射到相应段的内存地址空间；对于物理内存来说，希望把每一段程序和物理内存分别进行分页，每一页映射到相应物理内存的页中。那么可以将上一步映射到相应段的内存地址空间与每一段程序等同联系起来，达到段页结合的目的</p>
+<ul>
+<li>从程序角度出发，需要找出一段地址，本来应该从内存地址中去割，为了支持页，不能直接使用物理内存地址，而从虚拟内存中割出一个区域给相应的段，段就有了映射</li>
+<li>虚拟内存中的段分割成固定大小的页，每一页再映射到物理内存上的页</li>
+<li>从物理内存角度看，支持了页，从虚拟地址到实际地址的映射</li>
+</ul>
+<p>引入虚拟内存，即支持了段，又支持了页</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216212723408.png"></p>
+<p>段页同时存在时的重定位（地址翻译）</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216213600702.png"></p>
+<p>经过两层地址翻译：第一层翻译是基于段的地址翻译，通过段表找到虚拟地址；第二层的翻译是基于页的地址翻译，通过页表找到实际物理地址</p>
+<p>核心：从逻辑地址到虚拟地址，从虚拟地址再到物理地址，操作系统利用这两层映射实现了即面向用户能支持段，采用段的结构，又面向物理内存，采用页的结构</p>
+<h2 id="一个实际的段页式内存管理"><a href="#一个实际的段页式内存管理" class="headerlink" title="一个实际的段页式内存管理"></a>一个实际的段页式内存管理</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216214719464.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216214816692.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216220631809.png"></p>
+<p>父子进程通过映射表实现了地址分离，实现了相互影响的消除，解决了多进程同时放到内存中，即使是同一个逻辑地址，OS也会通过LDT和页表的配合，也会操作不同的物理内存</p>
+<h2 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h2><p>虚拟内存是连接分段和分页的核心，而分段和分页是OS管理内存的两个重要机制</p>
+<p>一个进程如何载入内存，首先在虚拟内存中割，其次在物理内存中割，建立段表、页表，执行的时候MMU自动执行地址翻译，程序中需要用到的内存真的可以访问到对应的物理内存，并且完成了多个进程在内存中影响的消除，进程切换的时候对应表都会进行相应切换，达到了进程拉动内存使用的目的</p>
+<h1 id="内存换入"><a href="#内存换入" class="headerlink" title="内存换入"></a>内存换入</h1><p>引入背景：OS为了让用户使用内存，需要分段，光有分段造成内存的效率低，空间利用率低，由此引入了分页，而对于用户和物理内存两个维度要求需要即有分段又有分页，由此引入了虚拟内存，而要想实现虚拟内存，就必须要有换入和换出机制</p>
+<p>用户眼里的内存，OS通过映射来给用户提供一个4G内存的假象，用换入、换出实现大内存</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217223050043.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217223127230.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217223157062.png"></p>
+<p>MMU查页表，发现缺页，就会触发中断，进行页错误处理程序，就要从磁盘中调入页</p>
+<h1 id="内存换出"><a href="#内存换出" class="headerlink" title="内存换出"></a>内存换出</h1><h2 id="FIFO页面置换"><a href="#FIFO页面置换" class="headerlink" title="FIFO页面置换"></a>FIFO页面置换</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232210224.png"></p>
+<h2 id="MIN页面置换"><a href="#MIN页面置换" class="headerlink" title="MIN页面置换"></a>MIN页面置换</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232236245.png"></p>
+<h2 id="LRU页面置换"><a href="#LRU页面置换" class="headerlink" title="LRU页面置换"></a>LRU页面置换</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232314526.png"></p>
+<p>LRU准确实现，方案1：用时间戳，记录每个页使用的最近时间戳，需要换页时换出最小时间戳的页</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232344199.png"></p>
+<p>LRU准确实现，方案2：用页码栈</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232414310.png"></p>
+<p>LRU近似实现，将时间计数变为是与否，对比上述两个准确实现的方案，每访问一次地址都需要修改页所对应的时间戳或者栈中的位置，而此方案只需要修改对应页的那一位，且可以用MMU自动实现，用最近是否使用来近似最近最少使用</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232500438.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232528670.png"></p>
+<h2 id="CPU颠簸"><a href="#CPU颠簸" class="headerlink" title="CPU颠簸"></a>CPU颠簸</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232616206.png"></p>
+<ul>
+<li>首先，进程个数增多，CPU交替执行，CPU利用率上升</li>
+<li>其次，当进程持续增多，给每个进程分配的页就少了，每个进程的缺页率就增加了，一旦增加到一定程度后，就会经常处于缺页状态，也就需要经常启动磁盘调页，一启动磁盘CPU就要等待，多个进程都会处于调页等待状态，导致CPU利用率急剧降低</li>
+<li>颠簸的原因：分配的页少了，不断在磁盘和内存中进行换入换出页的操作，CPU啥也执行不了，只能等待，用户的程序得不到推进</li>
+</ul>
+<h2 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232647665.png"></p>
+<p>访问某个地址，发现缺页，进行缺页中断，从磁盘中读出一页放进物理内存，再放页的过程中，可能会发现分配的页框不足，就需要用clock算法淘汰换出一个页，写入磁盘，此时有空闲页后就可以换入</p>
+<p>swap分区，实现换入换出的样子，也就是实现虚拟内存，也就是实现段页，也就是操作系统管理内存的思想，也就能让程序执行起来，也就实现了进程</p>
+]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
+      <tags>
+        <tag>内存分段分页</tag>
+        <tag>GDT, LDT</tag>
+        <tag>页表</tag>
+        <tag>内存换入换出</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>操作系统04_设备驱动</title>
+    <url>/2022/06/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F04_%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/</url>
+    <content><![CDATA[<h1 id="I-O与显示器"><a href="#I-O与显示器" class="headerlink" title="I/O与显示器"></a>I/O与显示器</h1><h2 id="外设工作原理"><a href="#外设工作原理" class="headerlink" title="外设工作原理"></a>外设工作原理</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200219223935454.png"></p>
+<p>要想进行外设的驱动：</p>
+<ul>
+<li>向设备控制器的寄存器发出指令，核心out指令</li>
+<li>为了让out做的统一，让用户使用起来方便，要给用户提供一个简单视图，文件视图</li>
+<li>进行设备中断的中断处理</li>
+</ul>
+<h2 id="文件视图"><a href="#文件视图" class="headerlink" title="文件视图"></a>文件视图</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200219224902886.png"></p>
+<p>不论什么设备都是open，read，write，close，OS为用户提供统一的接口</p>
+<p>不同设备对应不同的设备文件（/dev/xxx），根据设备文件找到控制器的地址、内容格式等</p>
+<h2 id="显示器输出流程"><a href="#显示器输出流程" class="headerlink" title="显示器输出流程"></a>显示器输出流程</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200219231204182.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200219231242778.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200219231309785.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200219231405734.png"></p>
+<p>设备驱动编写流程：根据设备对应信息，注册相应函数到file_table里面，在根据文件描述符，最终调用out出去</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>外设工作的基本原理：CPU发一条读或写的指令出去，当外设执行完相应操作后，向CPU发送一个中断。也就是说不管是对于终端设备还是外设而言，要想实现外设的驱动，需要实现三个方面：</p>
+<ul>
+<li>核心就是向外设的设备控制器的寄存器或者端口发出读写指令。但是这些读写指令往往需要对硬件十分了解，需要知道硬件的端口，硬件指令的格式，往往这些细节非常麻烦</li>
+<li>OS为了隐蔽这些细节，就做了一个统一的文件视图，OS将所有的外设都做成文件，根据对文件的一个描述性结构信息（inode）决定了走哪个分支，最终到了out代码，也就是将一段out的代码采用文件的形式向上封装起来</li>
+<li>进行中断处理，通常是完成设备读写后，进行的后续处理</li>
+</ul>
+<h1 id="磁盘"><a href="#磁盘" class="headerlink" title="磁盘"></a>磁盘</h1><h2 id="磁盘使用"><a href="#磁盘使用" class="headerlink" title="磁盘使用"></a>磁盘使用</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301144331192.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301145059466.png"></p>
+<p>移动磁头到相应的磁道上，旋转磁盘到相应的扇区上，和内存缓冲进行读写</p>
+<h2 id="盘块号抽象-第一层抽象"><a href="#盘块号抽象-第一层抽象" class="headerlink" title="盘块号抽象 - 第一层抽象"></a>盘块号抽象 - 第一层抽象</h2><p>从CHS到扇区号，从扇区号到盘块号</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301150843399.png"></p>
+<p>操作系统将一个盘块对应多个连续扇区，适当降低空间利用率来提高磁盘读写速度，上层应用程序可以发出一个盘块号，操作系统会定义一个盘块是由多少个连续扇区组成，再通过上述公式计算出每个扇区对应的CHS，再通过out指令发给磁盘控制器，应用程序就可以通过盘块号来访问磁盘，而且效率也得到了提升</p>
+<h2 id="多进程使用磁盘-第二层抽象"><a href="#多进程使用磁盘-第二层抽象" class="headerlink" title="多进程使用磁盘 - 第二层抽象"></a>多进程使用磁盘 - 第二层抽象</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301153351990.png"></p>
+<ul>
+<li>FCFS磁盘调度算法</li>
+<li>SSTF磁盘调度算法</li>
+<li>SCAN磁盘调度算法</li>
+<li>C-SCAN磁盘调度（电梯算法）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301154155816.png"></p>
+<h2 id="小结1"><a href="#小结1" class="headerlink" title="小结1"></a>小结1</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301154952979.png"></p>
+<h2 id="引入文件-第三层抽象"><a href="#引入文件-第三层抽象" class="headerlink" title="引入文件 - 第三层抽象"></a>引入文件 - 第三层抽象</h2><p>让普通用户使用生磁盘：许多人连扇区都不知道是什么，要求他们根据盘块号来访问磁盘太过复杂，需要在盘块上引入更高一层次的抽象概念，即文件</p>
+<p>文件：建立字符流到盘块集合的映射关系</p>
+<p>连续结构，不适用于动态增长的文件</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301160648606.png"></p>
+<p>链式结构</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301161041114.png"></p>
+<p>索引结构，index，也就是inode，保存了映射关系</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301161655964.png"></p>
+<p>多级索引</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301161942728.png"></p>
+<h2 id="小结2"><a href="#小结2" class="headerlink" title="小结2"></a>小结2</h2><p>通过映射，用户对磁盘的使用，不在使用生磁盘，不在使用盘块号，而是使用字符流</p>
+<p>操作系统设计了一个结构，设计了一个映射表，根据映射表可以找到字符流中的字符对应的盘块号，用户不用关心盘块号的概念，操作系统自己维护inode信息，维护FCB信息</p>
+<h2 id="文件使用磁盘的实现"><a href="#文件使用磁盘的实现" class="headerlink" title="文件使用磁盘的实现"></a>文件使用磁盘的实现</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301200821087.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301200839987.png"></p>
+<p>inode除了作为一个映射表，映射从文件到盘块号的信息，inode也是文件视图中的文件抽象，如果inode对应的是一个设备文件，里面存放着设备的信息，比如主设备号、次设备号</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301201540650.png"></p>
+<p>从文件名找到inode，根据inode找到盘块号，将盘块号往电梯队列中放，根据盘块号算出CHS，最后out指令发在磁盘控制器上</p>
+<h2 id="文件系统-第四层抽象"><a href="#文件系统-第四层抽象" class="headerlink" title="文件系统 - 第四层抽象"></a>文件系统 - 第四层抽象</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301202956599.png"></p>
+<p>将一个磁盘的所有盘块进行抽象组织，用inode组织这些盘块，形成一个字符序列，形成一个给用户的一个抽象的结构，用户按照这种结构去存取、管理文件，OS将这种读写通过磁盘存储的这种映射关系最终转换成对扇区的读写</p>
+<h2 id="小结3"><a href="#小结3" class="headerlink" title="小结3"></a>小结3</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200301205442518.png"></p>
+]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
+  </entry>
 </search>

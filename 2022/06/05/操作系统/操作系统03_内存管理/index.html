@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-z.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-z.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hankong91.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="操作系统03_内存管理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统03_内存管理">
+<meta property="og:url" content="https://hankong91.github.io/2022/06/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F03_%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="寒空の博客">
+<meta property="og:description" content="操作系统03_内存管理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20230706223526206.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215211324604.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215212327234.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215212516841.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215220134561.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215222356671.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215222903538.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215224354688.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216095326213.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216100136795.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216101308933.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216110654297.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216124103790.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216185551610.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216202236743.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216212723408.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216213600702.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216214719464.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216214816692.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216220631809.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217223050043.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217223127230.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217223157062.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232210224.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232236245.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232314526.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232344199.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232414310.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232500438.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232528670.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232616206.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232647665.png">
+<meta property="article:published_time" content="2022-06-05T13:54:19.000Z">
+<meta property="article:modified_time" content="2023-07-12T15:53:43.225Z">
+<meta property="article:author" content="寒空">
+<meta property="article:tag" content="内存分段分页">
+<meta property="article:tag" content="GDT, LDT">
+<meta property="article:tag" content="页表">
+<meta property="article:tag" content="内存换入换出">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20230706223526206.png">
+
+
+<link rel="canonical" href="https://hankong91.github.io/2022/06/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F03_%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hankong91.github.io/2022/06/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F03_%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/","path":"2022/06/05/操作系统/操作系统03_内存管理/","title":"操作系统03_内存管理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>操作系统03_内存管理 | 寒空の博客</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">寒空の博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">31</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">52</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E4%BD%BF%E7%94%A8%E4%B8%8E%E5%88%86%E6%AE%B5"><span class="nav-number">1.</span> <span class="nav-text">内存使用与分段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">内存使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%AE%B5"><span class="nav-number">1.2.</span> <span class="nav-text">分段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GDT%E8%A1%A8%E5%92%8CLDT%E8%A1%A8"><span class="nav-number">1.3.</span> <span class="nav-text">GDT表和LDT表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E5%8C%BA%E4%B8%8E%E5%88%86%E9%A1%B5"><span class="nav-number">2.</span> <span class="nav-text">内存分区与分页</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%8C%BA"><span class="nav-number">2.1.</span> <span class="nav-text">分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E9%A1%B5"><span class="nav-number">2.2.</span> <span class="nav-text">分页</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8%E4%B8%8E%E5%BF%AB%E8%A1%A8"><span class="nav-number">3.</span> <span class="nav-text">多级页表与快表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8"><span class="nav-number">3.1.</span> <span class="nav-text">多级页表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E8%A1%A8"><span class="nav-number">3.2.</span> <span class="nav-text">快表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AE%B5%E9%A1%B5%E7%BB%93%E5%90%88%E7%9A%84%E5%AE%9E%E9%99%85%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">段页结合的实际内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AE%B5%E9%A1%B5%E7%BB%93%E5%90%88%E8%BD%AE%E5%BB%93"><span class="nav-number">4.1.</span> <span class="nav-text">段页结合轮廓</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%AE%9E%E9%99%85%E7%9A%84%E6%AE%B5%E9%A1%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">4.2.</span> <span class="nav-text">一个实际的段页式内存管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93-1"><span class="nav-number">4.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%8D%A2%E5%85%A5"><span class="nav-number">5.</span> <span class="nav-text">内存换入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%8D%A2%E5%87%BA"><span class="nav-number">6.</span> <span class="nav-text">内存换出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FIFO%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2"><span class="nav-number">6.1.</span> <span class="nav-text">FIFO页面置换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MIN%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2"><span class="nav-number">6.2.</span> <span class="nav-text">MIN页面置换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LRU%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2"><span class="nav-number">6.3.</span> <span class="nav-text">LRU页面置换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU%E9%A2%A0%E7%B0%B8"><span class="nav-number">6.4.</span> <span class="nav-text">CPU颠簸</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93-2"><span class="nav-number">6.5.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="寒空"
+      src="/images/author.jpg">
+  <p class="site-author-name" itemprop="name">寒空</p>
+  <div class="site-description" itemprop="description">放弃不难，但坚持一定很酷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hankong91" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hankong91" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/NSRyan" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;NSRyan" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hankong91.github.io/2022/06/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F03_%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="寒空">
+      <meta itemprop="description" content="放弃不难，但坚持一定很酷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒空の博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统03_内存管理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-05 21:54:19" itemprop="dateCreated datePublished" datetime="2022-06-05T21:54:19+08:00">2022-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-12 23:53:43" itemprop="dateModified" datetime="2023-07-12T23:53:43+08:00">2023-07-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">操作系统03_内存管理</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="内存使用与分段"><a href="#内存使用与分段" class="headerlink" title="内存使用与分段"></a>内存使用与分段</h1><h2 id="内存使用"><a href="#内存使用" class="headerlink" title="内存使用"></a>内存使用</h2><p>将程序放到内存中，CPU不断取址执行，内存也就使用起来了</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20230706223526206.png"></p>
+<p>假设main函数的地址是40，那么为了让CPU使用内存，需要将程序读入内存后取址执行，但是关键是要读到内存中的哪个地方。比如main函数在40的位置，那么call 40就要跳转到40的地址去执行，就要往物理内存中40的地址上去找，也就是main函数的第一条指令需要放到物理内存中40的地址中存放，同理entry需要存放在0地址处，最后将PC置成0，CPU取址执行后就会进入main函数，也就是内存可以使用了</p>
+<p>因此如果按上述做法，这个程序的main函数必须存放到物理地址40处，入口地址必须存放到0地址处，否则这个程序无法执行，但是0地址处不可能随便存放程序（放的是OS），即使可以，万一其他程序也需要放到0地址处，那就会导致冲突</p>
+<p>实际情况应该是将在内存中找一段空闲的内存，然后将这段程序放到这段内存，同时需要将call 40中的40进行修改，因为编译时每个程序的地址都是与入口地址的一个相对地址（逻辑地址），放到物理内存中需要变成一个物理地址</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215211324604.png"></p>
+<p>采用载入时重定位的方法更加灵活，但是很多时候，程序载入后还需要移动，比如交换的场景，一个进程长时间进入睡眠，操作系统为了更充分地利用内存，会将该段内存换出到磁盘中，待需要唤醒的时候重新换入内存</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215212327234.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215212516841.png"></p>
+<p>过程小结：</p>
+<ul>
+<li>程序加载进内存，首先在内存中找到的一段空闲内存，把这段空闲内存的基地址（初始地址）拿出来，设置这个进程的PCB，然后把程序放到这段空闲内存</li>
+<li>上下文切换到该进程的时候，基址寄存器的值就变成了PCB中的初始地址</li>
+<li>每取址执行的时候，都要进行地址翻译，就找到了这条指令实际使用的物理内存地址</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215220134561.png"></p>
+<h2 id="分段"><a href="#分段" class="headerlink" title="分段"></a>分段</h2><p>实际的程序结构</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215222356671.png"></p>
+<p>es：数据段号，bx：偏移</p>
+<p>如果把所有段都放在一起，有可能在写数据段的时候把程序段也写了，因此需要将程序分段存放内存</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215222903538.png"></p>
+<p>可以让内存更加高效的使用，比如说第3个段是堆栈段，堆栈段可以增长，假如不分段而采用集中处理，当堆栈段新申请内存超过预留内存时，要让程序执行，必须在另外空闲内存的地方新申请一段内存，再将所有这些内容拷贝到该空闲内存，形成一个新的样子，把堆栈段拉长，才能继续执行，此时这两块内存在移植过程中都不可以使用，而且移动的数据会比较大，造成内存使用浪费；而如果采用分段处理，当第3段堆栈段不够时，只需要移动第3段，其他几个段可以照常使用，也减少移动内存段空间，内存效率提升</p>
+<p>按照上述情况，再去寻址的话就是段号和段内偏移（DS:offset），注意这里DS和CS不是一回事（DS表示段号，CS表示对应段的段基址），因此此时PCB里面需要存放每一个段的基址，也就是段表</p>
+<h2 id="GDT表和LDT表"><a href="#GDT表和LDT表" class="headerlink" title="GDT表和LDT表"></a>GDT表和LDT表</h2><p>操作系统（看成一个进程），对应的段表就是GDT表；用户的每个进程对应的段表就是LDT表</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200215224354688.png"></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>把程序分成多个段，每个段在内存中找到一块空闲的地方，将初始地址放到该进程的LDT表里面</li>
+<li>LDT表赋给PCB，OS根据PC指针不断取址执行，在每执行一条指令的时候都查这个表，根据表中的基址和程序中的地址进行运行时重定向，就能找到对应的物理地址</li>
+<li>LDT表就是内存映射，进程切换的时候，PCB切换，对应的LDT表也切换，保证每个进程有自己的内存空间</li>
+</ul>
+<h1 id="内存分区与分页"><a href="#内存分区与分页" class="headerlink" title="内存分区与分页"></a>内存分区与分页</h1><h2 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h2><p>内存如何分割，就可以将程序的各个段载入到相应的内存分区</p>
+<ul>
+<li>固定分区：OS初始化时将内存等分成N个分区，但是段有大有小，不合适</li>
+<li>可变分区：需要对每个分区进行动态管理</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216095326213.png"></p>
+<h2 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h2><p>可变分区造成的问题</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216100136795.png"></p>
+<p>为解决这个问题，引入分页的机制，将内存分配成页，针对每个段的内存请求，系统一页一页的分配给这个段</p>
+<ul>
+<li>通过分页的机制，将程序段和物理内存分别进行分页，再将对应的页放到空闲内存页上，这样保证了物理内存中尽量没有内存碎片，即使有也是一个分页中不满整个页导致的少量碎片，一个段最多浪费了4K的大小</li>
+<li>不用进行内存紧缩，并且内存的浪费也很少</li>
+<li>物理内存最关心的是空间没有浪费，采用分页机制可以满足，因此从物理内存角度来看希望采用分页，而从用户角度，用户希望分段的特点，可以对每段进行处理，因此需要即支持分段又支持分页</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216101308933.png"></p>
+<p>段表有相应的寄存器LDTR，页表也有相应的寄存器CR3，进程切换的时候，LDTR和CR3分别跟着切换</p>
+<p>MMU：CPU中的硬件模块，根据页表指针，当需要访问内存的时候，根据硬件电路自动算出需要找到的页号，然后根据页表找到页框号，算出实际物理地址，实现内存地址重定向</p>
+<blockquote>
+<p>以0x2240地址为列，首先除以4K（右移12位），得到页号2，根据页表找到页框号为3，每页4K，再左移12位，得到物理地址0x3240</p>
+</blockquote>
+<p>小结：一个程序分成多个段，每个段再打散成多个页，建立页表，页表再和PCB关联</p>
+<h1 id="多级页表与快表"><a href="#多级页表与快表" class="headerlink" title="多级页表与快表"></a>多级页表与快表</h1><p>上述分页机制，为了提高内存空间利用率，页应该小，但是页小了，页表项就会增加，页表就大了，比如4G内存，4G / 4K = 1M，需要存放1M个页表项</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216110654297.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216124103790.png"></p>
+<p>例如只存放用到的页，比如申请4M内存空间，则需要的单级页表项个数为4M / 4K = 1K，即1024个页表项，由于也表项目不连续，则每次查找都需要遍历（或者采用二分查找），为了查找一个页表项，平均需要进行log2^10，即10次查找操作，平均效率变成1/10，这个不允许的，同时本身这个页表也是在内存中的，也需要进行内存访问，速度更慢</p>
+<p>因此需要连续进行存储所有页表项，查找可以通过偏移，快速查找，由此引入多级页表，页目录表（章）+ 页表（节）</p>
+<h2 id="多级页表"><a href="#多级页表" class="headerlink" title="多级页表"></a>多级页表</h2><p>采用章节的思想，记录每个章的页目录，再根据页目录项找到对应的页表，而对于不需要关心的页表项也就不需要放进内存中，即保证了连续，也使得页表占用内存少</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216185551610.png"></p>
+<ul>
+<li>32位机，12bits - 4K地址偏移；10bits - 1K个页目录号（章）；10bits - 1K个页号（节）</li>
+<li>先找到章，再找到节，再计算物理地址</li>
+<li>每个页目录指向2^10个页表，每个页表项指向4K空间，即一个页目录项指向4M空间</li>
+<li>中间很多多余的目录不需要映射，也就不需要相应的节，即页表不需要放到内存中，节省内存</li>
+<li>例如要申请12M内存，则需要三个目录，每个目录所存放页表项对应内存为2^10 x 4Byte = 4K，再加上页目录本身驻留4K，则共需要16K内存空间，远小于单级页表4M内存空间</li>
+<li>注意，未用到页目录仍然占用，保证连续，快速查找</li>
+</ul>
+<p>多节页表，即保证了表项的连续性，可以进行快查找，又保证了在内存中存放的页表项尽可能少。多级页表提高了空间利用率，但是由于多级结构，导致访问内存的次数增加，造成时间相对增加</p>
+<h2 id="快表"><a href="#快表" class="headerlink" title="快表"></a>快表</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216202236743.png"></p>
+<p>多级页表在时间上造成的增加，利用快表来弥补，快表TLB是一组快速存储寄存器，可以通过硬件电路快速找到最近使用内存的逻辑页对应的物理页号</p>
+<p>利用多级页表保证了页表项在内存中连续，可以快速查找，而且提高了空间利用率；利用快表将最近频繁使用的页表项放在快表中，首先去快表中查，查不到再去多级页表中查，也保证了时间上的高效</p>
+<h1 id="段页结合的实际内存管理"><a href="#段页结合的实际内存管理" class="headerlink" title="段页结合的实际内存管理"></a>段页结合的实际内存管理</h1><h2 id="段页结合轮廓"><a href="#段页结合轮廓" class="headerlink" title="段页结合轮廓"></a>段页结合轮廓</h2><p>段、页结合：用户希望用段，物理内存希望用页</p>
+<p>思路：对于用户来说，希望把程序和内存地址空间分成多段，每一段映射到相应段的内存地址空间；对于物理内存来说，希望把每一段程序和物理内存分别进行分页，每一页映射到相应物理内存的页中。那么可以将上一步映射到相应段的内存地址空间与每一段程序等同联系起来，达到段页结合的目的</p>
+<ul>
+<li>从程序角度出发，需要找出一段地址，本来应该从内存地址中去割，为了支持页，不能直接使用物理内存地址，而从虚拟内存中割出一个区域给相应的段，段就有了映射</li>
+<li>虚拟内存中的段分割成固定大小的页，每一页再映射到物理内存上的页</li>
+<li>从物理内存角度看，支持了页，从虚拟地址到实际地址的映射</li>
+</ul>
+<p>引入虚拟内存，即支持了段，又支持了页</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216212723408.png"></p>
+<p>段页同时存在时的重定位（地址翻译）</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216213600702.png"></p>
+<p>经过两层地址翻译：第一层翻译是基于段的地址翻译，通过段表找到虚拟地址；第二层的翻译是基于页的地址翻译，通过页表找到实际物理地址</p>
+<p>核心：从逻辑地址到虚拟地址，从虚拟地址再到物理地址，操作系统利用这两层映射实现了即面向用户能支持段，采用段的结构，又面向物理内存，采用页的结构</p>
+<h2 id="一个实际的段页式内存管理"><a href="#一个实际的段页式内存管理" class="headerlink" title="一个实际的段页式内存管理"></a>一个实际的段页式内存管理</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216214719464.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216214816692.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200216220631809.png"></p>
+<p>父子进程通过映射表实现了地址分离，实现了相互影响的消除，解决了多进程同时放到内存中，即使是同一个逻辑地址，OS也会通过LDT和页表的配合，也会操作不同的物理内存</p>
+<h2 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h2><p>虚拟内存是连接分段和分页的核心，而分段和分页是OS管理内存的两个重要机制</p>
+<p>一个进程如何载入内存，首先在虚拟内存中割，其次在物理内存中割，建立段表、页表，执行的时候MMU自动执行地址翻译，程序中需要用到的内存真的可以访问到对应的物理内存，并且完成了多个进程在内存中影响的消除，进程切换的时候对应表都会进行相应切换，达到了进程拉动内存使用的目的</p>
+<h1 id="内存换入"><a href="#内存换入" class="headerlink" title="内存换入"></a>内存换入</h1><p>引入背景：OS为了让用户使用内存，需要分段，光有分段造成内存的效率低，空间利用率低，由此引入了分页，而对于用户和物理内存两个维度要求需要即有分段又有分页，由此引入了虚拟内存，而要想实现虚拟内存，就必须要有换入和换出机制</p>
+<p>用户眼里的内存，OS通过映射来给用户提供一个4G内存的假象，用换入、换出实现大内存</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217223050043.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217223127230.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217223157062.png"></p>
+<p>MMU查页表，发现缺页，就会触发中断，进行页错误处理程序，就要从磁盘中调入页</p>
+<h1 id="内存换出"><a href="#内存换出" class="headerlink" title="内存换出"></a>内存换出</h1><h2 id="FIFO页面置换"><a href="#FIFO页面置换" class="headerlink" title="FIFO页面置换"></a>FIFO页面置换</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232210224.png"></p>
+<h2 id="MIN页面置换"><a href="#MIN页面置换" class="headerlink" title="MIN页面置换"></a>MIN页面置换</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232236245.png"></p>
+<h2 id="LRU页面置换"><a href="#LRU页面置换" class="headerlink" title="LRU页面置换"></a>LRU页面置换</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232314526.png"></p>
+<p>LRU准确实现，方案1：用时间戳，记录每个页使用的最近时间戳，需要换页时换出最小时间戳的页</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232344199.png"></p>
+<p>LRU准确实现，方案2：用页码栈</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232414310.png"></p>
+<p>LRU近似实现，将时间计数变为是与否，对比上述两个准确实现的方案，每访问一次地址都需要修改页所对应的时间戳或者栈中的位置，而此方案只需要修改对应页的那一位，且可以用MMU自动实现，用最近是否使用来近似最近最少使用</p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232500438.png"></p>
+<p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232528670.png"></p>
+<h2 id="CPU颠簸"><a href="#CPU颠簸" class="headerlink" title="CPU颠簸"></a>CPU颠簸</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232616206.png"></p>
+<ul>
+<li>首先，进程个数增多，CPU交替执行，CPU利用率上升</li>
+<li>其次，当进程持续增多，给每个进程分配的页就少了，每个进程的缺页率就增加了，一旦增加到一定程度后，就会经常处于缺页状态，也就需要经常启动磁盘调页，一启动磁盘CPU就要等待，多个进程都会处于调页等待状态，导致CPU利用率急剧降低</li>
+<li>颠簸的原因：分配的页少了，不断在磁盘和内存中进行换入换出页的操作，CPU啥也执行不了，只能等待，用户的程序得不到推进</li>
+</ul>
+<h2 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h2><p><img src="https://raw.githubusercontent.com/hankong91/image_01/master/os_hit/image-20200217232647665.png"></p>
+<p>访问某个地址，发现缺页，进行缺页中断，从磁盘中读出一页放进物理内存，再放页的过程中，可能会发现分配的页框不足，就需要用clock算法淘汰换出一个页，写入磁盘，此时有空闲页后就可以换入</p>
+<p>swap分区，实现换入换出的样子，也就是实现虚拟内存，也就是实现段页，也就是操作系统管理内存的思想，也就能让程序执行起来，也就实现了进程</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>寒空
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hankong91.github.io/2022/06/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F03_%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="操作系统03_内存管理">https://hankong91.github.io/2022/06/05/操作系统/操作系统03_内存管理/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%86%85%E5%AD%98%E5%88%86%E6%AE%B5%E5%88%86%E9%A1%B5/" rel="tag"># 内存分段分页</a>
+              <a href="/tags/GDT-LDT/" rel="tag"># GDT, LDT</a>
+              <a href="/tags/%E9%A1%B5%E8%A1%A8/" rel="tag"># 页表</a>
+              <a href="/tags/%E5%86%85%E5%AD%98%E6%8D%A2%E5%85%A5%E6%8D%A2%E5%87%BA/" rel="tag"># 内存换入换出</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/06/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F02_%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%9B%BE%E5%83%8F/" rel="prev" title="操作系统02_多进程图像">
+                  <i class="fa fa-chevron-left"></i> 操作系统02_多进程图像
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/06/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F04_%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" rel="next" title="操作系统04_设备驱动">
+                  操作系统04_设备驱动 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寒空</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">167k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:32</span>
+  </span>
+</div>
+
+<!---->
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>
